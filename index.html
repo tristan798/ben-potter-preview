@@ -8,7 +8,7 @@
 <meta name="description" content="Ben Potter. Nearly forty years living on the Devonport peninsula. Harcourts Cooper & Co agent for Devonport, Belmont and Bayswater. Book a free appraisal.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@400;500;600&display=swap">
 <style>
   :root{
     --ground:#0C0C0D;
@@ -28,7 +28,7 @@
     --rule-strong:var(--line-strong);
     --panel:var(--surface);
     --accent:var(--brass);
-    --serif:"DM Serif Display", Georgia, "Times New Roman", serif;
+    --serif:"Instrument Serif", Georgia, "Times New Roman", serif;
     --sans:"Poppins", "Helvetica Neue", Arial, sans-serif;
     --wrap:1240px;
     --gutter:clamp(20px, 5vw, 64px);
@@ -43,10 +43,10 @@
   body{margin:0; background:var(--ground); color:var(--ivory); font-family:var(--sans); font-size:15.5px; line-height:1.7; -webkit-font-smoothing:antialiased; overflow-x:clip}
   img{max-width:100%; height:auto; display:block}
   a{color:inherit}
-  h1,h2,h3{font-family:var(--serif); font-weight:400; line-height:1.04; margin:0; letter-spacing:-.01em; text-wrap:balance}
-  h1{font-size:clamp(3rem, 6.6vw, 6.2rem)}
-  h2{font-size:clamp(2.2rem, 4.2vw, 3.8rem)}
-  h3{font-size:clamp(1.6rem, 2.2vw, 2.1rem)}
+  h1,h2,h3{font-family:var(--serif); font-weight:400; line-height:1.0; margin:0; letter-spacing:0; text-wrap:balance}
+  h1{font-size:clamp(3.4rem, 7.4vw, 7.2rem)}
+  h2{font-size:clamp(2.5rem, 4.8vw, 4.4rem)}
+  h3{font-size:clamp(1.8rem, 2.5vw, 2.4rem)}
   em{font-style:italic}
   p{margin:0}
   .wrap{max-width:var(--wrap); margin-inline:auto; padding-inline:var(--gutter)}
@@ -72,7 +72,7 @@
   /* Header */
   .header{position:absolute; top:0; left:0; right:0; z-index:30}
   .header .wrap{display:flex; align-items:center; justify-content:space-between; height:96px; gap:24px}
-  .wordmark{font-family:var(--serif); font-weight:400; font-size:1.4rem; letter-spacing:.05em; text-decoration:none; text-transform:uppercase; line-height:1}
+  .wordmark{font-family:var(--serif); font-weight:400; font-size:1.55rem; letter-spacing:.06em; text-decoration:none; text-transform:uppercase; line-height:1}
   .nav{display:flex; gap:36px}
   .nav a{text-decoration:none; font-size:.7rem; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--ivory-2); transition:color .2s}
   .nav a:hover{color:var(--ivory)}
@@ -114,18 +114,18 @@
   .stat{padding:34px 32px 34px 0; display:flex; flex-direction:column; gap:6px; border-right:1px solid var(--rule)}
   .stat + .stat{padding-left:32px}
   .stat:last-child{border-right:0}
-  .stat b{font-family:var(--serif); font-weight:400; font-size:2.2rem; line-height:1; letter-spacing:-.01em}
+  .stat b{font-family:var(--serif); font-weight:400; font-size:2.5rem; line-height:1}
   .stat span{font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); font-weight:600}
 
   /* About */
-  .statement{font-family:var(--serif); font-weight:400; font-size:clamp(1.9rem, 3.3vw, 3rem); line-height:1.15; letter-spacing:-.01em; text-wrap:balance; max-width:22ch; margin-bottom:2.2rem}
+  .statement{font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem, 3.7vw, 3.4rem); line-height:1.12; text-wrap:balance; max-width:22ch; margin-bottom:2.2rem}
   .statement em{color:var(--accent)}
   .reel{margin-top:clamp(56px, 7vw, 96px); position:relative; aspect-ratio:16/8; background:var(--panel); border:1px solid var(--rule); display:grid; place-items:center; width:100%; cursor:pointer; color:var(--fg); padding:0; border-radius:2px; overflow:hidden}
   .reel-ring{width:88px; height:88px; border-radius:50%; border:1px solid var(--rule-strong); display:grid; place-items:center; transition:border-color .2s, transform .3s}
   .reel:hover .reel-ring{border-color:var(--fg); transform:scale(1.04)}
   .reel-ring svg{width:22px; height:22px; margin-left:3px}
   .reel-caption{position:absolute; left:28px; bottom:24px; display:flex; flex-direction:column; gap:6px; text-align:left}
-  .reel-caption b{font-family:var(--serif); font-weight:400; font-size:1.35rem; line-height:1.1}
+  .reel-caption b{font-family:var(--serif); font-weight:400; font-size:1.5rem; line-height:1.1}
   .reel-caption span{font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mute); font-weight:600}
   .reel-msg{margin-top:14px; font-size:.78rem}
 
@@ -147,7 +147,7 @@
   .ledger th{font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mute); font-weight:700; text-align:left; padding:0 0 16px; border-bottom:1px solid var(--rule-strong)}
   .ledger td{padding:22px 24px 22px 0; border-bottom:1px solid var(--rule); vertical-align:baseline}
   .ledger td:last-child{padding-right:0}
-  .ledger .addr{font-family:var(--serif); font-weight:400; font-size:1.45rem; line-height:1; white-space:nowrap}
+  .ledger .addr{font-family:var(--serif); font-weight:400; font-size:1.6rem; line-height:1; white-space:nowrap}
   .ledger .sub{color:var(--fg-2); font-size:.95rem}
   .ledger .res{color:var(--fg-2); font-size:.95rem}
   .ledger .date{color:var(--mute); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; text-align:right; white-space:nowrap}
@@ -159,7 +159,7 @@
 
   /* Quote */
   .words{text-align:center}
-  .quote{max-width:28ch; margin:2.2rem auto 0; font-family:var(--serif); font-weight:400; font-style:italic; font-size:clamp(1.7rem, 3.2vw, 3rem); line-height:1.22; letter-spacing:-.01em; text-wrap:balance; min-height:3.6em}
+  .quote{max-width:30ch; margin:2.2rem auto 0; font-family:var(--serif); font-weight:400; font-style:italic; font-size:clamp(1.9rem, 3.6vw, 3.4rem); line-height:1.18; text-wrap:balance; min-height:3.6em}
   .quote-by{margin-top:2rem; display:flex; flex-direction:column; gap:6px; align-items:center}
   .quote-by b{font-weight:600; font-size:.9rem; letter-spacing:.02em}
   .quote-by span{font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mute); font-weight:600}
@@ -174,7 +174,7 @@
   /* FAQ */
   .faq-list{border-top:1px solid var(--rule); margin-top:2.6rem}
   .faq-list details{border-bottom:1px solid var(--rule)}
-  .faq-list summary{list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:24px; padding:26px 0; font-family:var(--serif); font-weight:400; font-size:clamp(1.25rem, 1.8vw, 1.55rem); line-height:1.25}
+  .faq-list summary{list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:24px; padding:26px 0; font-family:var(--serif); font-weight:400; font-size:clamp(1.4rem, 2vw, 1.75rem); line-height:1.2}
   .faq-list summary::-webkit-details-marker{display:none}
   .faq-list summary::after{content:""; width:12px; height:12px; flex:none; border-right:1px solid var(--fg-2); border-bottom:1px solid var(--fg-2); transform:rotate(45deg) translate(-3px,-3px); transition:transform .25s}
   .faq-list details[open] summary::after{transform:rotate(225deg) translate(-3px,-3px)}
@@ -187,7 +187,7 @@
   .details{display:flex; flex-direction:column; gap:22px; border-top:1px solid var(--rule); padding-top:28px; margin-top:.6rem}
   .details a, .details div{text-decoration:none; display:flex; flex-direction:column; gap:4px}
   .details span{font-size:.64rem; letter-spacing:.22em; text-transform:uppercase; color:var(--mute); font-weight:700}
-  .details b{font-family:var(--serif); font-weight:400; font-size:1.4rem; line-height:1.1; transition:color .2s}
+  .details b{font-family:var(--serif); font-weight:400; font-size:1.55rem; line-height:1.1; transition:color .2s}
   .details a:hover b{color:var(--accent)}
   form{display:flex; flex-direction:column; gap:26px}
   .field{display:flex; flex-direction:column; gap:8px}
@@ -200,7 +200,7 @@
   .form-foot{display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:6px}
   .form-foot small{font-size:.78rem; color:var(--mute)}
   .form-done{display:flex; flex-direction:column; gap:14px; padding-block:12px}
-  .form-done h3{font-size:1.8rem}
+  .form-done h3{font-size:2rem}
   .form-done p{color:var(--fg-2)}
 
   /* Footer */
