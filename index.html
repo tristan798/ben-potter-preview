@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ben Potter</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Ben Potter. Nearly forty years selling homes in Devonport, Belmont and Bayswater. Harcourts Cooper & Co. Book a free appraisal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#0C0C0D;
+    --surface:#151517;
+    --ivory:#EDE9E1;
+    --ivory-2:#CFCAC0;
+    --muted:#8A8781;
+    --line:rgba(237,233,225,.12);
+    --line-strong:rgba(237,233,225,.28);
+    --brass:#B9A07A;
+    --serif:"Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+    --sans:"Manrope", "Helvetica Neue", Arial, sans-serif;
+    --wrap:1240px;
+    --gutter:clamp(20px, 5vw, 64px);
+  }
+  *{box-sizing:border-box}
+  html{color-scheme:dark; scroll-behavior:smooth}
+  body{margin:0; background:var(--ground); color:var(--ivory); font-family:var(--sans); font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:clip}
+  img{max-width:100%; height:auto; display:block}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--serif); font-weight:300; line-height:1.02; margin:0; letter-spacing:-.005em; text-wrap:balance}
+  h1{font-size:clamp(3.2rem, 7.4vw, 7rem)}
+  h2{font-size:clamp(2.4rem, 4.6vw, 4.2rem)}
+  h3{font-size:clamp(1.7rem, 2.4vw, 2.3rem)}
+  em{font-style:italic; font-weight:300}
+  p{margin:0}
+  .wrap{max-width:var(--wrap); margin-inline:auto; padding-inline:var(--gutter)}
+  .label{font-family:var(--sans); font-size:.68rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--brass)}
+  .muted{color:var(--muted)}
+  .section{padding-block:clamp(88px, 11vw, 160px); border-top:1px solid var(--line)}
+  .split{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:clamp(32px, 6vw, 96px)}
+  .split > .label{padding-top:.5rem}
+  .prose{display:flex; flex-direction:column; gap:1.4rem; max-width:62ch; color:var(--ivory-2)}
+  .prose p{font-size:1.06rem}
+
+  /* Buttons and links */
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:12px; font-family:var(--sans); font-weight:600; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; padding:18px 30px; border-radius:2px; border:1px solid transparent; cursor:pointer; text-decoration:none; line-height:1; transition:background .2s, color .2s, border-color .2s}
+  .btn-ivory{background:var(--ivory); color:var(--ground)}
+  .btn-ivory:hover{background:#fff}
+  .btn-line{background:transparent; color:var(--ivory); border-color:var(--line-strong)}
+  .btn-line:hover{border-color:var(--ivory)}
+  .textlink{display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-size:.78rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ivory); padding-bottom:6px; border-bottom:1px solid var(--line-strong); transition:border-color .2s}
+  .textlink:hover{border-color:var(--ivory)}
+  .textlink svg{width:14px; height:14px}
+  :focus-visible{outline:1px solid var(--brass); outline-offset:4px}
+
+  /* Header */
+  .header{position:absolute; top:0; left:0; right:0; z-index:30}
+  .header .wrap{display:flex; align-items:center; justify-content:space-between; height:96px; gap:24px}
+  .wordmark{font-family:var(--serif); font-weight:400; font-size:1.5rem; letter-spacing:.06em; text-decoration:none; text-transform:uppercase; line-height:1}
+  .nav{display:flex; gap:36px}
+  .nav a{text-decoration:none; font-size:.72rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--ivory-2); transition:color .2s}
+  .nav a:hover{color:var(--ivory)}
+  .header .btn{padding:14px 22px}
+  .menu-btn{display:none; background:none; border:1px solid var(--line-strong); border-radius:2px; width:44px; height:44px; place-items:center; cursor:pointer; color:var(--ivory)}
+  .menu-btn svg{width:20px; height:20px}
+  .mobile-nav{display:none; position:absolute; top:96px; left:0; right:0; background:var(--ground); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .mobile-nav .wrap{display:flex; flex-direction:column; height:auto; padding-block:8px}
+  .mobile-nav a{padding:16px 0; text-decoration:none; font-size:.78rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; border-bottom:1px solid var(--line)}
+  .mobile-nav a:last-child{border-bottom:0}
+  .header.open .mobile-nav{display:block}
+
+  /* Hero */
+  .hero{position:relative; min-height:min(92vh, 980px); display:grid; align-items:end; overflow:hidden; isolation:isolate}
+  .hero-glow{position:absolute; inset:0; z-index:-1; background:radial-gradient(60% 70% at 72% 62%, rgba(185,160,122,.13), transparent 70%)}
+  /* Ben's beach photo can sit here at low opacity behind everything, once supplied */
+  .hero-photo{position:absolute; inset:0; z-index:-2; background:var(--ground)}
+  .hero .wrap{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); align-items:end; gap:clamp(16px, 4vw, 48px); width:100%}
+  .hero-copy{display:flex; flex-direction:column; gap:28px; padding-block:clamp(120px, 14vw, 180px) clamp(72px, 9vw, 128px)}
+  .hero-copy h1{max-width:11ch}
+  .hero-copy .sub{font-size:1.08rem; color:var(--ivory-2); max-width:44ch}
+  .hero-actions{display:flex; align-items:center; gap:32px; flex-wrap:wrap; margin-top:8px}
+  .hero-figure{position:relative; margin:0; align-self:end; justify-self:end; max-width:100%}
+  .hero-figure img{height:clamp(600px, 84vh, 920px); width:auto; max-width:100%; object-fit:contain; object-position:bottom; -webkit-mask-image:linear-gradient(to bottom, #000 78%, transparent 100%); mask-image:linear-gradient(to bottom, #000 78%, transparent 100%)}
+  .hero-scroll{position:absolute; left:var(--gutter); bottom:28px; font-size:.62rem; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:12px}
+  .hero-scroll::before{content:""; width:32px; height:1px; background:var(--line-strong)}
+
+  /* Load sequence */
+  .rise{opacity:0; transform:translateY(14px); animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  .rise.d1{animation-delay:.1s} .rise.d2{animation-delay:.22s} .rise.d3{animation-delay:.34s} .rise.d4{animation-delay:.46s}
+  .hero-figure{opacity:0; animation:figure 1.3s cubic-bezier(.2,.7,.2,1) .15s forwards}
+  @keyframes rise{to{opacity:1; transform:none}}
+  @keyframes figure{from{opacity:0; transform:translateY(24px)} to{opacity:1; transform:none}}
+  @media (prefers-reduced-motion:reduce){ .rise,.hero-figure{opacity:1; transform:none; animation:none} html{scroll-behavior:auto} *{transition:none !important} }
+
+  /* Stats line */
+  .stats{border-top:1px solid var(--line)}
+  .stats .wrap{display:grid; grid-template-columns:repeat(3, minmax(0,1fr))}
+  .stat{padding:34px 32px 34px 0; display:flex; flex-direction:column; gap:6px; border-right:1px solid var(--line)}
+  .stat + .stat{padding-left:32px}
+  .stat:last-child{border-right:0}
+  .stat b{font-family:var(--serif); font-weight:300; font-size:2.4rem; line-height:1; letter-spacing:-.01em}
+  .stat span{font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:500}
+
+  /* About */
+  .statement{font-family:var(--serif); font-weight:300; font-size:clamp(2rem, 3.6vw, 3.3rem); line-height:1.15; letter-spacing:-.005em; text-wrap:balance; max-width:22ch; margin-bottom:2.2rem}
+  .statement em{color:var(--brass)}
+  .reel{margin-top:clamp(56px, 7vw, 96px); position:relative; aspect-ratio:16/8; background:var(--surface); border:1px solid var(--line); display:grid; place-items:center; width:100%; cursor:pointer; color:var(--ivory); padding:0; border-radius:2px; overflow:hidden}
+  .reel-ring{width:88px; height:88px; border-radius:50%; border:1px solid var(--line-strong); display:grid; place-items:center; transition:border-color .2s, transform .3s}
+  .reel:hover .reel-ring{border-color:var(--ivory); transform:scale(1.04)}
+  .reel-ring svg{width:22px; height:22px; margin-left:3px}
+  .reel-caption{position:absolute; left:28px; bottom:24px; display:flex; flex-direction:column; gap:6px; text-align:left}
+  .reel-caption b{font-family:var(--serif); font-weight:300; font-size:1.5rem; line-height:1}
+  .reel-caption span{font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:500}
+  .reel-msg{margin-top:14px; font-size:.78rem}
+
+  /* Suburbs list */
+  .rows{border-top:1px solid var(--line); margin-top:2.6rem}
+  .row{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) auto; align-items:center; gap:32px; padding:34px 0; border-bottom:1px solid var(--line); text-decoration:none; color:inherit; transition:padding-left .3s}
+  .row:hover{padding-left:12px}
+  .row h3{transition:color .2s}
+  .row:hover h3{color:var(--brass)}
+  .row p{color:var(--muted); font-size:.98rem; max-width:52ch}
+  .row .arrow{width:40px; height:40px; border:1px solid var(--line-strong); border-radius:50%; display:grid; place-items:center; transition:border-color .2s}
+  .row .arrow svg{width:16px; height:16px}
+  .row:hover .arrow{border-color:var(--ivory)}
+  .also{margin-top:2rem; font-size:.9rem; color:var(--muted)}
+  .also a{color:var(--ivory-2); text-decoration:none; border-bottom:1px solid var(--line-strong)}
+
+  /* Ledger */
+  .ledger{width:100%; border-collapse:collapse; margin-top:2.6rem; font-variant-numeric:tabular-nums}
+  .ledger th{font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600; text-align:left; padding:0 0 16px; border-bottom:1px solid var(--line-strong)}
+  .ledger td{padding:22px 24px 22px 0; border-bottom:1px solid var(--line); vertical-align:baseline}
+  .ledger td:last-child{padding-right:0}
+  .ledger .addr{font-family:var(--serif); font-weight:300; font-size:1.7rem; line-height:1; letter-spacing:-.005em; white-space:nowrap}
+  .ledger .sub{color:var(--ivory-2); font-size:.95rem}
+  .ledger .res{color:var(--ivory-2); font-size:.95rem}
+  .ledger .date{color:var(--muted); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; text-align:right; white-space:nowrap}
+  .ledger .live{color:var(--brass)}
+  .ledger-wrap{overflow-x:auto}
+  .ledger-note{margin-top:1.4rem; font-size:.74rem; color:var(--muted); letter-spacing:.02em}
+  .ledger-head{display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; margin-top:clamp(56px, 7vw, 88px)}
+  .ledger-head h3{font-size:clamp(1.6rem, 2.2vw, 2rem)}
+
+  /* Quote */
+  .words{text-align:center}
+  .quote{max-width:26ch; margin:2.2rem auto 0; font-family:var(--serif); font-weight:300; font-style:italic; font-size:clamp(1.9rem, 3.6vw, 3.4rem); line-height:1.2; letter-spacing:-.005em; text-wrap:balance; min-height:3.6em}
+  .quote-by{margin-top:2rem; display:flex; flex-direction:column; gap:6px; align-items:center}
+  .quote-by b{font-weight:500; font-size:.9rem; letter-spacing:.02em}
+  .quote-by span{font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:500}
+  .quote-nav{margin-top:2.6rem; display:flex; align-items:center; justify-content:center; gap:22px}
+  .quote-nav button{background:none; border:1px solid var(--line-strong); color:var(--ivory); width:44px; height:44px; border-radius:50%; cursor:pointer; display:grid; place-items:center; transition:border-color .2s}
+  .quote-nav button:hover{border-color:var(--ivory)}
+  .quote-nav button svg{width:16px; height:16px}
+  .quote-nav .count{font-size:.72rem; letter-spacing:.2em; color:var(--muted); font-variant-numeric:tabular-nums; min-width:5ch}
+  .stars{color:var(--brass); letter-spacing:.2em; font-size:.85rem}
+  .rma{margin-top:3.2rem; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); display:flex; justify-content:center; gap:14px; align-items:center; flex-wrap:wrap}
+
+  /* FAQ */
+  .faq-list{border-top:1px solid var(--line); margin-top:2.6rem}
+  .faq-list details{border-bottom:1px solid var(--line)}
+  .faq-list summary{list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:24px; padding:26px 0; font-family:var(--serif); font-weight:300; font-size:clamp(1.35rem, 2vw, 1.75rem); line-height:1.2}
+  .faq-list summary::-webkit-details-marker{display:none}
+  .faq-list summary::after{content:""; width:12px; height:12px; flex:none; border-right:1px solid var(--ivory-2); border-bottom:1px solid var(--ivory-2); transform:rotate(45deg) translate(-3px,-3px); transition:transform .25s}
+  .faq-list details[open] summary::after{transform:rotate(225deg) translate(-3px,-3px)}
+  .faq-list details p{padding:0 48px 28px 0; color:var(--ivory-2); max-width:62ch; font-size:1.02rem}
+
+  /* Contact */
+  .contact .split{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .contact-copy{display:flex; flex-direction:column; gap:1.8rem}
+  .contact-copy h2{max-width:12ch}
+  .details{display:flex; flex-direction:column; gap:22px; border-top:1px solid var(--line); padding-top:28px; margin-top:.6rem}
+  .details a, .details div{text-decoration:none; display:flex; flex-direction:column; gap:4px}
+  .details span{font-size:.64rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); font-weight:600}
+  .details b{font-family:var(--serif); font-weight:300; font-size:1.6rem; line-height:1.1; transition:color .2s}
+  .details a:hover b{color:var(--brass)}
+  form{display:flex; flex-direction:column; gap:26px}
+  .field{display:flex; flex-direction:column; gap:8px}
+  .field label{font-size:.64rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); font-weight:600}
+  .field input, .field textarea, .field select{font:inherit; font-size:1.05rem; color:var(--ivory); background:transparent; border:0; border-bottom:1px solid var(--line-strong); border-radius:0; padding:10px 0 12px; width:100%; transition:border-color .2s}
+  .field input:focus, .field textarea:focus, .field select:focus{outline:none; border-color:var(--ivory)}
+  .field input::placeholder, .field textarea::placeholder{color:#5E5C57}
+  .field select option{background:var(--surface)}
+  .field-row{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:26px}
+  .form-foot{display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:6px}
+  .form-foot small{font-size:.78rem; color:var(--muted)}
+  .form-done{display:flex; flex-direction:column; gap:14px; padding-block:12px}
+  .form-done h3{font-size:2rem}
+  .form-done p{color:var(--ivory-2)}
+
+  /* Footer */
+  .footer{border-top:1px solid var(--line); padding-block:48px 40px}
+  .footer .wrap{display:flex; flex-direction:column; gap:36px}
+  .footer-top{display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap}
+  .footer-links{display:flex; gap:28px; flex-wrap:wrap}
+  .footer-links a{text-decoration:none; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); font-weight:600; transition:color .2s}
+  .footer-links a:hover{color:var(--ivory)}
+  .footer-bottom{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size:.72rem; color:var(--muted); letter-spacing:.02em}
+
+  /* Sticky mobile CTA */
+  .sticky{display:none; position:fixed; left:0; right:0; bottom:0; z-index:40; padding:12px var(--gutter); background:rgba(12,12,13,.9); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-top:1px solid var(--line)}
+  .sticky .btn{width:100%}
+
+  @media (max-width: 1000px){
+    .split, .contact .split{grid-template-columns:minmax(0,1fr)}
+    .split > .label{padding-top:0}
+    .row{grid-template-columns:minmax(0,1fr) auto; }
+    .row p{grid-column:1 / -1}
+  }
+  @media (max-width: 860px){
+    .nav{display:none}
+    .header .btn{display:none}
+    .menu-btn{display:grid}
+    .hero .wrap{grid-template-columns:minmax(0,1fr)}
+    .hero-figure{order:-1; justify-self:center; width:min(88%, 460px); margin-top:96px}
+    .hero-figure img{height:auto; width:100%}
+    .hero-figure img{-webkit-mask-image:linear-gradient(to bottom, #000 70%, transparent 100%); mask-image:linear-gradient(to bottom, #000 70%, transparent 100%)}
+    .hero-copy{padding-block:0 clamp(72px, 9vw, 128px); margin-top:-40px}
+    .hero-glow{background:radial-gradient(70% 50% at 50% 36%, rgba(185,160,122,.13), transparent 70%)}
+    .hero-scroll{display:none}
+    .stats .wrap{grid-template-columns:minmax(0,1fr)}
+    .stat, .stat + .stat{border-right:0; padding:22px 0; border-bottom:1px solid var(--line)}
+    .stat:last-child{border-bottom:0}
+    .ledger td, .ledger th{padding-right:16px}
+  }
+  @media (max-width: 640px){
+    body{padding-bottom:78px}
+    .sticky{display:block}
+    .field-row{grid-template-columns:minmax(0,1fr)}
+    .hero-actions{gap:20px}
+    .ledger .addr{font-size:1.35rem}
+    .ledger .sub{display:none}
+    .row{padding:26px 0}
+    .reel{aspect-ratio:4/3}
+  }
+</style>
+</head>
+<body>
+
+<header class="header" id="top">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="Ben Potter, home">Ben Potter</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#suburbs">Suburbs</a>
+      <a href="#results">Results</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn btn-line" href="#contact">Book an appraisal</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 8h18M3 16h18"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+    <div class="wrap">
+      <a href="#about">About Ben</a>
+      <a href="#suburbs">Suburbs</a>
+      <a href="#results">Results</a>
+      <a href="#words">Reviews</a>
+      <a href="#contact">Book an appraisal</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-photo" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="label rise d1">Devonport &nbsp;·&nbsp; Belmont &nbsp;·&nbsp; Bayswater</p>
+        <h1 id="heroTitle" class="rise d2">Nearly forty years in the <em>neighbourhood.</em></h1>
+        <p class="sub rise d3">Ben Potter has sold homes on the Devonport peninsula since 1988. If you're thinking of selling, talk to him before you list, not after.</p>
+        <div class="hero-actions rise d4">
+          <a class="btn btn-ivory" href="#contact">Book a free appraisal</a>
+          <a class="textlink" href="#about">About Ben</a>
+        </div>
+      </div>
+      <figure class="hero-figure">
+        <img src="img/ben.png" alt="Ben Potter" width="1122" height="1402" fetchpriority="high">
+      </figure>
+    </div>
+    <p class="hero-scroll" aria-hidden="true">Scroll</p>
+  </section>
+
+  <div class="stats" aria-label="At a glance">
+    <div class="wrap">
+      <div class="stat"><b>38 years</b><span>Selling on the North Shore</span></div>
+      <div class="stat"><b>Three suburbs</b><span>Devonport, Belmont and Bayswater</span></div>
+      <div class="stat"><b>Harcourts</b><span>Cooper &amp; Co</span></div>
+    </div>
+  </div>
+
+  <section class="section" id="about" aria-labelledby="aboutTitle">
+    <div class="wrap split">
+      <p class="label">About Ben</p>
+      <div>
+        <h2 id="aboutTitle" class="statement">Most agents can show you a map of the Peninsula. Ben can tell you <em>who lives on it.</em></h2>
+        <div class="prose">
+          <p>Ben Potter brings a rare blend of energy, experience and a fresh outlook to real estate on Auckland's North Shore. Thirty-eight years across Devonport, Belmont and Bayswater have given him the kind of knowledge that can't be learned from a spreadsheet: which streets are tightly held, which buyers are waiting, and what a home needs to look like before they walk through the door.</p>
+          <p>His drive to deliver premium results, paired with a genuine passion for people and property, is why locals trust him with the peninsula's most sought-after homes. Ben doesn't cover these suburbs. He lives in them.</p>
+        </div>
+        <button class="reel" id="reelBtn" type="button" aria-label="Play the reel">
+          <span class="reel-ring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="reel-caption"><b>Nearly forty years in the neighbourhood</b><span>Watch the film · 45 sec</span></span>
+        </button>
+        <p class="reel-msg muted" id="reelMsg" hidden>Film slot. The promo reel plays here, muted with captions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="suburbs" aria-labelledby="suburbsTitle">
+    <div class="wrap split">
+      <p class="label">The Peninsula</p>
+      <div>
+        <h2 id="suburbsTitle">Three suburbs. <em>One agent.</em></h2>
+        <div class="rows">
+          <a class="row" href="#contact">
+            <h3>Devonport</h3>
+            <p>Heritage villas, Cheltenham Beach and the ferry. The most tightly held streets in Auckland, where presentation and pricing matter more than anywhere.</p>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a class="row" href="#contact">
+            <h3>Belmont</h3>
+            <p>Family homes on the flat, minutes from Takapuna Grammar and the Belmont shops. Where Devonport families go for another bedroom.</p>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a class="row" href="#contact">
+            <h3>Bayswater</h3>
+            <p>Water on three sides, the marina and views back to the city. Quieter than its neighbours, and buyers know it.</p>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+        </div>
+        <p class="also">Ben also sells in <a href="#contact">Narrow Neck</a>, <a href="#contact">Stanley Point</a>, <a href="#contact">Cheltenham</a> and <a href="#contact">Hauraki</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="results" aria-labelledby="resultsTitle">
+    <div class="wrap split">
+      <p class="label">Results</p>
+      <div>
+        <h2 id="resultsTitle">Recently <em>sold.</em></h2>
+        <div class="ledger-wrap">
+          <table class="ledger">
+            <thead><tr><th scope="col">Address</th><th scope="col">Suburb</th><th scope="col">Result</th><th scope="col" style="text-align:right">Sold</th></tr></thead>
+            <tbody>
+              <tr><td class="addr">Roberts Avenue</td><td class="sub">Bayswater</td><td class="res">Auction, three registered bidders</td><td class="date">Aug 2026</td></tr>
+              <tr><td class="addr">Old Lake Road</td><td class="sub">Devonport</td><td class="res">Sold prior to auction, nine days</td><td class="date">Jul 2026</td></tr>
+              <tr><td class="addr">Kiri Place</td><td class="sub">Belmont</td><td class="res">Deadline sale</td><td class="date">Jul 2026</td></tr>
+              <tr><td class="addr">Mozeley Avenue</td><td class="sub">Devonport</td><td class="res">Sold off market to a local buyer</td><td class="date">Jun 2026</td></tr>
+              <tr><td class="addr">Seabreeze Road</td><td class="sub">Belmont</td><td class="res">Auction, above reserve</td><td class="date">May 2026</td></tr>
+              <tr><td class="addr">Vauxhall Road</td><td class="sub">Devonport</td><td class="res">By negotiation, three weeks</td><td class="date">May 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ledger-head">
+          <h3>Currently for <em>sale.</em></h3>
+          <a class="textlink" href="#contact">Register as a buyer</a>
+        </div>
+        <div class="ledger-wrap">
+          <table class="ledger">
+            <tbody>
+              <tr><td class="addr">Cheltenham Road</td><td class="sub">Devonport</td><td class="res live">Auction, 8 October</td><td class="date">Open Sat &amp; Sun</td></tr>
+              <tr><td class="addr">Bardia Street</td><td class="sub">Belmont</td><td class="res live">Deadline, 2 October</td><td class="date">Open Sun</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="ledger-note">Sample entries for layout. Live results are uploaded by Ben or pulled from his Harcourts profile.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section words" id="words" aria-labelledby="wordsTitle">
+    <div class="wrap">
+      <p class="label" id="wordsTitle">In their words</p>
+      <p class="stars" aria-hidden="true" style="margin-top:1.4rem">★★★★★</p>
+      <blockquote class="quote" id="quoteText">Ben knew exactly who would buy our villa before we'd even signed with him. Sold in ten days, above what two other agents told us to expect.</blockquote>
+      <div class="quote-by"><b id="quoteName">Sarah and James</b><span id="quoteWhere">Sold in Devonport</span></div>
+      <div class="quote-nav">
+        <button type="button" id="qPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+        <span class="count" id="qCount" aria-live="polite">1 / 3</span>
+        <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <p class="rma">Verified reviews on RateMyAgent <span aria-hidden="true">·</span> <span class="muted" style="text-transform:none; letter-spacing:.02em">Sample reviews shown, live feed to follow</span></p>
+    </div>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="faqTitle">
+    <div class="wrap split">
+      <p class="label">Questions</p>
+      <div>
+        <h2 id="faqTitle">Selling on the <em>North Shore.</em></h2>
+        <div class="faq-list">
+          <details open>
+            <summary>Who is the best real estate agent in Devonport?</summary>
+            <p>Ben Potter has sold homes across Devonport for 38 years with Harcourts Cooper &amp; Co and specialises in the suburb's heritage villas and tightly held streets. The right agent for a Devonport sale is the one who already knows the buyers waiting for your street. On the peninsula, that is Ben's whole business.</p>
+          </details>
+          <details>
+            <summary>What suburbs does Ben Potter work in?</summary>
+            <p>Devonport, Belmont and Bayswater on Auckland's North Shore, along with the neighbouring peninsula pockets of Narrow Neck, Stanley Point, Cheltenham and Hauraki. Ben has lived and sold in these suburbs since 1988.</p>
+          </details>
+          <details>
+            <summary>How do I get a property appraisal in Belmont or Bayswater?</summary>
+            <p>Use the form below or call Ben directly. Appraisals are free, come with no obligation, and are usually arranged within a few days. You'll receive a written estimate based on recent comparable sales, plus a recommended method of sale.</p>
+          </details>
+          <details>
+            <summary>What is my Devonport home worth in 2026?</summary>
+            <p>In Devonport it depends on the street, the section and the condition of the home more than in almost any other Auckland suburb. Ben tracks every sale on the peninsula and gives you a realistic range from comparable sales in the last six months, not a headline figure to win the listing.</p>
+          </details>
+          <details>
+            <summary>Should I sell by auction, deadline sale or asking price?</summary>
+            <p>Different methods suit different homes. Auction works well for tightly held Devonport villas with several buyers competing. A deadline sale often suits Belmont and Bayswater family homes. Ben recommends a method for your property as part of the appraisal, and explains why.</p>
+          </details>
+          <details>
+            <summary>How long does it take to sell a house in Devonport, Belmont or Bayswater?</summary>
+            <p>Most well priced homes on the peninsula sell within four to six weeks of going to market. Homes prepared properly before listing sell faster and for more, which is why Ben likes to talk to owners before the sign goes up.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact" aria-labelledby="contactTitle">
+    <div class="wrap split">
+      <div class="contact-copy">
+        <p class="label">Book an appraisal</p>
+        <h2 id="contactTitle">Talk to Ben <em>before</em> you list.</h2>
+        <p class="muted" style="max-width:40ch">A free, written appraisal of your Devonport, Belmont or Bayswater home, and an honest view on what it needs before the first open home.</p>
+        <div class="details">
+          <a href="tel:+64210000000"><span>Mobile</span><b>021 000 0000</b></a>
+          <a href="mailto:ben.potter@harcourts.co.nz"><span>Email</span><b>ben.potter@harcourts.co.nz</b></a>
+          <div><span>Office</span><b>Harcourts Cooper &amp; Co, Devonport</b></div>
+        </div>
+      </div>
+      <form id="appraisal" novalidate aria-label="Appraisal request">
+        <div class="field">
+          <label for="f-address">Property address</label>
+          <input id="f-address" name="address" type="text" autocomplete="street-address" placeholder="12 Cheltenham Road, Devonport" required>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="f-phone">Mobile</label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="f-when">Timeframe</label>
+          <select id="f-when" name="timeframe">
+            <option>Selling in the next three months</option>
+            <option>Selling in three to twelve months</option>
+            <option>Just curious about value</option>
+          </select>
+        </div>
+        <div class="form-foot">
+          <button class="btn btn-ivory" type="submit">Request appraisal</button>
+          <small>No cost, no obligation. Ben replies personally.</small>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <a class="wordmark" href="#top">Ben Potter</a>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#suburbs">Devonport</a>
+        <a href="#suburbs">Belmont</a>
+        <a href="#suburbs">Bayswater</a>
+        <a href="#results">Results</a>
+        <a href="#words">Reviews</a>
+        <a href="#faq">Questions</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Ben Potter · Harcourts Cooper &amp; Co · Licensed REAA 2008</span>
+      <span>Devonport · Belmont · Bayswater</span>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky" aria-label="Quick action">
+  <a class="btn btn-ivory" href="#contact">Book a free appraisal</a>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "RealEstateAgent",
+      "name": "Ben Potter",
+      "description": "Harcourts Cooper & Co real estate agent with nearly forty years selling homes in Devonport, Belmont and Bayswater on Auckland's North Shore.",
+      "telephone": "+64210000000",
+      "parentOrganization": { "@type": "Organization", "name": "Harcourts Cooper & Co" },
+      "areaServed": [
+        { "@type": "Place", "name": "Devonport, Auckland" },
+        { "@type": "Place", "name": "Belmont, Auckland" },
+        { "@type": "Place", "name": "Bayswater, Auckland" }
+      ],
+      "address": { "@type": "PostalAddress", "addressLocality": "Devonport", "addressRegion": "Auckland", "addressCountry": "NZ" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Who is the best real estate agent in Devonport?", "acceptedAnswer": { "@type": "Answer", "text": "Ben Potter has sold homes across Devonport for 38 years with Harcourts Cooper & Co and specialises in the suburb's heritage villas and tightly held streets." } },
+        { "@type": "Question", "name": "What suburbs does Ben Potter work in?", "acceptedAnswer": { "@type": "Answer", "text": "Devonport, Belmont and Bayswater on Auckland's North Shore, along with Narrow Neck, Stanley Point, Cheltenham and Hauraki." } },
+        { "@type": "Question", "name": "How do I get a property appraisal in Belmont or Bayswater?", "acceptedAnswer": { "@type": "Answer", "text": "Use the form on benpotter.co.nz or call Ben directly. Appraisals are free, with no obligation, and are usually arranged within a few days." } },
+        { "@type": "Question", "name": "How long does it take to sell a house in Devonport, Belmont or Bayswater?", "acceptedAnswer": { "@type": "Answer", "text": "Most well priced homes on the peninsula sell within four to six weeks of going to market." } }
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+  (function(){
+    var header = document.querySelector('.header');
+    var menuBtn = document.getElementById('menuBtn');
+    menuBtn.addEventListener('click', function(){
+      var open = header.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.querySelectorAll('.mobile-nav a').forEach(function(a){
+      a.addEventListener('click', function(){ header.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); });
+    });
+
+    var reelMsg = document.getElementById('reelMsg');
+    document.getElementById('reelBtn').addEventListener('click', function(){ reelMsg.hidden = !reelMsg.hidden; });
+
+    var quotes = [
+      { t: "Ben knew exactly who would buy our villa before we'd even signed with him. Sold in ten days, above what two other agents told us to expect.", n: "Sarah and James", w: "Sold in Devonport" },
+      { t: "Straight talking, no pressure, and he did everything he said he would. We've used Ben twice now and would use him again without a second thought.", n: "Mark T.", w: "Sold in Belmont" },
+      { t: "Ben's advice on what to fix and what to leave alone saved us thousands. The campaign was quiet and classy, and the result was better than we hoped.", n: "The Nguyen family", w: "Sold in Bayswater" }
+    ];
+    var qi = 0;
+    var qText = document.getElementById('quoteText'), qName = document.getElementById('quoteName'), qWhere = document.getElementById('quoteWhere'), qCount = document.getElementById('qCount');
+    function showQuote(i){
+      qi = (i + quotes.length) % quotes.length;
+      qText.textContent = quotes[qi].t; qName.textContent = quotes[qi].n; qWhere.textContent = quotes[qi].w;
+      qCount.textContent = (qi + 1) + ' / ' + quotes.length;
+    }
+    document.getElementById('qPrev').addEventListener('click', function(){ showQuote(qi - 1); });
+    document.getElementById('qNext').addEventListener('click', function(){ showQuote(qi + 1); });
+
+    var form = document.getElementById('appraisal');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var ok = true;
+      form.querySelectorAll('[required]').forEach(function(el){
+        var bad = !el.value.trim();
+        el.style.borderColor = bad ? '#B9A07A' : '';
+        if(bad){ ok = false; el.setAttribute('aria-invalid','true'); } else { el.removeAttribute('aria-invalid'); }
+      });
+      if(!ok){ form.querySelector('[aria-invalid]').focus(); return; }
+      var name = form.querySelector('[name="name"]').value.trim().split(' ')[0] || 'there';
+      var clean = function(s){ return s.replace(/[<>&]/g, ''); };
+      form.innerHTML = '<div class="form-done"><p class="label">Received</p><h3>Thank you, ' + clean(name) + '.</h3><p>Ben will call you within one business day to arrange a time. If it’s urgent, ring him on <a href="tel:+64210000000">021 000 0000</a>.</p></div>';
+      form.querySelector('h3').setAttribute('tabindex','-1'); form.querySelector('h3').focus();
+    });
+  })();
+</script>
+
+</body>
+</html>
