@@ -1,0 +1,3 @@
+RewriteEngine On
+Redirect 301 /listings https://www.ben-potter.com/recently-sold/
+Redirect 301 /listings/ https://www.ben-potter.com/recently-sold/

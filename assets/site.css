@@ -1,12 +1,11 @@
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ben Potter</title>
-<meta name="description" content="Ben Potter, Harcourts Cooper &amp; Co. Local real estate agent for Devonport, Belmont and Bayswater on Auckland's North Shore, with 38 years on the Devonport Peninsula. Free property appraisals.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
-<style>
-/*!FONTS!*/
+@font-face{font-family:"Clash Display";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/clash-display-400.woff2) format("woff2")}
+@font-face{font-family:"Clash Display";font-weight:500;font-style:normal;font-display:swap;src:url(fonts/clash-display-500.woff2) format("woff2")}
+@font-face{font-family:"Clash Display";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/clash-display-600.woff2) format("woff2")}
+@font-face{font-family:"Poppins";font-weight:300;font-style:normal;font-display:swap;src:url(fonts/poppins-300.woff2) format("woff2")}
+@font-face{font-family:"Poppins";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/poppins-400.woff2) format("woff2")}
+@font-face{font-family:"Poppins";font-weight:500;font-style:normal;font-display:swap;src:url(fonts/poppins-500.woff2) format("woff2")}
+@font-face{font-family:"Poppins";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/poppins-600.woff2) format("woff2")}
+
   :root{
     --shell:#F5F3EF;
     --stone:#EBE8E2;
@@ -272,263 +271,58 @@
     .hero-actions .btn{flex:1; white-space:normal; text-align:center}
     .modal-body{padding:36px 24px}
   }
-</style>
 
-<header class="header" id="top">
-  <div class="wrap">
-    <a class="wordmark" href="#top">Ben Potter</a>
-    <nav class="nav" aria-label="Main">
-      <a href="#about">About</a>
-      <a href="#areas">Areas</a>
-      <a href="#sold">Sold</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <a class="btn btn-ink" href="#contact">Book a Free Appraisal</a>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M3 8h18M3 16h18"/></svg>
-    </button>
-  </div>
-  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
-    <div class="wrap">
-      <a href="#about">About</a>
-      <a href="#areas">Areas</a>
-      <a href="#sold">Sold</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#contact">Book a Free Appraisal</a>
-    </div>
-  </nav>
-</header>
+  /* ---- Breadcrumbs ---- */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:.72rem; letter-spacing:.06em; color:var(--mute)}
+  .crumbs a{text-decoration:none; color:var(--mute); border-bottom:1px solid transparent; transition:color .2s, border-color .2s}
+  .crumbs a:hover{color:var(--accent); border-color:var(--accent)}
+  .crumbs span[aria-current]{color:var(--fg-2)}
+  .crumbs i{font-style:normal; opacity:.5}
 
-<main>
-  <section class="hero" aria-labelledby="heroTitle">
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="hero-copy">
-        <p class="label blue rise d1">Harcourts Cooper &amp; Co &nbsp;·&nbsp; Devonport</p>
-        <h1 id="heroTitle" class="rise d2">Nearly forty years in the <em>neighbourhood.</em></h1>
-        <p class="lede rise d3">Ben Potter has been on the Devonport Peninsula for 38 years and specialises in selling homes across Devonport, Belmont and Bayswater, with extensive experience across the wider North Shore market.</p>
-        <div class="hero-actions rise d4">
-          <a class="btn btn-ink" href="#contact">Book a Free Appraisal</a>
-          <button class="btn btn-line" type="button" id="guideBtn">Get the Free Selling Guide</button>
-        </div>
-        <a class="quietlink rise d5" href="#areas">Explore Devonport, Belmont &amp; Bayswater <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <figure class="hero-figure">
-        <img src="img/ben.png" alt="Ben Potter, licensed real estate salesperson with Harcourts Cooper &amp; Co" width="1122" height="1402" fetchpriority="high">
-      </figure>
-    </div>
-    <p class="hero-note" aria-hidden="true">Devonport Peninsula</p>
-  </section>
+  /* ---- Interior page hero ---- */
+  .page-hero{position:relative; overflow:hidden; background:radial-gradient(78% 92% at 74% 44%, #34353A 0%, #1B1C1F 48%, #0F1012 100%); color:var(--fg); padding-block:clamp(48px, 6vw, 84px) clamp(64px, 8vw, 110px)}
+  .page-hero .wrap{display:flex; flex-direction:column; gap:26px}
+  .page-hero h1{max-width:16ch}
+  .page-hero .lede{font-size:1.06rem; max-width:62ch}
+  .page-hero-meta{display:flex; flex-wrap:wrap; gap:14px 32px; align-items:center; margin-top:6px; padding-top:24px; border-top:1px solid var(--rule)}
+  .page-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px}
 
-  <div class="stats" aria-label="At a glance">
-    <div class="wrap">
-      <div class="stat"><b>38 years</b><span>On the Devonport Peninsula</span></div>
-      <div class="stat"><b>Three suburbs</b><span>Devonport · Belmont · Bayswater</span></div>
-      <div class="stat"><b>Harcourts</b><span>Cooper &amp; Co</span></div>
-    </div>
-  </div>
+  /* ---- Long-form content ---- */
+  .content{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2.1fr); gap:clamp(28px, 5vw, 88px)}
+  .content-main{display:flex; flex-direction:column; gap:clamp(40px, 5vw, 64px); max-width:70ch}
+  .block{display:flex; flex-direction:column; gap:1.1rem}
+  .block h2{font-size:clamp(1.7rem, 2.6vw, 2.3rem)}
+  .block h3{font-size:1.15rem; font-weight:500; letter-spacing:-.01em; margin-top:.4rem}
+  .block p{color:var(--fg-2); font-size:1.02rem}
+  .block ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:.7rem}
+  .block ul li{position:relative; padding-left:20px; color:var(--fg-2); font-size:1.02rem}
+  .block ul li::before{content:""; position:absolute; left:0; top:.68em; width:5px; height:5px; border-radius:50%; background:var(--accent)}
+  .aside{display:flex; flex-direction:column; gap:14px; position:sticky; top:104px; order:1}
+  .content-main{order:2}
+  .aside .panel{background:var(--panel); border:1px solid var(--rule); border-radius:2px; padding:26px; display:flex; flex-direction:column; gap:12px}
+  .aside .panel h3{font-size:1.2rem}
+  .aside .panel p{font-size:.92rem; color:var(--fg-2)}
+  .aside .panel .btn{margin-top:6px}
+  .keyfacts{display:flex; flex-direction:column; gap:0; border-top:1px solid var(--rule)}
+  .keyfacts div{display:flex; justify-content:space-between; gap:18px; padding:13px 0; border-bottom:1px solid var(--rule); font-size:.9rem}
+  .keyfacts dt{color:var(--mute); font-size:.78rem; letter-spacing:.06em; text-transform:uppercase}
+  .keyfacts dd{margin:0; color:var(--fg); text-align:right}
 
-  <section class="section on-light" id="about" aria-labelledby="aboutTitle">
-    <div class="wrap split">
-      <div class="split-head">
-        <p class="label">About Ben</p>
-        <p class="coord">36.8290° S · 174.7961° E</p>
-      </div>
-      <div>
-        <h2 id="aboutTitle" class="statement">Most agents can show you a map of the Peninsula. Ben can tell you <em>who lives on it.</em></h2>
-        <div class="prose">
-          <p>Ben Potter brings a rare blend of energy, experience and a fresh outlook to real estate on Auckland's North Shore. Thirty-eight years living across Devonport, Belmont and Bayswater have given him the kind of knowledge that can't be learned from a spreadsheet: which streets are tightly held, which buyers are waiting, and what a home needs to look like before they walk through the door.</p>
-          <p>His drive to deliver premium results, paired with a genuine passion for people and property, is why locals trust him with the peninsula's most sought-after homes. Ben doesn't cover these suburbs. He lives in them.</p>
-        </div>
-        <button class="reel" id="reelBtn" type="button" aria-label="Play the reel">
-          <span class="reel-ring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-          <span class="reel-caption"><b>Ben on Devonport, Belmont and Bayswater</b><span>Watch the reel</span></span>
-        </button>
-        <p class="reel-msg" id="reelMsg" hidden>Reel slot. Add a YouTube or Vimeo link in the page config and it plays here.</p>
-      </div>
-    </div>
-  </section>
+  /* ---- Suburb switcher ---- */
+  .switch{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:0; border-top:1px solid var(--rule)}
+  .switch a{display:flex; flex-direction:column; gap:10px; padding:32px 32px 32px 0; border-right:1px solid var(--rule); text-decoration:none; color:inherit}
+  .switch a + a{padding-left:32px}
+  .switch a:last-child{border-right:0}
+  .switch a h3{transition:color .2s}
+  .switch a:hover h3{color:var(--accent)}
+  .switch a p{font-size:.92rem; color:var(--mute)}
+  .switch a[aria-current]{opacity:.55; pointer-events:none}
 
-  <section class="section" id="areas" aria-labelledby="areasTitle">
-    <div class="wrap">
-      <div class="areas-head">
-        <div>
-          <p class="label">The Peninsula</p>
-          <h2 id="areasTitle">Three suburbs. <em>One agent.</em></h2>
-        </div>
-        <p class="lede">Ben is the local real estate agent for Devonport, Belmont and Bayswater: appraisals, campaigns, auctions and off-market introductions across the whole Devonport Peninsula.</p>
-      </div>
-      <div class="areas">
-        <a class="area" href="#contact">
-          <p class="coord">36.8290° S · 174.7961° E</p>
-          <h3>Devonport</h3>
-          <p>Heritage villas, Cheltenham Beach and the ferry. The most tightly held streets on the North Shore, where presentation and pricing matter more than anywhere else on the Peninsula.</p>
-          <p class="terms">Devonport real estate · Houses for sale Devonport · Devonport property appraisal · Villas · Cheltenham · Narrow Neck · Stanley Point · Vauxhall · Mt Victoria</p>
-          <span class="quietlink">Explore Devonport <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-        <a class="area" href="#contact">
-          <p class="coord">36.8060° S · 174.7898° E</p>
-          <h3>Belmont</h3>
-          <p>Family homes on the flat between Devonport and Takapuna. Driven by the Takapuna Grammar and Belmont Intermediate zones, generous sections and a short run up Lake Road.</p>
-          <p class="terms">Belmont real estate · Houses for sale Belmont · Belmont property appraisal · Belmont Intermediate zone · Takapuna Grammar zone · Lake Road · Ngataringa Bay</p>
-          <span class="quietlink">Explore Belmont <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-        <a class="area" href="#contact">
-          <p class="coord">36.8163° S · 174.7727° E</p>
-          <h3>Bayswater</h3>
-          <p>Water on three sides, the marina and views back to the city. Quieter than its neighbours: townhouses on the ridge, weatherboard homes on the flat, the ferry at the end of the road.</p>
-          <p class="terms">Bayswater real estate · Houses for sale Bayswater · Bayswater property appraisal · Bayswater Marina · Harbour views · Bayswater School · City ferry</p>
-          <span class="quietlink">Explore Bayswater <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-      </div>
-      <div class="secondary">
-        <p class="label quiet">Also sells in</p>
-        <p><a href="#faq">Narrow Neck</a> &nbsp;·&nbsp; <a href="#faq">Stanley Point</a> &nbsp;·&nbsp; <a href="#faq">Hauraki</a> &nbsp;·&nbsp; <a href="#faq">Takapuna</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section on-light white" id="sold" aria-labelledby="soldTitle">
-    <div class="wrap">
-      <div class="list-head">
-        <div>
-          <p class="label">Results</p>
-          <h2 id="soldTitle">Recently <em>sold.</em></h2>
-        </div>
-        <p class="lede">Every sale handled by Ben from the first appraisal through to settlement.</p>
-      </div>
-      <div class="cards">{{SOLD}}</div>
-
-      <div class="list-head second">
-        <div><h2>Currently for <em>sale.</em></h2></div>
-        <a class="ruled" href="#contact">Register as a buyer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="cards">{{SALE}}</div>
-      <p class="card-note">Sample entries shown for layout. Listings and photography connect to Ben's CRM feed or are uploaded manually.</p>
-    </div>
-  </section>
-
-  <section class="section words" id="reviews" aria-labelledby="reviewsTitle">
-    <div class="wrap">
-      <p class="label" id="reviewsTitle">In their words</p>
-      <p class="stars" aria-hidden="true" style="margin-top:1.4rem">★★★★★</p>
-      <blockquote class="quote" id="quoteText">Ben knew exactly who would buy our villa before we'd even signed with him. Sold in ten days, above what two other agents told us to expect.</blockquote>
-      <div class="quote-by"><b id="quoteName">Sarah and James</b><span id="quoteWhere">Sold in Devonport</span></div>
-      <div class="quote-nav">
-        <button type="button" id="qPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
-        <span class="count" id="qCount" aria-live="polite">1 / 3</span>
-        <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </div>
-      <p class="trust"><span>Verified reviews · RateMyAgent</span><span>Google reviews</span><span>Sample reviews shown, live feed to follow</span></p>
-    </div>
-  </section>
-
-  <section class="section on-light" id="faq" aria-labelledby="faqTitle">
-    <div class="wrap split">
-      <div class="split-head">
-        <p class="label">Questions</p>
-        <h2 id="faqTitle">Selling and buying on the <em>Peninsula.</em></h2>
-        <p class="muted" style="font-size:.94rem; max-width:34ch">Straight answers for Devonport, Belmont, Bayswater, Narrow Neck, Stanley Point, Hauraki and Takapuna.</p>
-      </div>
-      <div class="faq-list">{{FAQ}}</div>
-    </div>
-  </section>
-
-  <section class="section appraise on-light stone" id="contact" aria-labelledby="contactTitle">
-    <div class="wrap">
-      <div class="appraise-copy">
-        <p class="label">Book a free appraisal</p>
-        <h2 id="contactTitle">Talk to Ben <em>before</em> you list.</h2>
-        <p class="lede">A written appraisal of your Devonport, Belmont or Bayswater home, and an honest view on what it needs before the first open home.</p>
-        <div class="details">
-          <a href="tel:+64279530210"><span>Mobile</span><b>027 953 0210</b></a>
-          <a href="mailto:ben.potter@harcourts.co.nz"><span>Email</span><b>ben.potter@harcourts.co.nz</b></a>
-          <div><span>Office</span><b>Harcourts Cooper &amp; Co, Devonport</b></div>
-        </div>
-      </div>
-      <div class="form-card">
-        <form id="appraisal" novalidate aria-label="Appraisal request">
-          <div class="field">
-            <label for="f-address">Property address</label>
-            <input id="f-address" name="address" type="text" autocomplete="street-address" placeholder="12 Cheltenham Road, Devonport" required>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="f-name">Name</label>
-              <input id="f-name" name="name" type="text" autocomplete="name" required>
-            </div>
-            <div class="field">
-              <label for="f-phone">Mobile</label>
-              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
-            </div>
-          </div>
-          <div class="field">
-            <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" autocomplete="email">
-          </div>
-          <div class="field">
-            <label for="f-when">Timeframe</label>
-            <select id="f-when" name="timeframe">
-              <option>Selling in the next three months</option>
-              <option>Selling in three to twelve months</option>
-              <option>Just curious about value</option>
-            </select>
-          </div>
-          <div class="form-foot">
-            <button class="btn btn-blue" type="submit">Request appraisal</button>
-            <small>No cost, no obligation. Ben replies personally.</small>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer class="footer">
-  <div class="wrap">
-    <div class="footer-top">
-      <div style="display:flex; flex-direction:column; gap:14px">
-        <a class="wordmark" href="#top">Ben Potter</a>
-        <p class="coord">Devonport Peninsula · 36.8290° S · 174.7961° E</p>
-      </div>
-      <div class="footer-links">
-        <a href="#about">About</a>
-        <a href="#areas">Devonport</a>
-        <a href="#areas">Belmont</a>
-        <a href="#areas">Bayswater</a>
-        <a href="#sold">Sold</a>
-        <a href="#reviews">Reviews</a>
-        <a href="#faq">Questions</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Ben Potter · Harcourts Cooper &amp; Co · Licensed REAA 2008</span>
-      <span>027 953 0210</span>
-    </div>
-  </div>
-</footer>
-
-<div class="sticky" aria-label="Quick action">
-  <a class="btn btn-blue" href="#contact">Book a Free Appraisal</a>
-</div>
-
-<dialog class="modal" id="guideModal" aria-labelledby="guideTitle">
-  <button class="modal-close" type="button" id="guideClose" aria-label="Close">×</button>
-  <div class="modal-body">
-    <p class="label">Free download</p>
-    <h3 id="guideTitle">The Peninsula Selling Guide</h3>
-    <p class="muted" style="font-size:.95rem">How to prepare, price and sell a home in Devonport, Belmont or Bayswater. Written by Ben from 38 years on the Peninsula.</p>
-    <form id="guideForm" novalidate>
-      <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
-      <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
-      <div class="form-foot"><button class="btn btn-blue" type="submit">Send me the guide</button><small>Ben emails the guide and follows up personally.</small></div>
-    </form>
-  </div>
-</dialog>
-
-{{SCHEMA}}
-
-{{SCRIPT}}
+  @media (max-width: 1020px){
+    .content{grid-template-columns:minmax(0,1fr)}
+    .aside{position:static; order:2}
+    .content-main{order:1}
+    .switch{grid-template-columns:minmax(0,1fr)}
+    .switch a, .switch a + a{border-right:0; border-bottom:1px solid var(--rule); padding:24px 0}
+    .switch a:last-child{border-bottom:0}
+  }

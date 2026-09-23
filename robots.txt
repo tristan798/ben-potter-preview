@@ -1,0 +1,4 @@
+# Preview build: indexing is switched off.
+# Set PREVIEW = False in tools/content.py before launch.
+User-agent: *
+Disallow: /

@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/listings",
+      "destination": "/recently-sold/",
+      "permanent": true
+    },
+    {
+      "source": "/listings/",
+      "destination": "/recently-sold/",
+      "permanent": true
+    }
+  ]
+}
