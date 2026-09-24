@@ -8,6 +8,17 @@ PREVIEW       = True          # True adds noindex and a disallow-all robots.txt.
 GA4_ID        = ""            # e.g. "G-XXXXXXXXXX"; leave empty to omit the tag entirely
 GSC_TOKEN     = ""            # Search Console HTML-tag verification token, if that method is used
 
+# Lead delivery. Appraisal and selling-guide submissions are emailed to LEAD_EMAIL.
+# FORM_KEY is a free Web3Forms access key: go to https://web3forms.com, enter LEAD_EMAIL,
+# confirm the verification email, paste the key here and rebuild. Until it is set, forms show
+# the thank-you state but nothing is sent.
+LEAD_EMAIL    = "ben.potter@harcourts.co.nz"
+FORM_KEY      = ""
+
+# Ben's Devonport / Belmont / Bayswater reel. Paste a YouTube or Vimeo EMBED url
+# (e.g. https://www.youtube.com/embed/VIDEO_ID) and it plays in the About section.
+REEL_EMBED    = ""
+
 AGENT_NAME    = "Ben Potter"
 AGENCY        = "Harcourts Cooper & Co"
 OFFICE        = "Harcourts Cooper & Co, Devonport"
@@ -49,13 +60,12 @@ SUPPORT_COPY = ("Ben Potter has been on the Devonport Peninsula for 38 years and
 
 ABOUT = [
     "Ben Potter brings a rare blend of energy, experience and a fresh outlook to real estate on "
-    "Auckland's North Shore. Thirty-eight years living across Devonport, Belmont and Bayswater have "
-    "given him the kind of knowledge that can't be learned from a spreadsheet: which streets are "
-    "tightly held, which buyers are waiting, and what a home needs to look like before they walk "
-    "through the door.",
+    "Auckland's North Shore. Nearly 40 years living and working around Devonport, Belmont and "
+    "Bayswater have given him the kind of knowledge you can't learn online. Which streets are tightly "
+    "held, which buyers are waiting, and what a home needs to look like before they walk through the "
+    "door.",
     "His drive to deliver premium results, paired with a genuine passion for people and property, is "
-    "why locals trust him with the peninsula's most sought-after homes. Ben doesn't cover these "
-    "suburbs. He lives in them.",
+    "why locals trust him with the Peninsula's most sought-after homes.",
 ]
 
 # ---------------------------------------------------------------- listings
@@ -74,50 +84,60 @@ SALE = [
 ]
 
 REVIEWS = [
-    ("Ben knew exactly who would buy our villa before we'd even signed with him. Sold in ten days, "
-     "above what two other agents told us to expect.", "Sarah and James", "Sold in Devonport"),
-    ("Straight talking, no pressure, and he did everything he said he would. We've used Ben twice now "
-     "and would use him again without a second thought.", "Mark T.", "Sold in Belmont"),
-    ("Ben's advice on what to fix and what to leave alone saved us thousands. The campaign was quiet "
-     "and classy, and the result was better than we hoped.", "The Nguyen family", "Sold in Bayswater"),
+    ("He was professional, helpful, and <mark>always available to answer my questions</mark> throughout "
+     "the process. He made everything much less stressful and kept me informed every step of the way",
+     "Heidi", "Sold in Devonport"),
+    ("Ben helped me from the very beginning, with great advice on staging, marketing and quick responses "
+     "throughout the campaign. He is very knowledgeable and professional and <mark>brought me the best "
+     "result!</mark>",
+     "Alex", "Sold in Bayswater"),
+    ("Ben ran a comprehensive campaign. Marketing activities were thoroughly explored and tuned to the "
+     "market conditions and time of the year. <mark>He worked hard, actively generating awareness and "
+     "interest in the property.</mark>",
+     "Trevor", "Sold in Belmont"),
 ]
 
 # ---------------------------------------------------------------- homepage FAQ
 FAQ_HOME = [
     ("Who is Ben Potter?",
      "Ben Potter is a licensed real estate salesperson with Harcourts Cooper &amp; Co in Devonport. He has "
-     "lived on the Devonport Peninsula for 38 years and sells homes across Devonport, Belmont and "
-     "Bayswater, along with Narrow Neck, Stanley Point, Hauraki and Takapuna."),
+     "been on the Devonport Peninsula for 38 years and sells homes across Devonport, Belmont, and "
+     "Bayswater, as well as Narrow Neck, Stanley Point, Hauraki, and Takapuna. His father, Gary Potter, "
+     "has been a trusted real estate agent in the same areas for close to 25 years."),
     ("Which areas does Ben sell in?",
      "Devonport, Belmont and Bayswater are his core suburbs, and he regularly sells in the neighbouring "
-     "pockets of Narrow Neck, Stanley Point, Hauraki and Takapuna. Working a small, well defined patch is "
-     "deliberate: it means he knows the buyers who are already looking on your street."),
+     "pockets of Narrow Neck, Stanley Point, Hauraki and Takapuna. Working a small, well-defined patch is "
+     "deliberate: it means he knows the properties, the streets, and the buyers already looking in the "
+     "neighbourhoods."),
     ("How do I get a free property appraisal?",
-     "Fill in the form on the appraisal page or call Ben on 027 953 0210. Appraisals are free and come "
-     "with no obligation. You'll get a written estimate of value based on recent comparable sales near "
-     "you, a recommended method of sale, and a marketing plan and budget before you commit to anything."),
+     "Fill in the form on the appraisal page or call Ben on 027 953 0210. Appraisals are free and "
+     "obligation-free. You'll get a written estimate of value based on recent comparable sales near you, "
+     "a recommended method of sale, and a marketing plan and budget before you commit to anything."),
     ("How long does it take to sell a home on the peninsula?",
-     "Most well priced homes in Devonport, Belmont and Bayswater sell within four to six weeks of going "
+     "Most well-priced homes in Devonport, Belmont and Bayswater sell within four to six weeks of going "
      "to market. Homes that are prepared properly before they list tend to sell faster and for more, "
      "which is why Ben prefers to talk to owners well before the sign goes up."),
-    ("Should I sell by auction, deadline sale or a price?",
-     "It depends on the home and how many buyers are likely to compete for it. Auction suits a tightly "
-     "held character home where several buyers want the same street. A deadline sale often suits a family "
-     "home with broad appeal. A price can be right for an apartment or a townhouse where buyers are "
-     "comparing like for like. Ben recommends a method as part of the appraisal and explains the reasoning."),
-    ("What does it cost to sell a house with Harcourts Cooper &amp; Co?",
+    ("Should I sell by auction, deadline sale, tender or a price?",
+     "The right method depends on the property, the likely buyer pool and the level of competition we "
+     "expect to create. Auction can work particularly well when several buyers are likely to compete for "
+     "the same home. A deadline sale can suit properties with broad appeal where buyers need time to "
+     "complete their checks, while a priced campaign may work better when buyers are closely comparing "
+     "similar properties. Tender can also help when flexibility around terms or timing matters. Ben "
+     "recommends the method as part of the appraisal and explains the reasoning behind it, so the "
+     "campaign is tailored to the property rather than following a one-size-fits-all approach."),
+    ("What does it cost to sell a house?",
      "Commission is agreed up front and is only payable when your home sells. Marketing costs depend on "
      "the campaign you choose. Ben provides a written estimate of both before you sign an agency "
      "agreement, so there are no surprises later."),
     ("Does Ben sell homes off market?",
-     "Regularly. A good share of peninsula homes change hands quietly, to buyers already registered with "
+     "Regularly. A good share of Peninsula homes change hands quietly, to buyers already registered with "
      "Ben. If you're buying, register your brief so you hear about homes before they're advertised. If "
      "you're selling, a quiet approach to the right buyer can be part of the plan, though it's worth "
      "understanding the trade-offs first."),
-    ("Is now a good time to sell on the North Shore?",
-     "Well presented homes in Devonport, Belmont and Bayswater continue to find local buyers who are "
-     "waiting for the right property. Whether now suits you depends on your home and your timing, and "
-     "Ben will tell you honestly if he thinks you're better to prepare and wait."),
+    ("Is now a good time to sell my home?",
+     "Well-presented homes on the North Shore continue to attract local buyers waiting for the right "
+     "property. Whether now suits you depends on your home and your timing, and Ben will tell you "
+     "honestly if he thinks you're better off preparing and waiting."),
 ]
 
 # ---------------------------------------------------------------- suburb pages
@@ -127,32 +147,32 @@ SUBURBS = [
         "name": "Devonport",
         "coord": "36.8290° S · 174.7961° E",
         "lat": -36.8290, "lng": 174.7961,
-        "h1": "Devonport real estate, street by street.",
+        "h1": "Devonport real estate<br>Street by street.",
         "title": "Devonport Real Estate Agent | Ben Potter, Harcourts Cooper & Co",
         "desc": ("Selling or buying in Devonport? Ben Potter has 38 years on the Devonport Peninsula and "
                  "specialises in the suburb's villas, character homes and tightly held streets. Free appraisals."),
-        "card": ("Heritage villas, Cheltenham Beach and the ferry. The most tightly held streets on the "
-                 "North Shore, where presentation and pricing matter more than anywhere else on the Peninsula."),
-        "lede": ("Devonport is the village at the end of the peninsula: villas under mature trees, a working "
-                 "naval base, two volcanic headlands and a twelve minute ferry into the city. It is also the "
-                 "hardest part of the North Shore to buy into, because the people who live here tend to stay."),
+        "card": ("Heritage villas, Cheltenham Beach and the ferry. Some of the North Shore's most tightly "
+                 "held streets, where careful presentation, positioning and pricing are especially important."),
+        "lede": ("Devonport is the village at the end of the Peninsula: heritage villas beneath mature "
+                 "trees, a working naval base, two volcanic headlands and a twelve-minute ferry ride into "
+                 "the city. It is one of the North Shore's most tightly held areas, with a strong sense of "
+                 "community and relatively few homes changing hands at any one time."),
         "blocks": [
             ("What sells here", [
                 "Devonport's housing stock is unusually old for Auckland. Victorian and Edwardian villas "
-                "from the 1880s through the 1910s dominate the streets around Victoria Road, Church Street "
-                "and Calliope Road, with bay villas and transitional villas on the flat and Californian "
-                "bungalows filling in the 1920s and 1930s.",
-                "Along King Edward Parade and the Cheltenham foreshore you have the suburb's blue chip "
-                "homes, where the view and the frontage carry the price. Up the slopes of Takarunga "
-                "(Mount Victoria) and Maungauika (North Head) sites get steeper and views open up. Closer "
-                "to the wharf there is a small apartment and townhouse market that suits downsizers and "
-                "lock-up-and-leave buyers.",
+                "from the 1880s through the 1910s dominate the local streets. Bay villas and transitional "
+                "villas on the flat, and Californian bungalows filling in the 1920s and 1930s.",
+                "Along King Edward Parade and the Cheltenham foreshore, you have the suburb's blue-chip "
+                "homes, where the view and the frontage carry the price. Up the slopes of Takarunga (Mount "
+                "Victoria) and Maungauika (North Head), sites get steeper, and views open up. Closer to the "
+                "wharf, there is a small apartment market that suits downsizers and lock-up-and-leave buyers.",
             ]),
             ("Who is buying", [
-                "Three groups compete for most Devonport homes. Professionals who want to commute by ferry "
-                "and will pay for walkability to the wharf. Families who want a character home inside good "
-                "school zones and are prepared to renovate. And downsizers, often selling a larger home "
-                "elsewhere on the Shore, who want the village rather than a lifestyle block.",
+                "Three groups compete for most Devonport homes. Families who want a character home inside "
+                "good school zones with safety and community as a priority. Professionals who want to "
+                "commute by ferry and will pay for walkability to the wharf and the village. Also, "
+                "downsizers, often selling a larger home elsewhere on the Shore, who want the smaller "
+                "section rather than a lifestyle block.",
                 "Returning expats make up a steady fourth group, and they tend to arrive with a short list "
                 "of streets rather than a budget. Knowing which of them is currently looking is usually "
                 "worth more to a seller than any marketing spend.",
@@ -160,55 +180,57 @@ SUBURBS = [
             ("Selling a Devonport home", [
                 "Much of Devonport sits inside the Auckland Unitary Plan's special character overlay, which "
                 "shapes what can be altered, removed or added. Buyers know this, so a clean consent history "
-                "and evidence that work was done properly are worth real money at auction.",
+                "and evidence that work was done properly are worth real money at auction. Many central "
+                "Devonport homes sit in the Single Housing Zone and offer some protections against major "
+                "future developments in the neighbourhood.",
                 "Villa buyers here inspect closely: piles and subfloor, roof and spouting, weatherboard and "
                 "joinery, drainage, and the quality of any past renovation. Ben's advice before a campaign "
-                "is usually about presentation rather than renovation, because the return on a full "
-                "renovation immediately before sale is rarely what owners expect.",
-                "Auction works well on a tightly held street where several buyers want the same thing at the "
-                "same time. Where a home is more specific, a deadline sale or a price can do better.",
+                "is usually about presentation rather than renovation.",
+                "Auction works well on a tightly held street where several buyers want the same thing at "
+                "the same time. Where a home is more specific, a deadline sale or tender may be a more "
+                "strategic advantage.",
             ]),
             ("Getting around", [
-                "The Devonport ferry reaches the downtown terminal in about twelve minutes, which is the "
-                "single strongest argument for the suburb and a genuine price driver for homes within an "
-                "easy walk of the wharf. By road, everything funnels onto Lake Road, and buyers do factor "
-                "the afternoon queue into what they will pay.",
+                "The Devonport ferry reaches the downtown terminal in about twelve minutes, the suburb's "
+                "strongest argument and a genuine price driver for homes within an easy walk of the wharf. "
+                "By road, everything funnels onto Lake Road, and buyers do factor the afternoon queue into "
+                "what they will pay.",
             ]),
         ],
         "facts": [
-            ("Housing stock", "Villas, bungalows, some apartments"),
+            ("Housing stock", "Villas and bungalows"),
             ("Typical section", "400 to 800 m²"),
             ("To the city", "About 12 minutes by ferry"),
-            ("Schools", "Devonport Primary, Vauxhall, Stanley Bay"),
-            ("Secondary", "Belmont Intermediate, Takapuna Grammar"),
+            ("Schools", "Devonport Primary, Vauxhall Primary, Stanley Bay Primary"),
+            ("Secondary", "Takapuna Grammar School"),
             ("Character overlay", "Yes, across much of the suburb"),
         ],
         "landmarks": ("Cheltenham Beach, Windsor Reserve, the Victoria Road shops, Torpedo Bay, the Devonport "
                       "Library, Takarunga and Maungauika"),
         "faq": [
             ("What is my Devonport home worth?",
-             "In Devonport the street, the section and the condition of the house matter more than the floor "
-             "area. Two villas of the same size a block apart can be a long way apart in value. Ben tracks "
-             "every peninsula sale and gives you a range built from comparable Devonport sales in the last "
-             "six months, rather than a headline number designed to win the listing."),
+             "In Devonport, the street, the section and the condition of the house can matter more than the "
+             "floor area. Two villas of the same size a few blocks apart can be a long way apart in value. "
+             "Ben tracks every peninsula sale and gives you a range built from comparable Devonport sales "
+             "in the last six months, rather than a headline number designed to win the listing."),
             ("Can I renovate or extend a villa in Devonport?",
-             "Often yes, but much of Devonport sits under a special character overlay, so what you can do to "
-             "the street-facing form of the house is more limited than in most Auckland suburbs. Alterations "
-             "at the rear and inside are usually more achievable. Talk to a planner early, and keep the "
-             "paperwork, because buyers will ask for it."),
+             "Often yes, but much of Devonport sits under a special character overlay, so what you can do "
+             "to the street-facing form of the house is more limited than in most Auckland suburbs. Rear "
+             "and internal alterations are usually more achievable. Talk to a planner and council early, "
+             "and keep the paperwork, because buyers will ask for it."),
             ("Which Devonport streets are the most tightly held?",
-             "The Cheltenham streets, the King Edward Parade waterfront and the pockets close to Victoria "
-             "Road turn over rarely, and when they do the buyer is often someone who has been waiting for "
-             "that street specifically. That is exactly the situation where an auction campaign earns its keep."),
+             "Cheltenham, the waterfront and the streets close to the village are among the areas where "
+             "homes can be held for long periods. When a well-positioned property does come to market, it "
+             "can attract buyers who have been waiting specifically for that location. In those "
+             "situations, a competitive auction campaign can be particularly effective."),
             ("Is Devonport a good place to live with children?",
-             "It suits families who value walkability. Devonport Primary, Vauxhall School and Stanley Bay "
-             "School serve different parts of the suburb, Belmont Intermediate and Takapuna Grammar take the "
-             "older years, and children can walk to two beaches and two headlands. Zones vary street by "
-             "street, so confirm the address rather than the suburb."),
+             "One of the best areas for families. Devonport Primary, Vauxhall School and Stanley Bay School "
+             "serve different parts of the suburb; Belmont Intermediate and Takapuna Grammar take the older "
+             "years, and children can walk to beaches and parks safely."),
             ("How long does a Devonport home take to sell?",
-             "A well prepared, sensibly priced Devonport home usually sells within four to six weeks, and "
-             "character homes on sought-after streets often sell faster than that. Homes that stall are "
-             "almost always priced against hope rather than against recent comparable sales."),
+             "A well-prepared, sensibly priced Devonport home usually sells within four to six weeks, and "
+             "character homes on sought-after streets often sell faster. Homes that stall are almost always "
+             "priced against hope rather than against recent comparable sales."),
         ],
     },
     {
@@ -216,57 +238,53 @@ SUBURBS = [
         "name": "Belmont",
         "coord": "36.8060° S · 174.7898° E",
         "lat": -36.8060, "lng": 174.7898,
-        "h1": "Belmont real estate, inside the school zones.",
+        "h1": "Belmont real estate<br>perfectly positioned.",
         "title": "Belmont Real Estate Agent | Ben Potter, Harcourts Cooper & Co",
         "desc": ("Thinking of selling in Belmont? Ben Potter knows the Takapuna Grammar and Belmont "
                  "Intermediate zones, the family homes and the buyers. 38 years on the peninsula. Free appraisals."),
-        "card": ("Family homes on the flat between Devonport and Takapuna. Driven by the Takapuna Grammar "
-                 "and Belmont Intermediate zones, generous sections and a short run up Lake Road."),
-        "lede": ("Belmont is the practical middle of the peninsula. Flatter land, bigger sections, and the "
-                 "school zones that decide where a great many North Shore families end up living. It is where "
-                 "Devonport households move when they need another bedroom and a lawn."),
+        "card": ("Perfectly positioned between Devonport and Takapuna. From first-home buyers to the "
+                 "ultra-wealthy. Older homes and brand-new offerings. Belmont has it all."),
+        "lede": ("Belmont sits at the practical heart of the peninsula. With flat sections, more space and "
+                 "easy connections across the North Shore, it has long appealed to families wanting room to "
+                 "grow while staying close to the coast."),
         "blocks": [
             ("What sells here", [
                 "The backbone of Belmont is the post-war weatherboard bungalow on a full site: three "
-                "bedrooms, one bathroom, a separate garage and a flat back lawn. A large share have been "
-                "renovated and extended over the last two decades, and the gap between a thoughtful "
-                "renovation and a tired original is one of the widest in the market.",
-                "Newer townhouses have filled in closer to Lake Road and the Belmont shops, which gives "
-                "first home buyers and downsizers a way into the zones. Cross-lease titles are common here "
-                "and have a real effect on price, on what you can build, and on how long due diligence takes.",
+                "bedrooms, one bathroom, a garage and a flat back lawn. A large share have been renovated "
+                "and extended over the last two decades, and the gap between a thoughtful renovation and a "
+                "tired original is one of the widest in the market. Newer townhouses have filled in closer "
+                "to Lake Road and the Belmont shops, which gives first home buyers and downsizers a way "
+                "into the zones. The landscape is consistently changing, and prices range from first-home "
+                "buyers to the ultra-wealthy.",
             ]),
             ("Who is buying", [
-                "Belmont's buyer is usually a family, and the school zone is usually the reason. Takapuna "
-                "Grammar and Belmont Intermediate bring buyers from across Auckland, and many arrive having "
-                "already worked out exactly which side of which street they need to be on.",
-                "The second group is local: Devonport owners with a growing family who want level lawn and "
-                "another bathroom, and older Belmont residents moving from the family home into a single "
-                "level townhouse a few streets away.",
+                "Belmont buyers are often families, with Takapuna Grammar and Belmont Intermediate a major "
+                "part of the appeal. Many arrive already focused on particular streets and pockets within "
+                "the suburb.",
+                "There is also a strong local buyer pool: Devonport families looking for more space, "
+                "Belmont owners downsizing into nearby townhouses, and younger buyers drawn to the "
+                "combination of beaches, ferry access and everyday convenience.",
             ]),
             ("Selling a Belmont home", [
-                "Get the zoning and the title right before you market. Confirm the school zone for the "
-                "address, not the suburb, and have the answer in writing. If the title is cross-lease, deal "
-                "with any unapproved alterations or an out of date flats plan early, because buyers' "
-                "solicitors will find them and it costs you momentum in the middle of a campaign.",
-                "Presentation is about family function here: show the flat lawn, show where a second living "
-                "space or a fourth bedroom could go, and make the indoor to outdoor flow obvious. Site "
-                "potential under the current zoning is worth understanding, because some Belmont buyers are "
-                "assessing what can be built as much as what is there.",
-                "Deadline sale suits a lot of Belmont homes: it gives every family time to do the school "
-                "zone and building checks, while still creating a single decision point.",
+                "Presentation in Belmont is often about family function. Make the lawn, indoor-outdoor flow "
+                "and flexible living spaces easy to understand. Show buyers how the home works day to day, "
+                "where there is room to grow, and any genuine future potential the property may offer.",
+                "The method of sale should suit the property and likely buyer pool. Deadline campaigns can "
+                "work well where buyers want time to complete their checks while still creating a clear "
+                "decision point. In other cases, auction may be more appropriate.",
             ]),
             ("Getting around", [
-                "Belmont sits on Lake Road with Takapuna a few minutes north and Devonport a few minutes "
-                "south. The Bayswater ferry is a short drive or a walk from the western streets, which "
-                "matters to buyers commuting into the city, and Ngataringa Bay borders the suburb on that "
-                "side.",
+                "Belmont sits around Lake Road with Takapuna a few minutes north and Devonport a few "
+                "minutes south. The Bayswater ferry is a short drive or a walk from the western streets, "
+                "which matters to buyers commuting into the city. Numerous bus and cycle routes are easily "
+                "available. Motorway access is only a few minutes away.",
             ]),
         ],
         "facts": [
-            ("Housing stock", "1950s and 60s bungalows, newer townhouses"),
-            ("Typical section", "500 to 800 m², often cross-lease"),
-            ("Schools", "Belmont Primary, Belmont Intermediate"),
-            ("Secondary", "Takapuna Grammar zone"),
+            ("Housing stock", "1950s and 60s bungalows, new townhouses"),
+            ("Typical section", "500 to 800 m²"),
+            ("Schools", "Belmont Primary School, Belmont Intermediate School"),
+            ("Secondary", "Takapuna Grammar School"),
             ("To Takapuna", "A few minutes up Lake Road"),
             ("Ferry", "Bayswater, a short drive or walk"),
         ],
@@ -274,31 +292,30 @@ SUBURBS = [
                       "Bayswater Marina"),
         "faq": [
             ("Is Belmont in the Takapuna Grammar zone?",
-             "Most of Belmont sits inside the Takapuna Grammar enrolment scheme, and Belmont Intermediate "
-             "covers the intermediate years, but the boundaries follow streets rather than suburb lines. "
-             "Always confirm the specific address against the school's current zone map, and keep that "
-             "confirmation with your sale documents, because buyers will ask."),
+             "Yes, most of Belmont sits inside the Takapuna Grammar and Belmont Intermediate zone."),
             ("What are houses selling for in Belmont?",
-             "Belmont price depends heavily on the school zone, the title type, the section and how much "
-             "renovation has already been done. A renovated four bedroom home on freehold land and an "
-             "original three bedroom cross-lease are very different propositions. Ben provides current "
-             "Belmont comparable sales with every appraisal, rather than a suburb average."),
+             "Belmont prices depend heavily on the property. A renovated four-bedroom home on freehold land "
+             "and an original three-bedroom cross-lease are very different propositions. Ben provides "
+             "current Belmont comparable sales with every appraisal."),
             ("What is the difference between cross-lease and freehold in Belmont?",
-             "A freehold title gives you the land outright. A cross-lease means you own a share of the whole "
-             "site and lease your particular dwelling, so alterations usually need the other owners' consent "
-             "and the flats plan has to match what is actually built. Cross-lease homes typically sell for "
-             "less than comparable freehold homes, and fixing a defective cross-lease before a campaign can "
-             "be worth doing."),
+             "A freehold title gives you the land outright. A cross-lease means you own a share of the "
+             "whole site and lease your particular dwelling, so alterations usually need the other owners' "
+             "consent and the flats plan has to match what is actually built. Cross-lease homes typically "
+             "sell for less than comparable freehold homes, and fixing a defective cross-lease before a "
+             "campaign can be worth doing. Ben can advise on this before the sale."),
             ("Should I renovate before selling in Belmont?",
-             "Usually not a full renovation. Belmont buyers pay for clean, functional family living, so "
-             "paint, flooring, a tidy kitchen and bathroom, a well presented lawn and clear flow to the "
-             "outdoors return more per dollar than a major project finished in a hurry. Ben walks through "
-             "before the campaign and tells you what to leave alone."),
+             "Usually, not extensively. Belmont buyers tend to respond well to clean, functional family "
+             "living, so targeted improvements such as fresh paint, updated flooring, a tidy kitchen or "
+             "bathroom, well-presented outdoor areas and good indoor-outdoor flow can often have more "
+             "impact than a major renovation rushed through before sale. Ben can walk through the property "
+             "before the campaign and help prioritise where money is worth spending and where it may be "
+             "better left alone. You can also download his free selling guide for practical advice on "
+             "preparing and positioning your home to achieve the most money."),
             ("Belmont, Hauraki or Takapuna: how do they compare?",
-             "Belmont gives you the grammar zone with more land and a quieter street than Takapuna, "
-             "generally at a lower price per square metre. Hauraki sits closer to Takapuna and tends to "
-             "trade a little higher. Takapuna itself offers the beach and town centre but a smaller section "
-             "or an apartment for the same money. Most buyers end up choosing between two of the three."),
+             "Belmont offers the grammar zone, more land, and a quieter street than Takapuna, generally at "
+             "a lower price per square metre. Hauraki sits closer to Takapuna and can trade a little "
+             "higher. Takapuna itself offers the beach and town centre, but you get a smaller section for "
+             "the same money."),
         ],
     },
     {
@@ -306,56 +323,47 @@ SUBURBS = [
         "name": "Bayswater",
         "coord": "36.8163° S · 174.7727° E",
         "lat": -36.8163, "lng": 174.7727,
-        "h1": "Bayswater real estate, on the harbour's edge.",
+        "h1": "Bayswater real estate<br>on the harbour's edge.",
         "title": "Bayswater Real Estate Agent | Ben Potter, Harcourts Cooper & Co",
         "desc": ("Selling in Bayswater? Ben Potter knows the marina, the ferry, the view lines and the "
                  "buyers. 38 years on the Devonport Peninsula. Free, no obligation property appraisals."),
-        "card": ("Water on three sides, the marina and views back to the city. Quieter than its neighbours: "
-                 "townhouses on the ridge, weatherboard homes on the flat, the ferry at the end of the road."),
+        "card": ("Water on three sides: the marina and views back to the city. Larger sections still "
+                 "quietly available. Ferry service to Auckland CBD at the end of the road."),
         "lede": ("Bayswater is the quiet one. A narrow finger of land with Ngataringa Bay on one side, the "
-                 "Waitematā on the other, a marina at the tip and a ferry that puts the city closer than most "
-                 "of the North Shore can manage. Buyers who find it tend to stop looking elsewhere."),
+                 "Waitematā on the other, a marina at the tip and a ferry that puts the city closer than "
+                 "most of the North Shore can manage. Still home of the Kiwi quarter-acre dream!"),
         "blocks": [
             ("What sells here", [
-                "Two markets sit side by side. On the flat, weatherboard family homes on regular sections, "
-                "many of them 1950s and 60s originals that have been extended over time. On the ridge and "
-                "the slopes, elevated homes and townhouses where the view across the harbour to the city "
-                "does most of the pricing work.",
-                "Around the marina there is a smaller apartment and townhouse market that appeals to "
-                "commuters and to boat owners who want to walk to the berth. New builds appear "
-                "occasionally, and they sell quickly when the aspect is right.",
+                "Everything from a character villa sitting proudly on a huge quarter-acre section where "
+                "families and kids can still play cricket on the back lawn, to townhouses from the 1970s to "
+                "modern masterpieces sitting on the water's edge.",
             ]),
             ("Who is buying", [
-                "The ferry defines the Bayswater buyer. A large share are city workers who have done the "
-                "maths on the commute and want to walk to the terminal rather than sit on Lake Road. Add "
-                "buyers who wanted Devonport but found Bayswater gave them more house and closer water, and "
-                "downsizers who want a single level home with a view.",
-                "Boat owners are a distinct group here, and marina access genuinely changes what a home is "
-                "worth to them.",
+                "Bayswater attracts a mix of families, boat owners and city commuters. Families are drawn "
+                "to the coastal setting, strong local schools, sense of safety and the relaxed community "
+                "feel. Boat owners value the marina and immediate connection to the harbour, while "
+                "commuters appreciate the convenience of the ferry and easy access to the city.",
             ]),
             ("Selling a Bayswater home", [
-                "Aspect and view line matter more than floor area. Two houses with the same plan can sit "
-                "well apart in value depending on what they see and how the afternoon sun falls. Marketing "
-                "has to prove the water proximity rather than assert it, which is where aerial photography "
-                "earns its place on this side of the peninsula.",
-                "Walking time to the ferry is a real, quotable selling point and worth measuring honestly "
-                "rather than estimating. For homes on the flat, the job is to show the family function and "
-                "the outdoor space. For homes on the ridge, the job is to show the view at the right time "
-                "of day.",
-                "Because the buyer pool is smaller and more specific than Devonport's, matching the method "
-                "of sale to the likely number of competing buyers matters. Ben will tell you when an "
-                "auction is likely to expose a thin field rather than create competition.",
+                "In Bayswater, value can come from the home itself, the land beneath it, or often a "
+                "combination of both. Presentation matters, particularly when a property has a strong "
+                "aspect to showcase. On the southern side, some homes capture impressive city skyline "
+                "views, while the northern side is often prized for sun and light.",
+                "Bayswater also has a remarkably broad range of properties, from modest homes and "
+                "townhouses through to substantial waterfront residences. That variety means the marketing "
+                "strategy needs to be tailored carefully to the individual property rather than treating "
+                "the suburb as one market.",
             ]),
             ("Getting around", [
                 "The Bayswater ferry runs from the marina into the downtown terminal and is the suburb's "
-                "main advantage over the rest of the peninsula's northern end. By road it is Bayswater "
+                "main advantage over the rest of the peninsula's northern end. By road, it is Bayswater "
                 "Avenue out to Lake Road, with Belmont and Takapuna a few minutes north and Devonport a few "
                 "minutes south.",
             ]),
         ],
         "facts": [
-            ("Housing stock", "Weatherboard homes, ridge townhouses, apartments"),
-            ("Typical section", "400 to 700 m²"),
+            ("Housing stock", "Character homes, midcentury and modern"),
+            ("Typical section", "400 to 1000 m²"),
             ("To the city", "Ferry from Bayswater Marina"),
             ("Schools", "Bayswater School"),
             ("Secondary", "Belmont Intermediate, Takapuna Grammar"),
@@ -365,24 +373,22 @@ SUBURBS = [
                       "toward Belmont"),
         "faq": [
             ("How long is the ferry from Bayswater to the city?",
-             "The Bayswater service runs from the marina into the downtown ferry terminal and is the reason "
-             "a lot of buyers choose the suburb. Check the current timetable for sailing times, and if "
-             "you're selling, measure the actual walk from your gate to the terminal, because buyers who "
-             "care about the ferry care about that number precisely."),
+             "The ferry from Bayswater Marina to downtown Auckland takes around 10 to 15 minutes, making it "
+             "one of the suburb's biggest drawcards for commuters. It is a particularly convenient option "
+             "for locals who want quick access to the city while still living in a quieter coastal setting."),
             ("Do Bayswater homes with harbour views sell for more?",
              "Yes, and the premium is specific rather than general. What the view takes in, whether it is "
              "protected by the homes below, and how the afternoon light falls all affect it. Elevated homes "
-             "on the ridge and well sited homes near the water consistently outperform equivalent floor "
+             "on the ridge and well-sited homes near the water consistently outperform equivalent floor "
              "area without an outlook."),
             ("Is Bayswater cheaper than Devonport?",
              "Usually, for a comparable house. Devonport carries a premium for the village, the character "
              "housing stock and the shorter ferry ride. Buyers who move their search to Bayswater often "
-             "find they get more house, more section or a better outlook for the same money, and give up "
-             "the walk to Victoria Road."),
+             "find more house, more section, or a better outlook for the same money."),
             ("What is the Bayswater Marina like for boat owners?",
-             "The marina sits at the end of the peninsula and is a genuine draw for buyers with a boat, "
-             "since it puts the berth within walking distance of home. Berth availability changes, so if it "
-             "is part of your buying decision it pays to look into it in parallel with the house search."),
+             "The marina sits at the end of the peninsula and is a genuine draw for boat owners, since it "
+             "puts the berth within walking distance of home. Berth availability changes, so if it is part "
+             "of your buying decision, it pays to look into it alongside the house search."),
             ("Which schools serve Bayswater?",
              "Bayswater School covers the primary years, with Belmont Intermediate and Takapuna Grammar "
              "taking the older years. As everywhere on the peninsula, enrolment zones follow streets, so "

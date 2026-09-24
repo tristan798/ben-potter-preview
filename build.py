@@ -173,7 +173,7 @@ def reviews_section(depth):
         <span class="count" id="qCount" aria-live="polite">1 / {len(C.REVIEWS)}</span>
         <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-      <p class="trust"><a href="{C.RATEMYAGENT}" rel="noopener">Verified reviews on RateMyAgent</a><span>Sample reviews shown, live feed to follow</span></p>
+      <p class="trust"><a href="{C.RATEMYAGENT}" rel="noopener">Verified reviews on RateMyAgent</a></p>
     </div>
   </section>'''
 
@@ -206,6 +206,7 @@ def appraisal_form(depth, heading='Request appraisal'):
               <option>Just curious about value</option>
             </select>
           </div>
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="form-foot">
             <button class="btn btn-blue" type="submit">{heading}</button>
             <small>No cost, no obligation. Ben replies personally.</small>
@@ -219,11 +220,11 @@ def contact_section(depth):
       <div class="appraise-copy">
         <p class="label blue">Book a free appraisal</p>
         <h2 id="contactTitle">Talk to Ben <em>before</em> you list.</h2>
-        <p class="lede">A written appraisal of your Devonport, Belmont or Bayswater home, and an honest view on what it needs before the first open home.</p>
+        <p class="lede">A written appraisal of your property and an honest view on what it needs before the first open home.</p>
         <div class="details">
           <a href="tel:{C.PHONE_LINK}"><span>Mobile</span><b>{C.PHONE_DISPLAY}</b></a>
           <a href="mailto:{C.EMAIL}"><span>Email</span><b>{C.EMAIL}</b></a>
-          <div><span>Office</span><b>{C.OFFICE}</b></div>
+          <div><span>Agency</span><b>{C.AGENCY}</b></div>
         </div>
       </div>
       <div class="form-card">
@@ -288,6 +289,7 @@ def footer(depth):
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
       <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="form-foot"><button class="btn btn-blue" type="submit">Send me the guide</button><small>Ben emails the guide and follows up personally.</small></div>
     </form>
   </div>
@@ -336,7 +338,6 @@ def home_body():
     <div class="wrap split">
       <div class="split-head">
         <p class="label blue">About Ben</p>
-        <p class="coord">36.8290° S · 174.7961° E</p>
       </div>
       <div>
         <h2 id="aboutTitle" class="statement">Most agents can show you a map of the Peninsula. Ben can tell you <em>who lives on it.</em></h2>
@@ -612,7 +613,7 @@ def appraisal_body():
       {crumbs([('Property appraisal', None)], d)}
       <p class="label blue">Free appraisal</p>
       <h1 id="pageTitle">Talk to Ben <em>before</em> you list.</h1>
-      <p class="lede">A written appraisal of your Devonport, Belmont or Bayswater home, built from recent comparable sales, with an honest view on what it needs before the first open home.</p>
+      <p class="lede">A written appraisal of your property, built from recent comparable sales, with an honest view on what it needs before the first open home.</p>
       <div class="page-actions">
         <a class="btn btn-blue" href="#form">Request an appraisal</a>
         <a class="btn btn-line" href="tel:{C.PHONE_LINK}">Call {C.PHONE_DISPLAY}</a>
@@ -660,7 +661,7 @@ def appraisal_body():
         <div class="details">
           <a href="tel:{C.PHONE_LINK}"><span>Mobile</span><b>{C.PHONE_DISPLAY}</b></a>
           <a href="mailto:{C.EMAIL}"><span>Email</span><b>{C.EMAIL}</b></a>
-          <div><span>Office</span><b>{C.OFFICE}</b></div>
+          <div><span>Agency</span><b>{C.AGENCY}</b></div>
         </div>
       </div>
       <div class="form-card">
@@ -842,9 +843,13 @@ def script_block():
   (function(){
     // Fill these in as Ben supplies them.
     var CONFIG = {
-      formEndpoint: '',                                    // leads POST here as JSON, and Ben is emailed
+      // Paste the Web3Forms access key for LEAD_EMAIL here and every submission is
+      // emailed straight to that address. Get one free at https://web3forms.com (no account).
+      formKey: 'FORM_KEY',
+      formEndpoint: 'https://api.web3forms.com/submit',
+      leadEmail: 'LEAD_EMAIL',
       guideUrl: 'GUIDE_URL',                               // the selling guide PDF
-      reelEmbed: ''                                        // e.g. https://www.youtube.com/embed/VIDEO_ID
+      reelEmbed: 'REEL_EMBED'                              // e.g. https://www.youtube.com/embed/VIDEO_ID
     };
     var PHONE = 'PHONE_D', PHONE_LINK = 'PHONE_L';
     var $ = function(id){ return document.getElementById(id); };
@@ -877,7 +882,7 @@ def script_block():
     var qi = 0, qText = $('quoteText'), qName = $('quoteName'), qWhere = $('quoteWhere'), qCount = $('qCount');
     function showQuote(i){
       qi = (i + quotes.length) % quotes.length;
-      qText.textContent = quotes[qi].t; qName.textContent = quotes[qi].n; qWhere.textContent = quotes[qi].w;
+      qText.innerHTML = quotes[qi].t; qName.textContent = quotes[qi].n; qWhere.textContent = quotes[qi].w;
       qCount.textContent = (qi + 1) + ' / ' + quotes.length;
     }
     if(qText){
@@ -886,10 +891,35 @@ def script_block():
     }
 
     function sendLead(kind, form){
-      var data = { kind: kind, page: location.href };
-      form.querySelectorAll('input, select, textarea').forEach(function(el){ if(el.name) data[el.name] = el.value.trim(); });
-      if(!CONFIG.formEndpoint) return Promise.resolve();
-      return fetch(CONFIG.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) }).catch(function(){});
+      var data = {};
+      form.querySelectorAll('input, select, textarea').forEach(function(el){
+        if(!el.name) return;
+        data[el.name] = (el.type === 'checkbox') ? el.checked : el.value.trim();
+      });
+      var label = (kind === 'guide') ? 'Selling guide download' : 'Appraisal request';
+      if(!CONFIG.formKey){
+        console.warn('No form key set: this lead was not emailed. See README launch checklist.');
+        return Promise.resolve();
+      }
+      var payload = {
+        access_key: CONFIG.formKey,
+        subject: label + ' from ' + (data.name || 'the website') + (data.address ? ' — ' + data.address : ''),
+        from_name: 'benpotter.co.nz',
+        replyto: data.email || '',
+        Enquiry: label,
+        Name: data.name || '',
+        Mobile: data.phone || '',
+        Email: data.email || '',
+        Property: data.address || '',
+        Timeframe: data.timeframe || '',
+        Page: location.href,
+        botcheck: data.botcheck || false
+      };
+      return fetch(CONFIG.formEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(function(){});
     }
     function validate(form){
       var ok = true;
@@ -935,7 +965,9 @@ def script_block():
     }
   })();
 </script>'''.replace('REVIEWS_JSON', reviews).replace('PHONE_D', C.PHONE_DISPLAY) \
-             .replace('PHONE_L', C.PHONE_LINK).replace('GUIDE_URL', 'guide/ben-potter-selling-guide.pdf')
+             .replace('PHONE_L', C.PHONE_LINK).replace('GUIDE_URL', 'guide/ben-potter-selling-guide.pdf') \
+             .replace('FORM_KEY', C.FORM_KEY).replace('LEAD_EMAIL', C.LEAD_EMAIL) \
+             .replace('REEL_EMBED', C.REEL_EMBED)
 
 
 # ---------------------------------------------------------------- output files

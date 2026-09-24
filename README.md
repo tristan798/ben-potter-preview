@@ -41,10 +41,16 @@ Everything below lives in `tools/content.py` unless noted.
    301s to `/recently-sold/`. GitHub Pages cannot do server redirects; Netlify, Vercel, Cloudflare
    and Apache all can.
 8. Submit `sitemap.xml` in Search Console and request indexing on the three suburb pages.
-9. Drop the selling guide PDF at `guide/ben-potter-selling-guide.pdf`, or change `CONFIG.guideUrl`
-   in the page script.
-10. Set `CONFIG.formEndpoint` (in `build.py`, `script_block()`) so appraisal and guide submissions
-    POST somewhere that emails Ben.
+9. `FORM_KEY` — **required for leads to reach Ben.** Go to https://web3forms.com, enter
+   `ben.potter@harcourts.co.nz`, confirm the verification email, paste the access key here and
+   rebuild. Every appraisal and selling-guide submission is then emailed to that address with the
+   sender set as reply-to. Until the key is set, the form shows its thank-you state but sends
+   nothing, and logs a console warning.
+10. `REEL_EMBED` — paste the YouTube or Vimeo **embed** URL for Ben's Devonport / Belmont /
+    Bayswater reel (e.g. `https://www.youtube.com/embed/VIDEO_ID`). The About section tile then
+    plays it inline instead of showing the placeholder.
+11. Drop the selling guide PDF at `guide/ben-potter-selling-guide.pdf`, or change `CONFIG.guideUrl`
+    in `build.py`, `script_block()`.
 
 ## Still needed from Ben
 
