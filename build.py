@@ -173,7 +173,7 @@ def reviews_section(depth):
         <span class="count" id="qCount" aria-live="polite">1 / {len(C.REVIEWS)}</span>
         <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-      <p class="trust"><a href="{C.RATEMYAGENT}" rel="noopener">Verified reviews on RateMyAgent</a></p>
+      <p class="trust"><a href="{C.RATEMYAGENT}" rel="noopener">Over {C.REVIEW_COUNT} five-star reviews on RateMyAgent</a></p>
     </div>
   </section>'''
 
@@ -283,8 +283,8 @@ def footer(depth):
   <button class="modal-close" type="button" id="guideClose" aria-label="Close">×</button>
   <div class="modal-body">
     <p class="label blue">Free download</p>
-    <h3 id="guideTitle">The Peninsula Selling Guide</h3>
-    <p class="muted" style="font-size:.95rem">How to prepare, price and sell a home in Devonport, Belmont or Bayswater. Written by Ben from {C.YEARS} years on the Peninsula.</p>
+    <h3 id="guideTitle">{C.GUIDE_TITLE}</h3>
+    <p class="muted" style="font-size:.95rem">{C.GUIDE_STRAP} {C.GUIDE_PAGES} pages on preparing and positioning your home, emailed straight to you.</p>
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
@@ -548,10 +548,14 @@ def sold_body():
 
 def guide_body():
     d = 1
-    items = '\n'.join(f'''      <div class="block">
-        <h3>{t}</h3>
-        <p>{b}</p>
-      </div>''' for t, b in C.GUIDE_CONTENTS)
+    contents = '\n'.join(f'          <li>{t}</li>' for t in C.GUIDE_CONTENTS)
+    blocks = []
+    for h, paras in C.GUIDE_BLOCKS:
+        body = '\n        '.join(f'<p>{t}</p>' for t in paras)
+        blocks.append(f'''      <div class="block">
+        <h2>{h}</h2>
+        {body}
+      </div>''')
     return f'''{header(d, 'guide')}
 
 <main>
@@ -559,9 +563,9 @@ def guide_body():
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="wrap">
       {crumbs([('Free selling guide', None)], d)}
-      <p class="label blue">Free download</p>
-      <h1 id="pageTitle">The Peninsula <em>Selling Guide.</em></h1>
-      <p class="lede">How to prepare, price and sell a home in Devonport, Belmont or Bayswater, written by Ben from {C.YEARS} years on the peninsula. Useful whether you're selling next month or next year.</p>
+      <p class="label blue">Free download &nbsp;·&nbsp; {C.GUIDE_PAGES} pages</p>
+      <h1 id="pageTitle">A proven strategy to <em>maximise your sale price.</em></h1>
+      <p class="lede">{C.GUIDE_STRAP} Ben's guide to preparing and positioning a home so it reaches the widest pool of buyers, creates competition, and sells for more. Useful whether you're selling next month or next year.</p>
       <div class="page-actions">
         <button class="btn btn-blue" type="button" id="guideBtn">Get the free guide</button>
         <a class="btn btn-line" href="../property-appraisal/">Book a Free Appraisal</a>
@@ -574,9 +578,12 @@ def guide_body():
       <div class="content-main">
         <div class="block">
           <h2 id="insideTitle">What's inside</h2>
-          <p>Six short sections, written for homes on this peninsula rather than generic advice about selling anywhere in New Zealand.</p>
+          <p>Fourteen short sections, written from {C.YEARS} years of selling on the North Shore rather than generic advice about selling anywhere in New Zealand.</p>
+          <ul>
+{contents}
+          </ul>
         </div>
-{items}
+{chr(10).join(blocks)}
         <div class="block">
           <h2>Where to next</h2>
           <p>Read about selling in <a href="../devonport-real-estate/">Devonport</a>, <a href="../belmont-real-estate/">Belmont</a> or <a href="../bayswater-real-estate/">Bayswater</a>, or see <a href="../recently-sold/">what has recently sold</a>.</p>
@@ -588,6 +595,11 @@ def guide_body():
           <p>If you already know you're selling, a free appraisal is the faster route. No cost, no obligation.</p>
           <a class="btn btn-blue" href="../property-appraisal/">Book a free appraisal</a>
         </div>
+        <dl class="keyfacts">
+          <div><dt>Format</dt><dd>PDF, {C.GUIDE_PAGES} pages</dd></div>
+          <div><dt>Cost</dt><dd>Free</dd></div>
+          <div><dt>Written by</dt><dd>{C.AGENT_NAME}</dd></div>
+        </dl>
       </div>
     </div>
   </section>
@@ -774,6 +786,20 @@ def schema_for(page):
                 "description": esc(s['desc']),
             })
             graph.append(faq_schema(s['faq'], url))
+        if page['path'] == 'free-selling-guide/':
+            graph.append({
+                "@type": "DigitalDocument", "@id": url + "#guide",
+                "name": C.GUIDE_TITLE,
+                "description": esc(f"{C.GUIDE_STRAP} A {C.GUIDE_PAGES} page guide to preparing and "
+                                   f"positioning a North Shore home for a premium sale."),
+                "author": {"@id": PERSON_ID},
+                "publisher": {"@id": AGENT_ID},
+                "inLanguage": "en-NZ",
+                "encodingFormat": "application/pdf",
+                "url": C.SITE + "/" + C.GUIDE_FILE,
+                "isAccessibleForFree": True,
+                "about": [{"@type": "Thing", "name": t} for t in C.GUIDE_CONTENTS],
+            })
         if page['path'] == 'property-appraisal/':
             graph.append(faq_schema(C.FAQ_APPRAISAL, url))
             graph.append({"@type": "Service", "@id": url + "#service",
@@ -837,7 +863,7 @@ def head(page, depth):
 </script>'''
 
 
-def script_block():
+def script_block(depth=0):
     reviews = json.dumps([{"t": t, "n": n, "w": w} for t, n, w in C.REVIEWS], indent=6, ensure_ascii=False)
     return '''<script>
   (function(){
@@ -965,7 +991,7 @@ def script_block():
     }
   })();
 </script>'''.replace('REVIEWS_JSON', reviews).replace('PHONE_D', C.PHONE_DISPLAY) \
-             .replace('PHONE_L', C.PHONE_LINK).replace('GUIDE_URL', 'guide/ben-potter-selling-guide.pdf') \
+             .replace('PHONE_L', C.PHONE_LINK).replace('GUIDE_URL', rel(depth) + C.GUIDE_FILE) \
              .replace('FORM_KEY', C.FORM_KEY).replace('LEAD_EMAIL', C.LEAD_EMAIL) \
              .replace('REEL_EMBED', C.REEL_EMBED)
 
@@ -1029,7 +1055,7 @@ def main():
     for p in page_list:
         depth = p['path'].count('/')
         doc = ('<!doctype html>\n<html lang="en-NZ">\n<head>\n' + head(p, depth)
-               + '\n</head>\n<body>\n' + bodies[p['path']] + '\n' + script_block() + '\n</body>\n</html>\n')
+               + '\n</head>\n<body>\n' + bodies[p['path']] + '\n' + script_block(depth) + '\n</body>\n</html>\n')
         write(p['file'], doc)
         print('  ', p['file'], f'{len(doc)/1024:.0f} KB')
 

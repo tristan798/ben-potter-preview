@@ -28,11 +28,11 @@ Everything below lives in `tools/content.py` unless noted.
 
 1. `PREVIEW = False` — removes `noindex` from every page and switches `robots.txt` from
    disallow-all to allow-all with the sitemap reference.
-2. `SITE` — confirm the production origin. Canonicals, Open Graph URLs and the sitemap all derive
-   from it.
+2. `SITE` — `https://www.ben-potter.com`, confirmed on Ben's selling guide. Canonicals, Open Graph
+   URLs and the sitemap all derive from it.
 3. `STREET` — the Devonport office street address. Currently empty, so `streetAddress` is omitted
    from the schema. Local SEO wants it filled.
-4. `EMAIL` — currently an assumed `firstname.lastname@harcourts.co.nz` format. Confirm with Ben.
+4. `EMAIL` — `ben.potter@harcourts.co.nz`, confirmed on Ben's selling guide.
 5. `GA4_ID` — add the measurement ID and the gtag snippet appears on every page. Empty means no
    tag is emitted at all.
 6. `GSC_TOKEN` — only needed if Search Console verification uses the HTML tag method. DNS or the
@@ -49,13 +49,14 @@ Everything below lives in `tools/content.py` unless noted.
 10. `REEL_EMBED` — paste the YouTube or Vimeo **embed** URL for Ben's Devonport / Belmont /
     Bayswater reel (e.g. `https://www.youtube.com/embed/VIDEO_ID`). The About section tile then
     plays it inline instead of showing the placeholder.
-11. Drop the selling guide PDF at `guide/ben-potter-selling-guide.pdf`, or change `CONFIG.guideUrl`
-    in `build.py`, `script_block()`.
+11. The selling guide PDF is in place at `guide/ben-potter-selling-guide.pdf` (16 pages, 2.6 MB).
+    Replace that file to update it; the path lives in `GUIDE_FILE`. If Ben revises the contents,
+    update `GUIDE_CONTENTS` so the page listing and the `DigitalDocument` schema stay accurate.
 
 ## Still needed from Ben
 
 Photography (peninsula, streetscapes, listing photos, the beach shot for the hero), the reel link,
-the selling guide PDF, real sold listings, CRM API details, and his RateMyAgent feed.
+real sold listings, CRM API details, and his RateMyAgent feed.
 
 Listing card photos drop into `img/listings/` using the filenames already commented into the card
 markup, e.g. `img/listings/old-lake-road-devonport.jpg`.

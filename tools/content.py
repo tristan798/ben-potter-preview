@@ -3,7 +3,7 @@
 
 # ---------------------------------------------------------------- configuration
 # TODO before launch: confirm every value in this block with Ben.
-SITE          = "https://www.ben-potter.com"   # production origin, used for canonical/OG/sitemap
+SITE          = "https://www.ben-potter.com"   # confirmed on Ben's selling guide
 PREVIEW       = True          # True adds noindex and a disallow-all robots.txt. Flip to False at launch.
 GA4_ID        = ""            # e.g. "G-XXXXXXXXXX"; leave empty to omit the tag entirely
 GSC_TOKEN     = ""            # Search Console HTML-tag verification token, if that method is used
@@ -20,6 +20,8 @@ FORM_KEY      = ""
 REEL_EMBED    = ""
 
 AGENT_NAME    = "Ben Potter"
+AGENT_TITLE   = "North Shore Real Estate Specialist"
+REVIEW_COUNT  = "90"   # five-star reviews, per Ben's selling guide
 AGENCY        = "Harcourts Cooper & Co"
 OFFICE        = "Harcourts Cooper & Co, Devonport"
 STREET        = ""            # TODO: Devonport office street address, needed for local SEO
@@ -29,7 +31,7 @@ POSTCODE      = "0624"
 COUNTRY       = "NZ"
 PHONE_DISPLAY = "027 953 0210"
 PHONE_LINK    = "+64279530210"
-EMAIL         = "ben.potter@harcourts.co.nz"   # TODO: confirm, this is an assumed Harcourts format
+EMAIL         = "ben.potter@harcourts.co.nz"   # confirmed on Ben's selling guide
 YEARS         = 38
 
 SAMEAS = [
@@ -430,11 +432,45 @@ FAQ_APPRAISAL = [
 ]
 
 # ---------------------------------------------------------------- selling guide page
+GUIDE_TITLE    = "A Proven Strategy to Maximise Your Sale Price"
+GUIDE_STRAP    = "Preparation. Positioning. Premium Results."
+GUIDE_PAGES    = 16
+GUIDE_FILE     = "guide/ben-potter-selling-guide.pdf"
+
+# The guide's actual contents, in order.
 GUIDE_CONTENTS = [
-    ("Preparing a peninsula home", "What actually returns money before a campaign, and what to leave alone."),
-    ("Choosing a method of sale", "Auction, deadline sale or price, and how to tell which suits your home."),
-    ("What a campaign costs", "Commission, marketing and the timeline, laid out plainly."),
-    ("Presentation and photography", "Why the first twenty images decide how many people walk through the door."),
-    ("Paperwork that slows sales down", "Cross-lease issues, unconsented work and school zone proof."),
-    ("The last two weeks", "Open homes, buyer feedback and how to read it before you make a decision."),
+    "Why preparation drives premium sale prices",
+    "How buyers actually decide",
+    "First impressions matter",
+    "Space sells",
+    "Clean homes feel more valuable",
+    "Staging drives premium prices",
+    "Not all improvements add value",
+    "Light creates emotion",
+    "The details that kill deals",
+    "Remove doubt, increase confidence",
+    "Create an emotional connection",
+    "The viewing experience matters",
+    "Don't miss the right buyer",
+    "Positioning your home for a premium sale",
+]
+
+# Ben's own framing, quoted from the guide.
+GUIDE_BLOCKS = [
+    ("The idea behind it", [
+        "The difference between an average result and a premium sale price is not luck. It is "
+        "preparation and positioning, and it is where sellers either gain or lose tens of thousands "
+        "of dollars.",
+        "Most buyers form an emotional connection within moments of seeing a home. When that "
+        "connection is strong, multiple buyers are drawn to the same property. That is what creates "
+        "competition, and competition is what ultimately drives premium sale prices.",
+    ]),
+    ("Where the money actually is", [
+        "Simple improvements usually deliver the highest return: worn carpet, tired paint, small "
+        "visible defects, the state of the garden and the entrance. Expensive upgrades immediately "
+        "before a campaign rarely return their full cost, because buyers prefer to make those choices "
+        "themselves.",
+        "The guide is specific about which jobs are worth doing, which are worth skipping, and why "
+        "buyers pay for what they see rather than what you have spent.",
+    ]),
 ]
