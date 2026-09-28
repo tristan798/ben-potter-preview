@@ -234,7 +234,7 @@ def reviews_section(depth):
       </div>
       <div class="reviews-cta">
         <a class="btn btn-blue btn-lg" href="{C.RATEMYAGENT}" target="_blank" rel="noopener">Read all {C.REVIEW_COUNT} five-star reviews {ARROW}</a>
-        <p class="reviews-cta-note">Verified on RateMyAgent. Every review, unedited.</p>
+        <p class="reviews-cta-note">Verified on RateMyAgent.</p>
       </div>
     </div>
   </section>'''
@@ -479,10 +479,6 @@ def home_body():
     <div class="wrap split">
       <div class="split-head">
         <p class="label blue">About Ben</p>
-      </div>
-      <div>
-        <h2 id="aboutTitle" class="statement">Most agents can show you a map of the Peninsula. Ben can tell you <em>who lives on it.</em></h2>
-        <div class="about-row">
         <figure class="reel-wrap">
           <div class="reel" id="reelBtn" role="button" tabindex="0" aria-label="Play the reel: {C.REEL_TITLE}">
             <video id="reelVideo" poster="{C.REEL_POSTER}" preload="none" playsinline
@@ -493,10 +489,12 @@ def home_body():
           </div>
           <figcaption class="reel-caption"><b>{C.REEL_TITLE}</b><span>Watch the reel &nbsp;·&nbsp; {C.REEL_SECONDS} sec</span></figcaption>
         </figure>
+      </div>
+      <div>
+        <h2 id="aboutTitle" class="statement">Most agents can show you a map of the Peninsula. Ben can tell you <em>who lives on it.</em></h2>
         <div class="prose">
           <p>{C.ABOUT[0]}</p>
           <p>{C.ABOUT[1]}</p>
-        </div>
         </div>
       </div>
     </div>
