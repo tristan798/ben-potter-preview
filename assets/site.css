@@ -7,6 +7,7 @@
 @font-face{font-family:"Poppins";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/poppins-600.woff2) format("woff2")}
 
   :root{
+    --headerH:84px;
     --shell:#F5F3EF;
     --stone:#EBE8E2;
     --white:#FFFFFF;
@@ -75,7 +76,7 @@
 
   /* Header */
   .header{position:sticky; top:0; z-index:40; background:rgba(245,243,239,.92); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid rgba(23,24,27,.1); --fg:#17181B; --fg-2:#4B4D53; --mute:#7C7A76; --rule:rgba(23,24,27,.12); --rule-2:rgba(23,24,27,.28); --accent:var(--blue); --bg:var(--shell); color:var(--fg)}
-  .header .wrap{display:flex; align-items:center; justify-content:space-between; gap:28px; height:84px}
+  .header .wrap{display:flex; align-items:center; justify-content:space-between; gap:28px; height:var(--headerH)}
   .wordmark{font-family:var(--display); font-weight:600; font-size:1.1rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none; line-height:1}
   .nav{display:flex; gap:34px}
   .nav a{font-family:var(--sans); font-size:.8rem; font-weight:400; text-decoration:none; color:var(--fg-2); padding-bottom:4px; border-bottom:1px solid transparent; transition:color .2s, border-color .2s}
@@ -91,8 +92,15 @@
 
   /* Hero */
   .hero{position:relative; overflow:hidden; background:radial-gradient(78% 88% at 70% 46%, #34353A 0%, #1B1C1F 48%, #0F1012 100%); color:var(--fg)}
-  .hero.full{min-height:100svh; display:flex; align-items:center}
-  .hero.full .wrap{padding-block:clamp(96px, 11vh, 150px) clamp(48px, 7vh, 96px)}
+  /* Hero and the stats strip together fill one viewport, below the sticky header */
+  .first-screen{min-height:calc(100svh - var(--headerH) - 1px); display:flex; flex-direction:column}
+  .first-screen .hero{flex:1 1 auto; display:flex; align-items:center}
+  .first-screen .stats{flex:0 0 auto}
+  .first-screen .hero .wrap{padding-block:clamp(16px, 4.2vh, 104px)}
+  .first-screen .hero-copy{gap:clamp(10px, 2.2vh, 26px)}
+  .first-screen .hero-copy h1{font-size:clamp(2.2rem, min(5.6vw, 7.4vh), 5.2rem)}
+  .first-screen .hero-copy .lede{font-size:clamp(.97rem, 1.7vh, 1.08rem)}
+  .first-screen .hero-actions{margin-top:0}
   .hero .wrap{display:grid; grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr); gap:clamp(28px, 5vw, 80px); align-items:center; padding-block:clamp(56px, 7vw, 104px) clamp(56px, 7vw, 96px); width:100%}
   .hero-copy{display:flex; flex-direction:column; align-items:flex-start; gap:26px}
   .hero-copy h1{max-width:13ch}
@@ -100,6 +108,7 @@
   .hero-actions{display:flex; gap:12px; flex-wrap:wrap}
   .hero-figure{position:relative; margin:0; justify-self:end; width:100%; max-width:560px}
   .hero-glow{position:absolute; inset:0; background:radial-gradient(52% 66% at 70% 58%, rgba(255,255,255,.14), transparent 70%); pointer-events:none}
+  .first-screen .hero-figure img{max-height:min(54vh, 600px); width:auto; margin-inline:auto}
   .hero-figure img{position:relative; width:100%; -webkit-mask-image:linear-gradient(to bottom, #000 82%, transparent 100%); mask-image:linear-gradient(to bottom, #000 82%, transparent 100%)}
   .hero-note{position:absolute; left:var(--gutter); bottom:26px; display:flex; align-items:center; gap:10px; font-size:.6rem; letter-spacing:.22em; text-transform:uppercase; color:var(--mute)}
   .hero-note::before{content:""; width:26px; height:1px; background:var(--rule-2)}
@@ -113,7 +122,7 @@
   /* Stats */
   .stats{background:var(--ink); color:var(--fg); border-top:1px solid var(--rule)}
   .stats .wrap{display:grid; grid-template-columns:repeat(3, minmax(0,1fr))}
-  .stat{padding:38px 40px 40px 0; display:flex; flex-direction:column; gap:10px; border-right:1px solid var(--rule)}
+  .stat{padding:clamp(18px, 3.6vh, 38px) 40px clamp(20px, 3.8vh, 40px) 0; display:flex; flex-direction:column; gap:clamp(4px, 1vh, 10px); border-right:1px solid var(--rule)}
   .stat + .stat{padding-left:40px}
   .stat:last-child{border-right:0}
   .stat b{font-family:var(--display); font-weight:500; font-size:2.3rem; line-height:1; letter-spacing:-.025em}
@@ -267,7 +276,7 @@
     .nav{display:none}
     .header .btn{display:none}
     .menu-btn{display:grid}
-    .header .wrap{height:72px}
+    :root{--headerH:72px}
     .hero-note{display:none}
     .stats .wrap{grid-template-columns:minmax(0,1fr)}
     .stat, .stat + .stat{border-right:0; border-bottom:1px solid var(--rule); padding:24px 0}

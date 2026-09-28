@@ -303,7 +303,8 @@ def home_body():
     return f'''{header(d, 'home')}
 
 <main>
-  <section class="hero full" aria-labelledby="heroTitle">
+  <div class="first-screen">
+  <section class="hero" aria-labelledby="heroTitle">
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-copy">
@@ -332,6 +333,7 @@ def home_body():
       <div class="stat"><b>Three suburbs</b><span>Devonport · Belmont · Bayswater</span></div>
       <div class="stat"><b>Harcourts</b><span>Cooper &amp; Co</span></div>
     </div>
+  </div>
   </div>
 
   <section class="section on-light" id="about" aria-labelledby="aboutTitle">
