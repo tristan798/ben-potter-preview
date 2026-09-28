@@ -40,19 +40,34 @@ were, it sends plain text, so it could never carry a designed email.
 The templates in `email/` and the sender in `api/lead.js` are built, tested and ready.
 They need somewhere that can run a function, which GitHub Pages cannot.
 
+Harbour Studios already sends through Resend from `website@harbourstudios.nz`, and all
+four of Ben's templates were sent through that account on 28 September 2026 and arrived
+correctly. So the templates and the key are both proven. What is missing is a place to
+run the function, and a verified sending domain of Ben's own.
+
+`ben-potter.com` is registered and sits on Cloudflare nameservers (`felicity` and
+`michelle`), with no MX and no SPF record on it today. Whoever holds that Cloudflare
+account has to add the records Resend generates before Ben's own domain can send.
+
 To turn them on:
 
 1. Import this repo at [vercel.com/new](https://vercel.com/new) or
    [app.netlify.com/start](https://app.netlify.com/start). `vercel.json` and
    `netlify.toml` are already here, and there is nothing to build: `build.py` has
    written the HTML into the repo already.
-2. Create an API key at [resend.com](https://resend.com) (free tier covers this
-   comfortably) and verify the sending domain.
-3. Set three environment variables on the host:
-   `RESEND_API_KEY`, `MAIL_FROM` (for example `Ben Potter <ben@ben-potter.com>`)
-   and `LEAD_TO` (`ben.potter@harcourts.co.nz`).
+2. Add `ben-potter.com` in the Resend dashboard, copy the DNS records it gives you
+   into Cloudflare, and wait for it to go green. The existing Harbour Studios key can
+   then send as Ben, or issue a new one scoped to his domain.
+3. Set four environment variables on the host:
+   `RESEND_API_KEY`, `MAIL_FROM` (for example `Ben Potter <ben@ben-potter.com>`),
+   `LEAD_TO` (`ben.potter@harcourts.co.nz`) and `ALLOWED_ORIGINS`.
+   `tools/deploy-vercel.sh` does the linking, the variables and the deploy in one go.
 4. In `tools/content.py` set `FORM_PROVIDER = "endpoint"`, and set `FORM_ENDPOINT` to
    the deployed function, for example `https://ben-potter.vercel.app/api/lead`. Rebuild.
+
+Until step 2 finishes, `MAIL_FROM` can stay on a verified Harbour Studios address so
+forms keep working. Switching to Ben's domain later is one environment variable and no
+code change.
 
 The function already sends CORS headers, so the site can stay on GitHub Pages and call
 the function on the other host if that is easier. Add any extra origin to
