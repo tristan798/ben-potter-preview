@@ -17,6 +17,11 @@ LEAD_EMAIL    = "ben.potter@harcourts.co.nz"
 # confirmation email to LEAD_EMAIL, and once Ben clicks it every later lead is forwarded.
 # "web3forms" needs an access key in FORM_KEY instead. "none" disables sending.
 FORM_PROVIDER = "formsubmit"
+# FormSubmit's hashed alias for LEAD_EMAIL. Using it instead of the raw address keeps Ben's
+# email out of the page source, where scrapers would find it. Activation is per domain:
+# when the site moves to ben-potter.com the first submission there triggers a fresh
+# confirmation email, which Ben needs to click once.
+FORM_ALIAS    = "834c42471a791eaf2dbcfd7e8233efd3"
 FORM_KEY      = ""
 
 # Ben's Devonport / Belmont / Bayswater reel, self-hosted so nothing depends on YouTube.
@@ -446,6 +451,7 @@ GUIDE_TITLE    = "A Proven Strategy to Maximise Your Sale Price"
 GUIDE_STRAP    = "Preparation. Positioning. Premium Results."
 GUIDE_PAGES    = 16
 GUIDE_FILE     = "guide/ben-potter-selling-guide.pdf"
+GUIDE_COVER    = "img/ben-potter-selling-guide-cover.jpg"
 
 # The guide's actual contents, in order.
 GUIDE_CONTENTS = [
@@ -532,3 +538,30 @@ FUNNEL_FAQ = [
      "No. Your details go to Ben directly, not to a call centre or a lead pool, and they are not "
      "passed on to anyone else."),
 ]
+
+
+# ---------------------------------------------------------------- autoresponders
+# Plain text, sent to the person who submitted. FormSubmit does not render HTML here,
+# so the download is a link on its own line rather than a styled button.
+def guide_autoresponse(site):
+    return (
+        "Thanks for requesting the guide.\n\n"
+        "Here it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and "
+        "positioning a home on the Devonport Peninsula so it reaches the widest pool of buyers.\n\n"
+        "Download it here:\n" + site + "/" + GUIDE_FILE + "\n\n"
+        "If you'd like a written appraisal of your own home, just reply to this email or call me on "
+        + PHONE_DISPLAY + ". No cost and no obligation.\n\n"
+        "Ben Potter\n" + AGENT_TITLE + "\n" + AGENCY + "\n" + PHONE_DISPLAY + "\n" + EMAIL
+    )
+
+
+def appraisal_autoresponse(site):
+    return (
+        "Thanks for getting in touch.\n\n"
+        "I've received your appraisal request and I'll call you within one business day to arrange a "
+        "time to see the property.\n\n"
+        "In the meantime you're welcome to read my selling guide, which covers how to prepare and "
+        "position a home on the Peninsula:\n" + site + "/" + GUIDE_FILE + "\n\n"
+        "If anything is urgent, call me on " + PHONE_DISPLAY + ".\n\n"
+        "Ben Potter\n" + AGENT_TITLE + "\n" + AGENCY + "\n" + PHONE_DISPLAY + "\n" + EMAIL
+    )

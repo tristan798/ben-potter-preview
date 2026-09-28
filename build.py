@@ -286,14 +286,14 @@ def footer(depth):
   <button class="modal-close" type="button" id="guideClose" aria-label="Close">×</button>
   <div class="modal-body">
     <p class="label blue">Free download</p>
-    <h3 id="guideTitle">{C.GUIDE_TITLE}</h3>
-    <p class="muted" style="font-size:.95rem">{C.GUIDE_STRAP} {C.GUIDE_PAGES} pages on preparing and positioning your home, emailed straight to you.</p>
+    <h3 id="guideTitle">Where should Ben send it?</h3>
+    <p class="muted" style="font-size:.95rem">{C.GUIDE_TITLE}, {C.GUIDE_PAGES} pages. It arrives in your inbox in a moment.</p>
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
       <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <div class="form-foot"><button class="btn btn-blue" type="submit">Send me the guide</button><small>Ben emails the guide and follows up personally.</small></div>
+      <div class="form-foot"><button class="btn btn-blue" type="submit">Email me the guide</button><small>One email with the guide. No list, no spam.</small></div>
     </form>
   </div>
 </dialog>'''
@@ -704,63 +704,58 @@ def sold_body():
 
 def guide_body():
     d = 1
-    contents = '\n'.join(f'          <li>{t}</li>' for t in C.GUIDE_CONTENTS)
-    blocks = []
-    for h, paras in C.GUIDE_BLOCKS:
-        body = '\n        '.join(f'<p>{t}</p>' for t in paras)
-        blocks.append(f'''      <div class="block">
-        <h2>{h}</h2>
-        {body}
-      </div>''')
+    half = (len(C.GUIDE_CONTENTS) + 1) // 2
+    cols = [C.GUIDE_CONTENTS[:half], C.GUIDE_CONTENTS[half:]]
+    lists = '\n'.join(
+        '          <ul>\n' + '\n'.join(f'            <li>{t}</li>' for t in col) + '\n          </ul>'
+        for col in cols)
     return f'''{header(d, 'guide')}
 
 <main>
-  <section class="page-hero" aria-labelledby="pageTitle">
+  <section class="page-hero guide-hero" aria-labelledby="pageTitle">
     <div class="hero-glow" aria-hidden="true"></div>
-    <div class="wrap">
-      {crumbs([('Free selling guide', None)], d)}
-      <p class="label blue">Free download &nbsp;·&nbsp; {C.GUIDE_PAGES} pages</p>
-      <h1 id="pageTitle">A proven strategy to <em>maximise your sale price.</em></h1>
-      <p class="lede">{C.GUIDE_STRAP} Ben's guide to preparing and positioning a home so it reaches the widest pool of buyers, creates competition, and sells for more. Useful whether you're selling next month or next year.</p>
-      <div class="page-actions">
-        <button class="btn btn-blue" type="button" id="guideBtn">Get the free guide</button>
-        <a class="btn btn-line" href="../property-appraisal/">Book a Free Appraisal</a>
+    <div class="wrap guide-grid">
+      <div class="guide-copy">
+        {crumbs([('Free selling guide', None)], d)}
+        <p class="label blue">Free download &nbsp;·&nbsp; {C.GUIDE_PAGES} pages</p>
+        <h1 id="pageTitle">A proven strategy to <em>maximise your sale price.</em></h1>
+        <p class="lede">{C.GUIDE_STRAP} Written by Ben from {C.YEARS} years selling on the Devonport Peninsula, for owners who want to know what actually moves the price before they go to market.</p>
+        <div class="page-actions">
+          <button class="btn btn-blue" type="button" id="guideBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 19h14"/></svg>
+            Download the guide
+          </button>
+        </div>
+        <a class="quietlink" href="../property-appraisal/">or book a free appraisal {ARROW}</a>
       </div>
+      <figure class="guide-cover">
+        <img src="../{C.GUIDE_COVER}" alt="Cover of Ben Potter's selling guide, A Proven Strategy to Maximise Your Sale Price" width="706" height="1000" loading="eager" decoding="async">
+      </figure>
     </div>
   </section>
 
   <section class="section on-light" aria-labelledby="insideTitle">
-    <div class="wrap content">
-      <div class="content-main">
-        <div class="block">
-          <h2 id="insideTitle">What's inside</h2>
-          <p>Fourteen short sections, written from {C.YEARS} years of selling on the North Shore rather than generic advice about selling anywhere in New Zealand.</p>
-          <ul>
-{contents}
-          </ul>
-        </div>
-{chr(10).join(blocks)}
-        <div class="block">
-          <h2>Where to next</h2>
-          <p>Read about selling in <a href="../devonport-real-estate/">Devonport</a>, <a href="../belmont-real-estate/">Belmont</a> or <a href="../bayswater-real-estate/">Bayswater</a>, or see <a href="../recently-sold/">what has recently sold</a>.</p>
-        </div>
+    <div class="wrap guide-inside">
+      <div class="funnel-head">
+        <p class="label blue">What's inside</p>
+        <h2 id="insideTitle">Fourteen short chapters.</h2>
       </div>
-      <div class="aside">
-        <div class="panel">
-          <h3>Ready to talk instead?</h3>
-          <p>If you already know you're selling, a free appraisal is the faster route. No cost, no obligation.</p>
-          <a class="btn btn-blue" href="../property-appraisal/">Book a free appraisal</a>
-        </div>
-        <dl class="keyfacts">
-          <div><dt>Format</dt><dd>PDF, {C.GUIDE_PAGES} pages</dd></div>
-          <div><dt>Cost</dt><dd>Free</dd></div>
-          <div><dt>Written by</dt><dd>{C.AGENT_NAME}</dd></div>
-        </dl>
+      <p class="guide-note">Written for homes on this peninsula, not generic advice about selling anywhere in New Zealand.</p>
+      <div class="guide-contents">
+{lists}
       </div>
+      <blockquote class="guide-pull">The difference between an average result and a premium sale price is not luck. It is preparation and positioning.</blockquote>
     </div>
   </section>
 
-{contact_section(d)}
+  <section class="section funnel-close">
+    <div class="wrap">
+      <h2>Get your copy.</h2>
+      <p class="lede">Enter your details and Ben emails it straight to you.</p>
+      <p><button class="btn btn-blue" type="button" id="guideBtn2">Download the guide</button></p>
+      <p class="or">or call Ben on <a href="tel:{C.PHONE_LINK}">{C.PHONE_DISPLAY}</a></p>
+    </div>
+  </section>
 </main>
 
 {footer(d)}'''
@@ -1050,7 +1045,10 @@ def script_block(depth=0):
       provider: '@@FORM_PROVIDER@@',
       formKey: '@@FORM_KEY@@',
       leadEmail: '@@LEAD_EMAIL@@',
-      guideUrl: '@@GUIDE_URL@@'                            // the selling guide PDF
+      formAlias: '@@FORM_ALIAS@@',
+      guideUrl: '@@GUIDE_URL@@',                           // the selling guide PDF
+      replyGuide: @@REPLY_GUIDE@@,                         // confirmation emailed to the requester
+      replyAppraisal: @@REPLY_APPRAISAL@@
     };
     var PHONE = '@@PHONE_DISPLAY@@', PHONE_LINK = '@@PHONE_LINK@@';
     var $ = function(id){ return document.getElementById(id); };
@@ -1142,9 +1140,10 @@ def script_block(depth=0):
                                   from_name: 'ben-potter.com', replyto: data.email || '',
                                   botcheck: data.botcheck || false }, fields);
       } else if(CONFIG.provider === 'formsubmit'){
-        url = 'https://formsubmit.co/ajax/' + CONFIG.leadEmail;
+        url = 'https://formsubmit.co/ajax/' + (CONFIG.formAlias || CONFIG.leadEmail);
         payload = Object.assign({ _subject: subject, _template: 'table',
                                   _replyto: data.email || '',
+                                  _autoresponse: (kind === 'guide' ? CONFIG.replyGuide : CONFIG.replyAppraisal),
                                   _honey: data.botcheck ? 'bot' : '' }, fields);
       } else {
         console.warn('Lead delivery is off: this submission was not emailed. See README.');
@@ -1154,7 +1153,12 @@ def script_block(depth=0):
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
-      }).catch(function(){});
+      }).then(function(r){ return r.json(); })
+        .then(function(j){ if(!j || String(j.success) !== 'true') throw new Error('not delivered'); })
+        .catch(function(){
+          deliveryFailed(fields);
+          throw new Error('lead delivery failed');
+        });
     }
     function validate(form){
       var ok = true;
@@ -1167,6 +1171,17 @@ def script_block(depth=0):
       return ok;
     }
     var clean = function(s){ return s.replace(/[<>&]/g, ''); };
+    // If the provider is unreachable, hand the visitor a way to reach Ben anyway.
+    function deliveryFailed(fields){
+      var lines = Object.keys(fields).map(function(k){ return k + ': ' + fields[k]; }).join('%0D%0A');
+      var href = 'mailto:@@LEAD_EMAIL@@?subject=' + encodeURIComponent('Appraisal enquiry') + '&body=' + lines;
+      var box = document.createElement('div');
+      box.className = 'send-failed';
+      box.innerHTML = '<p><b>That did not send.</b> Please call Ben on <a href="tel:@@PHONE_LINK@@">@@PHONE_DISPLAY@@</a> ' +
+                      'or <a href="' + href + '">email him directly</a>.</p>';
+      var host = document.querySelector('.form-card') || document.querySelector('.funnel-card') || document.body;
+      host.appendChild(box);
+    }
     function firstName(form){ return (form.querySelector('[name="name"]').value.trim().split(' ')[0]) || 'there'; }
     function done(form, html){
       form.innerHTML = '<div class="form-done">' + html + '</div>';
@@ -1291,6 +1306,8 @@ def script_block(depth=0):
     var modal = $('guideModal'), guideBtn = $('guideBtn');
     if(modal && guideBtn){
       guideBtn.addEventListener('click', function(){ modal.showModal(); });
+      var guideBtn2 = $('guideBtn2');
+      if(guideBtn2) guideBtn2.addEventListener('click', function(){ modal.showModal(); });
       $('guideClose').addEventListener('click', function(){ modal.close(); });
       modal.addEventListener('click', function(e){ if(e.target === modal) modal.close(); });
       var gform = $('guideForm');
@@ -1299,8 +1316,7 @@ def script_block(depth=0):
         if(!validate(gform)) return;
         var name = clean(firstName(gform));
         sendLead('guide', gform);
-        window.open(CONFIG.guideUrl, '_blank', 'noopener');
-        done(gform, '<p class="label blue">On its way</p><h3>Thanks, ' + name + '.</h3><p>The guide should have opened in a new tab. If your browser blocked it, use the button below.</p><p style="margin-top:6px"><a class="btn btn-blue" href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">Open the guide</a></p>');
+        done(gform, '<p class="label blue">On its way</p><h3>Check your inbox, ' + name + '.</h3><p>The guide is on its way to your email now. It usually lands within a minute.</p><p class="micro-fallback">Not there? <a href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">open it here</a>, and check your junk folder.</p>');
       });
     }
   })();
@@ -1312,7 +1328,10 @@ def script_block(depth=0):
         '@@GUIDE_URL@@': rel(depth) + C.GUIDE_FILE,
         '@@FORM_KEY@@': C.FORM_KEY,
         '@@LEAD_EMAIL@@': C.LEAD_EMAIL,
+        '@@FORM_ALIAS@@': getattr(C, 'FORM_ALIAS', ''),
         '@@FORM_PROVIDER@@': C.FORM_PROVIDER,
+        '@@REPLY_GUIDE@@': json.dumps(C.guide_autoresponse(C.SITE)),
+        '@@REPLY_APPRAISAL@@': json.dumps(C.appraisal_autoresponse(C.SITE)),
     }
     for k, v in tokens.items():
         js = js.replace(k, v)
@@ -1368,6 +1387,23 @@ def write(path, text):
     open(full, 'w', encoding='utf-8').write(text)
 
 
+
+def check_scripts(page_list):
+    """Parse every generated inline script with node. Two shipped syntax errors is enough."""
+    import subprocess
+    if not shutil.which('node'):
+        print('   ! node not found, skipping script syntax check')
+        return
+    for p in page_list:
+        html = open(os.path.join(HERE, p['file']), encoding='utf-8').read()
+        for m in re.finditer(r'<script>(.*?)</script>', html, re.S):
+            r = subprocess.run(['node', '--check', '-'], input=m.group(1),
+                               text=True, capture_output=True)
+            if r.returncode != 0:
+                raise SystemExit('SCRIPT SYNTAX ERROR in %s:\n%s' % (p['file'], r.stderr.strip()))
+    print('   script syntax checked on', len(page_list), 'pages')
+
+
 def main():
     page_list = pages()
     # stylesheet + fonts are shared and cached across pages
@@ -1386,6 +1422,7 @@ def main():
         write(p['file'], doc)
         print('  ', p['file'], f'{len(doc)/1024:.0f} KB')
 
+    check_scripts(page_list)
     write('sitemap.xml', sitemap(page_list))
     write('robots.txt', robots())
     redirect_configs()

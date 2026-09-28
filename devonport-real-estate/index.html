@@ -375,14 +375,14 @@
   <button class="modal-close" type="button" id="guideClose" aria-label="Close">×</button>
   <div class="modal-body">
     <p class="label blue">Free download</p>
-    <h3 id="guideTitle">A Proven Strategy to Maximise Your Sale Price</h3>
-    <p class="muted" style="font-size:.95rem">Preparation. Positioning. Premium Results. 16 pages on preparing and positioning your home, emailed straight to you.</p>
+    <h3 id="guideTitle">Where should Ben send it?</h3>
+    <p class="muted" style="font-size:.95rem">A Proven Strategy to Maximise Your Sale Price, 16 pages. It arrives in your inbox in a moment.</p>
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
       <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <div class="form-foot"><button class="btn btn-blue" type="submit">Send me the guide</button><small>Ben emails the guide and follows up personally.</small></div>
+      <div class="form-foot"><button class="btn btn-blue" type="submit">Email me the guide</button><small>One email with the guide. No list, no spam.</small></div>
     </form>
   </div>
 </dialog>
@@ -394,7 +394,10 @@
       provider: 'formsubmit',
       formKey: '',
       leadEmail: 'ben.potter@harcourts.co.nz',
-      guideUrl: '../guide/ben-potter-selling-guide.pdf'                            // the selling guide PDF
+      formAlias: '834c42471a791eaf2dbcfd7e8233efd3',
+      guideUrl: '../guide/ben-potter-selling-guide.pdf',                           // the selling guide PDF
+      replyGuide: "Thanks for requesting the guide.\n\nHere it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and positioning a home on the Devonport Peninsula so it reaches the widest pool of buyers.\n\nDownload it here:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf you'd like a written appraisal of your own home, just reply to this email or call me on 027 953 0210. No cost and no obligation.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz",                         // confirmation emailed to the requester
+      replyAppraisal: "Thanks for getting in touch.\n\nI've received your appraisal request and I'll call you within one business day to arrange a time to see the property.\n\nIn the meantime you're welcome to read my selling guide, which covers how to prepare and position a home on the Peninsula:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf anything is urgent, call me on 027 953 0210.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz"
     };
     var PHONE = '027 953 0210', PHONE_LINK = '+64279530210';
     var $ = function(id){ return document.getElementById(id); };
@@ -502,9 +505,10 @@
                                   from_name: 'ben-potter.com', replyto: data.email || '',
                                   botcheck: data.botcheck || false }, fields);
       } else if(CONFIG.provider === 'formsubmit'){
-        url = 'https://formsubmit.co/ajax/' + CONFIG.leadEmail;
+        url = 'https://formsubmit.co/ajax/' + (CONFIG.formAlias || CONFIG.leadEmail);
         payload = Object.assign({ _subject: subject, _template: 'table',
                                   _replyto: data.email || '',
+                                  _autoresponse: (kind === 'guide' ? CONFIG.replyGuide : CONFIG.replyAppraisal),
                                   _honey: data.botcheck ? 'bot' : '' }, fields);
       } else {
         console.warn('Lead delivery is off: this submission was not emailed. See README.');
@@ -514,7 +518,12 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
-      }).catch(function(){});
+      }).then(function(r){ return r.json(); })
+        .then(function(j){ if(!j || String(j.success) !== 'true') throw new Error('not delivered'); })
+        .catch(function(){
+          deliveryFailed(fields);
+          throw new Error('lead delivery failed');
+        });
     }
     function validate(form){
       var ok = true;
@@ -527,6 +536,17 @@
       return ok;
     }
     var clean = function(s){ return s.replace(/[<>&]/g, ''); };
+    // If the provider is unreachable, hand the visitor a way to reach Ben anyway.
+    function deliveryFailed(fields){
+      var lines = Object.keys(fields).map(function(k){ return k + ': ' + fields[k]; }).join('%0D%0A');
+      var href = 'mailto:ben.potter@harcourts.co.nz?subject=' + encodeURIComponent('Appraisal enquiry') + '&body=' + lines;
+      var box = document.createElement('div');
+      box.className = 'send-failed';
+      box.innerHTML = '<p><b>That did not send.</b> Please call Ben on <a href="tel:+64279530210">027 953 0210</a> ' +
+                      'or <a href="' + href + '">email him directly</a>.</p>';
+      var host = document.querySelector('.form-card') || document.querySelector('.funnel-card') || document.body;
+      host.appendChild(box);
+    }
     function firstName(form){ return (form.querySelector('[name="name"]').value.trim().split(' ')[0]) || 'there'; }
     function done(form, html){
       form.innerHTML = '<div class="form-done">' + html + '</div>';
@@ -651,6 +671,8 @@
     var modal = $('guideModal'), guideBtn = $('guideBtn');
     if(modal && guideBtn){
       guideBtn.addEventListener('click', function(){ modal.showModal(); });
+      var guideBtn2 = $('guideBtn2');
+      if(guideBtn2) guideBtn2.addEventListener('click', function(){ modal.showModal(); });
       $('guideClose').addEventListener('click', function(){ modal.close(); });
       modal.addEventListener('click', function(e){ if(e.target === modal) modal.close(); });
       var gform = $('guideForm');
@@ -659,8 +681,7 @@
         if(!validate(gform)) return;
         var name = clean(firstName(gform));
         sendLead('guide', gform);
-        window.open(CONFIG.guideUrl, '_blank', 'noopener');
-        done(gform, '<p class="label blue">On its way</p><h3>Thanks, ' + name + '.</h3><p>The guide should have opened in a new tab. If your browser blocked it, use the button below.</p><p style="margin-top:6px"><a class="btn btn-blue" href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">Open the guide</a></p>');
+        done(gform, '<p class="label blue">On its way</p><h3>Check your inbox, ' + name + '.</h3><p>The guide is on its way to your email now. It usually lands within a minute.</p><p class="micro-fallback">Not there? <a href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">open it here</a>, and check your junk folder.</p>');
       });
     }
   })();
