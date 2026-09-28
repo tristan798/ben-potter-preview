@@ -303,7 +303,7 @@ def home_body():
     return f'''{header(d, 'home')}
 
 <main>
-  <section class="hero" aria-labelledby="heroTitle">
+  <section class="hero full" aria-labelledby="heroTitle">
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-copy">
@@ -345,11 +345,16 @@ def home_body():
           <p>{C.ABOUT[0]}</p>
           <p>{C.ABOUT[1]}</p>
         </div>
-        <button class="reel" id="reelBtn" type="button" aria-label="Play the reel">
-          <span class="reel-ring"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-          <span class="reel-caption"><b>Ben on Devonport, Belmont and Bayswater</b><span>Watch the reel</span></span>
-        </button>
-        <p class="reel-msg" id="reelMsg" hidden>Reel slot. Add a YouTube or Vimeo link in the page config and it plays here.</p>
+        <figure class="reel-wrap">
+          <div class="reel" id="reelBtn" role="button" tabindex="0" aria-label="Play the reel: {C.REEL_TITLE}">
+            <video id="reelVideo" poster="{C.REEL_POSTER}" preload="none" playsinline
+                   width="720" height="1280" aria-label="{C.REEL_TITLE}">
+              <source src="{C.REEL_FILE}" type="video/mp4">
+            </video>
+            <span class="reel-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+          </div>
+          <figcaption class="reel-caption"><b>{C.REEL_TITLE}</b><span>Watch the reel &nbsp;·&nbsp; {C.REEL_SECONDS} sec</span></figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -759,6 +764,19 @@ def schema_for(page):
                       "name": esc(page['title']), "description": esc(page['desc']),
                       "isPartOf": {"@id": C.SITE + "/#website"},
                       "about": {"@id": AGENT_ID}, "inLanguage": "en-NZ"})
+        graph.append({
+            "@type": "VideoObject", "@id": url + "#reel",
+            "name": C.REEL_TITLE,
+            "description": esc(C.REEL_DESC),
+            "thumbnailUrl": C.SITE + "/" + C.REEL_POSTER,
+            "contentUrl": C.SITE + "/" + C.REEL_FILE,
+            "uploadDate": C.REEL_DATE,
+            "duration": f"PT{C.REEL_SECONDS}S",
+            "creator": {"@id": PERSON_ID},
+            "publisher": {"@id": AGENT_ID},
+            "inLanguage": "en-NZ",
+            "isFamilyFriendly": True,
+        })
         graph.append(faq_schema(C.FAQ_HOME, url))
     else:
         crumb_items = [{"@type": "ListItem", "position": 1, "name": "Home", "item": C.SITE + "/"}]
@@ -869,10 +887,9 @@ def script_block(depth=0):
   (function(){
     // Fill these in as Ben supplies them.
     var CONFIG = {
-      // Paste the Web3Forms access key for LEAD_EMAIL here and every submission is
-      // emailed straight to that address. Get one free at https://web3forms.com (no account).
+      // Where appraisal and guide submissions are emailed. See tools/content.py.
+      provider: 'FORM_PROVIDER',
       formKey: 'FORM_KEY',
-      formEndpoint: 'https://api.web3forms.com/submit',
       leadEmail: 'LEAD_EMAIL',
       guideUrl: 'GUIDE_URL',                               // the selling guide PDF
       reelEmbed: 'REEL_EMBED'                              // e.g. https://www.youtube.com/embed/VIDEO_ID
@@ -891,16 +908,25 @@ def script_block(depth=0):
       });
     }
 
-    var reelBtn = $('reelBtn'), reelMsg = $('reelMsg');
-    if(reelBtn){
-      reelBtn.addEventListener('click', function(){
-        if(CONFIG.reelEmbed){
-          var f = document.createElement('iframe');
-          f.src = CONFIG.reelEmbed + (CONFIG.reelEmbed.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
-          f.allow = 'autoplay; fullscreen'; f.title = 'Ben Potter reel';
-          f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
-          reelBtn.innerHTML = ''; reelBtn.appendChild(f);
-        } else if(reelMsg){ reelMsg.hidden = !reelMsg.hidden; }
+    var reelBtn = $('reelBtn'), reelVideo = $('reelVideo');
+    if(reelBtn && reelVideo){
+      function playReel(){
+        if(reelBtn.classList.contains('playing')){
+          reelVideo.paused ? reelVideo.play() : reelVideo.pause();
+          return;
+        }
+        reelBtn.classList.add('playing');
+        reelVideo.controls = true;
+        reelVideo.play();
+      }
+      reelBtn.addEventListener('click', playReel);
+      reelBtn.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); playReel(); }
+      });
+      reelVideo.addEventListener('ended', function(){
+        reelBtn.classList.remove('playing');
+        reelVideo.controls = false;
+        reelVideo.load();
       });
     }
 
@@ -912,8 +938,18 @@ def script_block(depth=0):
       qCount.textContent = (qi + 1) + ' / ' + quotes.length;
     }
     if(qText){
-      $('qPrev').addEventListener('click', function(){ showQuote(qi - 1); });
-      $('qNext').addEventListener('click', function(){ showQuote(qi + 1); });
+      var timer = null, REVIEW_MS = 7000;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function start(){ if(!reduce && !timer) timer = setInterval(function(){ showQuote(qi + 1); }, REVIEW_MS); }
+      function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+      function step(n){ stop(); showQuote(n); start(); }
+      $('qPrev').addEventListener('click', function(){ step(qi - 1); });
+      $('qNext').addEventListener('click', function(){ step(qi + 1); });
+      var band = document.getElementById('reviews');
+      ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });
+      ['mouseleave','focusout'].forEach(function(e){ band.addEventListener(e, start); });
+      document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
+      start();
     }
 
     function sendLead(kind, form){
@@ -923,25 +959,32 @@ def script_block(depth=0):
         data[el.name] = (el.type === 'checkbox') ? el.checked : el.value.trim();
       });
       var label = (kind === 'guide') ? 'Selling guide download' : 'Appraisal request';
-      if(!CONFIG.formKey){
-        console.warn('No form key set: this lead was not emailed. See README launch checklist.');
-        return Promise.resolve();
-      }
-      var payload = {
-        access_key: CONFIG.formKey,
-        subject: label + ' from ' + (data.name || 'the website') + (data.address ? ' — ' + data.address : ''),
-        from_name: 'benpotter.co.nz',
-        replyto: data.email || '',
+      var subject = label + ' from ' + (data.name || 'the website') + (data.address ? ', ' + data.address : '');
+      var fields = {
         Enquiry: label,
         Name: data.name || '',
         Mobile: data.phone || '',
         Email: data.email || '',
         Property: data.address || '',
         Timeframe: data.timeframe || '',
-        Page: location.href,
-        botcheck: data.botcheck || false
+        Page: location.href
       };
-      return fetch(CONFIG.formEndpoint, {
+      var url, payload;
+      if(CONFIG.provider === 'web3forms' && CONFIG.formKey){
+        url = 'https://api.web3forms.com/submit';
+        payload = Object.assign({ access_key: CONFIG.formKey, subject: subject,
+                                  from_name: 'ben-potter.com', replyto: data.email || '',
+                                  botcheck: data.botcheck || false }, fields);
+      } else if(CONFIG.provider === 'formsubmit'){
+        url = 'https://formsubmit.co/ajax/' + CONFIG.leadEmail;
+        payload = Object.assign({ _subject: subject, _template: 'table',
+                                  _replyto: data.email || '',
+                                  _honey: data.botcheck ? 'bot' : '' }, fields);
+      } else {
+        console.warn('Lead delivery is off: this submission was not emailed. See README.');
+        return Promise.resolve();
+      }
+      return fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
@@ -986,14 +1029,15 @@ def script_block(depth=0):
         if(!validate(gform)) return;
         var name = clean(firstName(gform));
         sendLead('guide', gform);
-        done(gform, '<p class="label blue">On its way</p><h3>Thanks, ' + name + '.</h3><p>Check your inbox for the guide, or open it now.</p><p style="margin-top:6px"><a class="btn btn-blue" href="' + CONFIG.guideUrl + '" download>Download the guide</a></p>');
+        window.open(CONFIG.guideUrl, '_blank', 'noopener');
+        done(gform, '<p class="label blue">On its way</p><h3>Thanks, ' + name + '.</h3><p>The guide should have opened in a new tab. If your browser blocked it, use the button below.</p><p style="margin-top:6px"><a class="btn btn-blue" href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">Open the guide</a></p>');
       });
     }
   })();
 </script>'''.replace('REVIEWS_JSON', reviews).replace('PHONE_D', C.PHONE_DISPLAY) \
              .replace('PHONE_L', C.PHONE_LINK).replace('GUIDE_URL', rel(depth) + C.GUIDE_FILE) \
              .replace('FORM_KEY', C.FORM_KEY).replace('LEAD_EMAIL', C.LEAD_EMAIL) \
-             .replace('REEL_EMBED', C.REEL_EMBED)
+             .replace('FORM_PROVIDER', C.FORM_PROVIDER)
 
 
 # ---------------------------------------------------------------- output files

@@ -13,11 +13,21 @@ GSC_TOKEN     = ""            # Search Console HTML-tag verification token, if t
 # confirm the verification email, paste the key here and rebuild. Until it is set, forms show
 # the thank-you state but nothing is sent.
 LEAD_EMAIL    = "ben.potter@harcourts.co.nz"
+# Delivery provider. "formsubmit" needs no account: the first submission triggers a one-time
+# confirmation email to LEAD_EMAIL, and once Ben clicks it every later lead is forwarded.
+# "web3forms" needs an access key in FORM_KEY instead. "none" disables sending.
+FORM_PROVIDER = "formsubmit"
 FORM_KEY      = ""
 
-# Ben's Devonport / Belmont / Bayswater reel. Paste a YouTube or Vimeo EMBED url
-# (e.g. https://www.youtube.com/embed/VIDEO_ID) and it plays in the About section.
-REEL_EMBED    = ""
+# Ben's Devonport / Belmont / Bayswater reel, self-hosted so nothing depends on YouTube.
+# Replace the file to update it, then regenerate the poster with tools/transcode.swift.
+REEL_FILE     = "video/ben-potter-devonport-belmont-bayswater-reel.mp4"
+REEL_POSTER   = "img/ben-potter-reel-devonport-belmont-bayswater.jpg"
+REEL_SECONDS  = 22
+REEL_TITLE    = "Ben Potter on Devonport, Belmont and Bayswater"
+REEL_DESC     = ("Ben Potter, Harcourts Cooper & Co, on selling homes across Devonport, Belmont and "
+                 "Bayswater on Auckland's North Shore.")
+REEL_DATE     = "2026-09-28"   # upload date for VideoObject schema
 
 AGENT_NAME    = "Ben Potter"
 AGENT_TITLE   = "North Shore Real Estate Specialist"

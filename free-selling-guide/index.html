@@ -338,13 +338,12 @@
   (function(){
     // Fill these in as Ben supplies them.
     var CONFIG = {
-      // Paste the Web3Forms access key for ben.potter@harcourts.co.nz here and every submission is
-      // emailed straight to that address. Get one free at https://web3forms.com (no account).
+      // Where appraisal and guide submissions are emailed. See tools/content.py.
+      provider: 'formsubmit',
       formKey: '',
-      formEndpoint: 'https://api.web3forms.com/submit',
       leadEmail: 'ben.potter@harcourts.co.nz',
       guideUrl: '../guide/ben-potter-selling-guide.pdf',                               // the selling guide PDF
-      reelEmbed: ''                              // e.g. https://www.youtube.com/embed/VIDEO_ID
+      reelEmbed: 'REEL_EMBED'                              // e.g. https://www.youtube.com/embed/VIDEO_ID
     };
     var PHONE = '027 953 0210', +64279530210INK = '+64279530210';
     var $ = function(id){ return document.getElementById(id); };
@@ -360,16 +359,25 @@
       });
     }
 
-    var reelBtn = $('reelBtn'), reelMsg = $('reelMsg');
-    if(reelBtn){
-      reelBtn.addEventListener('click', function(){
-        if(CONFIG.reelEmbed){
-          var f = document.createElement('iframe');
-          f.src = CONFIG.reelEmbed + (CONFIG.reelEmbed.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
-          f.allow = 'autoplay; fullscreen'; f.title = 'Ben Potter reel';
-          f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
-          reelBtn.innerHTML = ''; reelBtn.appendChild(f);
-        } else if(reelMsg){ reelMsg.hidden = !reelMsg.hidden; }
+    var reelBtn = $('reelBtn'), reelVideo = $('reelVideo');
+    if(reelBtn && reelVideo){
+      function playReel(){
+        if(reelBtn.classList.contains('playing')){
+          reelVideo.paused ? reelVideo.play() : reelVideo.pause();
+          return;
+        }
+        reelBtn.classList.add('playing');
+        reelVideo.controls = true;
+        reelVideo.play();
+      }
+      reelBtn.addEventListener('click', playReel);
+      reelBtn.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); playReel(); }
+      });
+      reelVideo.addEventListener('ended', function(){
+        reelBtn.classList.remove('playing');
+        reelVideo.controls = false;
+        reelVideo.load();
       });
     }
 
@@ -397,8 +405,18 @@
       qCount.textContent = (qi + 1) + ' / ' + quotes.length;
     }
     if(qText){
-      $('qPrev').addEventListener('click', function(){ showQuote(qi - 1); });
-      $('qNext').addEventListener('click', function(){ showQuote(qi + 1); });
+      var timer = null, REVIEW_MS = 7000;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function start(){ if(!reduce && !timer) timer = setInterval(function(){ showQuote(qi + 1); }, REVIEW_MS); }
+      function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+      function step(n){ stop(); showQuote(n); start(); }
+      $('qPrev').addEventListener('click', function(){ step(qi - 1); });
+      $('qNext').addEventListener('click', function(){ step(qi + 1); });
+      var band = document.getElementById('reviews');
+      ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });
+      ['mouseleave','focusout'].forEach(function(e){ band.addEventListener(e, start); });
+      document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
+      start();
     }
 
     function sendLead(kind, form){
@@ -408,25 +426,32 @@
         data[el.name] = (el.type === 'checkbox') ? el.checked : el.value.trim();
       });
       var label = (kind === 'guide') ? 'Selling guide download' : 'Appraisal request';
-      if(!CONFIG.formKey){
-        console.warn('No form key set: this lead was not emailed. See README launch checklist.');
-        return Promise.resolve();
-      }
-      var payload = {
-        access_key: CONFIG.formKey,
-        subject: label + ' from ' + (data.name || 'the website') + (data.address ? ' — ' + data.address : ''),
-        from_name: 'benpotter.co.nz',
-        replyto: data.email || '',
+      var subject = label + ' from ' + (data.name || 'the website') + (data.address ? ', ' + data.address : '');
+      var fields = {
         Enquiry: label,
         Name: data.name || '',
         Mobile: data.phone || '',
         Email: data.email || '',
         Property: data.address || '',
         Timeframe: data.timeframe || '',
-        Page: location.href,
-        botcheck: data.botcheck || false
+        Page: location.href
       };
-      return fetch(CONFIG.formEndpoint, {
+      var url, payload;
+      if(CONFIG.provider === 'web3forms' && CONFIG.formKey){
+        url = 'https://api.web3forms.com/submit';
+        payload = Object.assign({ access_key: CONFIG.formKey, subject: subject,
+                                  from_name: 'ben-potter.com', replyto: data.email || '',
+                                  botcheck: data.botcheck || false }, fields);
+      } else if(CONFIG.provider === 'formsubmit'){
+        url = 'https://formsubmit.co/ajax/' + CONFIG.leadEmail;
+        payload = Object.assign({ _subject: subject, _template: 'table',
+                                  _replyto: data.email || '',
+                                  _honey: data.botcheck ? 'bot' : '' }, fields);
+      } else {
+        console.warn('Lead delivery is off: this submission was not emailed. See README.');
+        return Promise.resolve();
+      }
+      return fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
@@ -471,7 +496,8 @@
         if(!validate(gform)) return;
         var name = clean(firstName(gform));
         sendLead('guide', gform);
-        done(gform, '<p class="label blue">On its way</p><h3>Thanks, ' + name + '.</h3><p>Check your inbox for the guide, or open it now.</p><p style="margin-top:6px"><a class="btn btn-blue" href="' + CONFIG.guideUrl + '" download>Download the guide</a></p>');
+        window.open(CONFIG.guideUrl, '_blank', 'noopener');
+        done(gform, '<p class="label blue">On its way</p><h3>Thanks, ' + name + '.</h3><p>The guide should have opened in a new tab. If your browser blocked it, use the button below.</p><p style="margin-top:6px"><a class="btn btn-blue" href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">Open the guide</a></p>');
       });
     }
   })();

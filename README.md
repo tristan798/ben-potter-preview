@@ -41,14 +41,15 @@ Everything below lives in `tools/content.py` unless noted.
    301s to `/recently-sold/`. GitHub Pages cannot do server redirects; Netlify, Vercel, Cloudflare
    and Apache all can.
 8. Submit `sitemap.xml` in Search Console and request indexing on the three suburb pages.
-9. `FORM_KEY` — **required for leads to reach Ben.** Go to https://web3forms.com, enter
-   `ben.potter@harcourts.co.nz`, confirm the verification email, paste the access key here and
-   rebuild. Every appraisal and selling-guide submission is then emailed to that address with the
-   sender set as reply-to. Until the key is set, the form shows its thank-you state but sends
-   nothing, and logs a console warning.
-10. `REEL_EMBED` — paste the YouTube or Vimeo **embed** URL for Ben's Devonport / Belmont /
-    Bayswater reel (e.g. `https://www.youtube.com/embed/VIDEO_ID`). The About section tile then
-    plays it inline instead of showing the placeholder.
+9. **Activate lead email.** `FORM_PROVIDER = "formsubmit"` sends every appraisal and guide
+   submission to `LEAD_EMAIL`. It needs no account, but the **first** submission triggers a
+   one-time confirmation email to that address. Submit the appraisal form once, have Ben click
+   the confirmation link, and every lead after that is forwarded automatically with the
+   enquirer set as reply-to. To use Web3Forms instead, set `FORM_PROVIDER = "web3forms"` and put
+   an access key in `FORM_KEY`. `"none"` disables sending.
+10. The reel is self-hosted at `video/` and needs no action. To replace it, drop in a new source
+    and run `tools/transcode.swift` (see the header comment for arguments), then update
+    `REEL_SECONDS` and `REEL_DATE`.
 11. The selling guide PDF is in place at `guide/ben-potter-selling-guide.pdf` (16 pages, 2.6 MB).
     Replace that file to update it; the path lives in `GUIDE_FILE`. If Ben revises the contents,
     update `GUIDE_CONTENTS` so the page listing and the `DigitalDocument` schema stay accurate.
