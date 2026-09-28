@@ -30,7 +30,7 @@ function escapeHtml(v) {
 
 function render(name, values) {
   return template(name).replace(/\{\{(\w+)\}\}/g, (_, k) =>
-    escapeHtml(values[k] !== undefined && values[k] !== '' ? values[k] : '—'));
+    escapeHtml(values[k] !== undefined && values[k] !== '' ? values[k] : 'Not given'));
 }
 
 async function send(payload) {
@@ -53,6 +53,7 @@ async function handle(body) {
     guide: 'Selling guide download',
     funnel: 'Appraisal request (Meta ad)',
     appraisal: 'Appraisal request',
+    contact: 'Website enquiry',
   };
   const kind = kindLabels[body.kind] || 'Website enquiry';
   const name = (body.name || '').trim();
@@ -70,10 +71,14 @@ async function handle(body) {
     type: body.type || '',
     bedrooms: body.bedrooms || '',
     timeframe: body.timeframe || '',
+    topic: body.topic || '',
+    message: body.message || '',
     page: body.page || '',
   };
 
-  const subject = `${kind}${name ? ' from ' + name : ''}${body.address ? ', ' + body.address : ''}`;
+  const subject = body.kind === 'contact'
+    ? `Website enquiry${values.topic ? ': ' + values.topic : ''}${name ? ' from ' + name : ''}`
+    : `${kind}${name ? ' from ' + name : ''}${body.address ? ', ' + body.address : ''}`;
 
   await send({
     from: process.env.MAIL_FROM,
@@ -83,23 +88,53 @@ async function handle(body) {
     html: render('lead-notification.html', values),
   });
 
+  // Every submission gets a confirmation. If this one throws, the notification to Ben
+  // has already gone, so the lead is never lost to a confirmation failure.
   if (values.email) {
-    const isGuide = body.kind === 'guide';
-    await send({
-      from: process.env.MAIL_FROM,
-      to: [values.email],
-      subject: isGuide
-        ? 'Your copy of A Proven Strategy to Maximise Your Sale Price'
-        : 'Thanks, I will call you shortly',
-      html: render(isGuide ? 'confirmation-guide.html' : 'confirmation-appraisal.html', values),
-    });
+    const confirmations = {
+      guide: ['confirmation-guide.html',
+              'Your copy of A Proven Strategy to Maximise Your Sale Price'],
+      contact: ['confirmation-contact.html', 'Thanks for getting in touch'],
+    };
+    const [tpl, subj] = confirmations[body.kind] ||
+                        ['confirmation-appraisal.html', 'Thanks, I will call you shortly'];
+    try {
+      await send({
+        from: process.env.MAIL_FROM,
+        to: [values.email],
+        reply_to: process.env.LEAD_TO,
+        subject: subj,
+        html: render(tpl, values),
+      });
+    } catch (err) {
+      console.error('confirmation failed, lead still delivered:', err);
+    }
   }
 
   return { success: 'true' };
 }
 
+// The site may be served from a different origin to this function (GitHub Pages now,
+// ben-potter.com later), so the browser needs these before it will hand over a response.
+const ALLOWED = (process.env.ALLOWED_ORIGINS ||
+  'https://tristan798.github.io,https://ben-potter.com,https://www.ben-potter.com')
+  .split(',').map((s) => s.trim());
+
+function cors(req, res) {
+  const origin = req.headers && (req.headers.origin || req.headers.Origin);
+  if (origin && ALLOWED.indexOf(origin) !== -1) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Max-Age', '86400');
+}
+
 // Vercel / Node
 module.exports = async (req, res) => {
+  cors(req, res);
+  if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ success: 'false' });
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {};

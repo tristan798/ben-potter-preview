@@ -16,11 +16,51 @@ python3 build.py        # regenerates every page, sitemap.xml, robots.txt and de
 | `assets/fonts/` | Self-hosted Clash Display and Poppins (no third-party font requests). |
 | `dist/page.html` | Single-file homepage fragment for the Claude artifact preview. |
 | `deploy/` | Redirect configs for Netlify (`_redirects`), Vercel (`vercel.json`) and Apache (`.htaccess`). |
+| `tools/sync_listings.py` | Pulls Ben's listings from his Harcourts pages. Runs hourly in CI. |
+| `tools/webp.py` | Writes a WebP beside each listing JPEG, through headless Chrome. |
+| `tools/emails.py` | Builds the branded HTML emails into `email/`. |
+| `api/lead.js` | Sends the notification and the confirmation. Needs a host that runs functions. |
 
 ## Pages
 
 `/` · `/devonport-real-estate/` · `/belmont-real-estate/` · `/bayswater-real-estate/` ·
-`/recently-sold/` · `/free-selling-guide/` · `/property-appraisal/`
+`/recently-sold/` · `/current-listings/` · `/free-selling-guide/` · `/property-appraisal/` ·
+`/contact/` · `/whats-my-home-worth/` (the paid ads funnel, noindex)
+
+## Confirmation emails
+
+**Nothing sends a confirmation to the enquirer while the site is on GitHub Pages.**
+
+Tested on 28 September 2026: FormSubmit delivers the notification to Ben reliably, but
+its `_autoresponse` never arrives. Three submissions were sent, with the form activated
+and with a submitter address different from the notification address, and no confirmation
+came back in any case. Its autoresponder is not available on the free tier. Even if it
+were, it sends plain text, so it could never carry a designed email.
+
+The templates in `email/` and the sender in `api/lead.js` are built, tested and ready.
+They need somewhere that can run a function, which GitHub Pages cannot.
+
+To turn them on:
+
+1. Import this repo at [vercel.com/new](https://vercel.com/new) or
+   [app.netlify.com/start](https://app.netlify.com/start). `vercel.json` and
+   `netlify.toml` are already here, and there is nothing to build: `build.py` has
+   written the HTML into the repo already.
+2. Create an API key at [resend.com](https://resend.com) (free tier covers this
+   comfortably) and verify the sending domain.
+3. Set three environment variables on the host:
+   `RESEND_API_KEY`, `MAIL_FROM` (for example `Ben Potter <ben@ben-potter.com>`)
+   and `LEAD_TO` (`ben.potter@harcourts.co.nz`).
+4. In `tools/content.py` set `FORM_PROVIDER = "endpoint"`, and set `FORM_ENDPOINT` to
+   the deployed function, for example `https://ben-potter.vercel.app/api/lead`. Rebuild.
+
+The function already sends CORS headers, so the site can stay on GitHub Pages and call
+the function on the other host if that is easier. Add any extra origin to
+`ALLOWED_ORIGINS`.
+
+Four emails are covered: the notification to Ben, and confirmations for an appraisal
+request, a guide download and a contact enquiry. `node` the test in the commit history
+to see all four rendered.
 
 ## Launch checklist
 

@@ -1,0 +1,23 @@
+# Deploying this repo to Netlify publishes the built site as it stands and turns
+# netlify/functions/lead.js into POST /api/lead, which is what sends the branded
+# notification and confirmation emails. Nothing needs building: build.py has already
+# written the HTML into the repo.
+[build]
+  publish = "."
+  command = ""
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/lead"
+  to = "/.netlify/functions/lead"
+  status = 200
+
+[[redirects]]
+  from = "/listings"
+  to = "/recently-sold/"
+  status = 301
+
+[[redirects]]
+  from = "/listings/"
+  to = "/recently-sold/"
+  status = 301

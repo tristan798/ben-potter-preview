@@ -108,7 +108,7 @@ lead_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px; fo
 guide_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:{BLUE}">Your free guide</p>
         <h1 style="margin:0 0 14px; font-family:{SANS}; font-size:27px; font-weight:bold; letter-spacing:-0.6px; color:{TEXT}">Here it is, {{{{name_first}}}}.</h1>
         <p style="margin:0 0 22px; font-family:{SANS}; font-size:16px; line-height:1.6; color:#4B4D53">
-          <strong>{C.GUIDE_TITLE}</strong> &mdash; {C.GUIDE_PAGES} pages on preparing and positioning a home for
+          <strong>{C.GUIDE_TITLE}</strong>. {C.GUIDE_PAGES} pages on preparing and positioning a home for
           sale so it reaches the widest pool of buyers and sells for more.</p>
 
         {button("Download the guide", C.SITE + "/" + C.GUIDE_FILE)}
@@ -147,6 +147,29 @@ appraisal_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11p
           If anything is urgent, call me on <a href="tel:{C.PHONE_LINK}" style="color:{BLUE}; text-decoration:none"><strong>{C.PHONE_DISPLAY}</strong></a>.</p>'''
 
 
+# ---------------------------------------------------------------- 4. contact confirmation, to the enquirer
+contact_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:{BLUE}">Message received</p>
+        <h1 style="margin:0 0 14px; font-family:{SANS}; font-size:27px; font-weight:bold; letter-spacing:-0.6px; color:{TEXT}">Thanks, {{{{name_first}}}}.</h1>
+        <p style="margin:0 0 22px; font-family:{SANS}; font-size:16px; line-height:1.6; color:#4B4D53">
+          Your message has come through and I will come back to you within one business day.</p>
+
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 26px; background:{PAPER}; border-radius:3px">
+          <tr><td style="padding:18px 20px">
+            <p style="margin:0 0 10px; font-family:{SANS}; font-size:11px; font-weight:bold; letter-spacing:1.6px; text-transform:uppercase; color:{MUTED}">What you sent</p>
+            <p style="margin:0 0 8px; font-family:{SANS}; font-size:15px; line-height:1.55; color:{TEXT}"><strong>{{{{topic}}}}</strong></p>
+            <p style="margin:0; font-family:{SANS}; font-size:15px; line-height:1.6; color:#4B4D53">{{{{message}}}}</p>
+          </td></tr>
+        </table>
+
+        <p style="margin:0 0 16px; font-family:{SANS}; font-size:16px; line-height:1.6; color:#4B4D53">
+          If it is quicker to talk, call me any time.</p>
+        {button("Call " + C.PHONE_DISPLAY, "tel:" + C.PHONE_LINK)}
+
+        <p style="margin:12px 0 0; font-family:{SANS}; font-size:15px; line-height:1.6; color:#4B4D53">
+          In the meantime, my selling guide covers how to prepare a home for sale.
+          <a href="{C.SITE}/{C.GUIDE_FILE}" style="color:{BLUE}; text-decoration:none"><strong>Read it here</strong></a>.</p>'''
+
+
 def main():
     out = os.path.join(HERE, '..', 'email')
     os.makedirs(out, exist_ok=True)
@@ -159,6 +182,9 @@ def main():
         'confirmation-appraisal.html': shell(
             "Ben will call you within one business day", appraisal_body,
             "You received this because you requested an appraisal at ben-potter.com"),
+        'confirmation-contact.html': shell(
+            "Ben will come back to you within one business day", contact_body,
+            "You received this because you sent a message at ben-potter.com"),
     }
     for name, html in files.items():
         open(os.path.join(out, name), 'w', encoding='utf-8').write(html)
