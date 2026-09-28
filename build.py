@@ -885,18 +885,17 @@ def head(page, depth):
 
 def script_block(depth=0):
     reviews = json.dumps([{"t": t, "n": n, "w": w} for t, n, w in C.REVIEWS], indent=6, ensure_ascii=False)
-    return '''<script>
+    js = '''<script>
   (function(){
     // Fill these in as Ben supplies them.
     var CONFIG = {
       // Where appraisal and guide submissions are emailed. See tools/content.py.
-      provider: 'FORM_PROVIDER',
-      formKey: 'FORM_KEY',
-      leadEmail: 'LEAD_EMAIL',
-      guideUrl: 'GUIDE_URL',                               // the selling guide PDF
-      reelEmbed: 'REEL_EMBED'                              // e.g. https://www.youtube.com/embed/VIDEO_ID
+      provider: '@@FORM_PROVIDER@@',
+      formKey: '@@FORM_KEY@@',
+      leadEmail: '@@LEAD_EMAIL@@',
+      guideUrl: '@@GUIDE_URL@@'                            // the selling guide PDF
     };
-    var PHONE = 'PHONE_D', PHONE_LINK = 'PHONE_L';
+    var PHONE = '@@PHONE_DISPLAY@@', PHONE_LINK = '@@PHONE_LINK@@';
     var $ = function(id){ return document.getElementById(id); };
 
     var header = document.querySelector('.header'), menuBtn = $('menuBtn');
@@ -932,7 +931,7 @@ def script_block(depth=0):
       });
     }
 
-    var quotes = REVIEWS_JSON;
+    var quotes = @@REVIEWS_JSON@@;
     var qi = 0, qText = $('quoteText'), qName = $('quoteName'), qWhere = $('quoteWhere'), qCount = $('qCount');
     function showQuote(i){
       qi = (i + quotes.length) % quotes.length;
@@ -1036,10 +1035,20 @@ def script_block(depth=0):
       });
     }
   })();
-</script>'''.replace('REVIEWS_JSON', reviews).replace('PHONE_D', C.PHONE_DISPLAY) \
-             .replace('PHONE_L', C.PHONE_LINK).replace('GUIDE_URL', rel(depth) + C.GUIDE_FILE) \
-             .replace('FORM_KEY', C.FORM_KEY).replace('LEAD_EMAIL', C.LEAD_EMAIL) \
-             .replace('FORM_PROVIDER', C.FORM_PROVIDER)
+</script>'''
+    tokens = {
+        '@@REVIEWS_JSON@@': reviews,
+        '@@PHONE_DISPLAY@@': C.PHONE_DISPLAY,
+        '@@PHONE_LINK@@': C.PHONE_LINK,
+        '@@GUIDE_URL@@': rel(depth) + C.GUIDE_FILE,
+        '@@FORM_KEY@@': C.FORM_KEY,
+        '@@LEAD_EMAIL@@': C.LEAD_EMAIL,
+        '@@FORM_PROVIDER@@': C.FORM_PROVIDER,
+    }
+    for k, v in tokens.items():
+        js = js.replace(k, v)
+    assert '@@' not in js, 'unsubstituted token left in the script block'
+    return js
 
 
 # ---------------------------------------------------------------- output files

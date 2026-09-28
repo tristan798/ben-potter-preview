@@ -93,7 +93,8 @@
   /* Hero */
   .hero{position:relative; overflow:hidden; background:radial-gradient(78% 88% at 70% 46%, #34353A 0%, #1B1C1F 48%, #0F1012 100%); color:var(--fg)}
   /* Hero and the stats strip together fill one viewport, below the sticky header */
-  .first-screen{min-height:calc(100svh - var(--headerH) - 1px); display:flex; flex-direction:column}
+  .first-screen{min-height:100svh; margin-top:calc(-1 * (var(--headerH) + 1px));
+    padding-top:calc(var(--headerH) + 1px); background:var(--ink); display:flex; flex-direction:column}
   .first-screen .hero{flex:1 1 auto; display:flex; align-items:center}
   .first-screen .stats{flex:0 0 auto}
   .first-screen .hero .wrap{padding-block:clamp(16px, 4.2vh, 104px)}

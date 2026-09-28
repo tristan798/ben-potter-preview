@@ -346,10 +346,9 @@
       provider: 'formsubmit',
       formKey: '',
       leadEmail: 'ben.potter@harcourts.co.nz',
-      guideUrl: '../guide/ben-potter-selling-guide.pdf',                               // the selling guide PDF
-      reelEmbed: 'REEL_EMBED'                              // e.g. https://www.youtube.com/embed/VIDEO_ID
+      guideUrl: '../guide/ben-potter-selling-guide.pdf'                            // the selling guide PDF
     };
-    var PHONE = '027 953 0210', +64279530210INK = '+64279530210';
+    var PHONE = '027 953 0210', PHONE_LINK = '+64279530210';
     var $ = function(id){ return document.getElementById(id); };
 
     var header = document.querySelector('.header'), menuBtn = $('menuBtn');
@@ -485,7 +484,7 @@
         if(!validate(form)) return;
         var name = clean(firstName(form));
         sendLead('appraisal', form);
-        done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\u2019s urgent, ring him on <a href="tel:' + +64279530210INK + '">' + PHONE + '</a>.</p>');
+        done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
       });
     }
 
