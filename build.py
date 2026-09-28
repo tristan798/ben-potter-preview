@@ -1331,8 +1331,8 @@ def script_block(depth=0):
         '@@PHONE_LINK@@': C.PHONE_LINK,
         '@@GUIDE_URL@@': rel(depth) + C.GUIDE_FILE,
         '@@FORM_KEY@@': C.FORM_KEY,
-        '@@LEAD_EMAIL@@': C.LEAD_EMAIL,
-        '@@FORM_ALIAS@@': getattr(C, 'FORM_ALIAS', ''),
+        '@@LEAD_EMAIL@@': C.lead_destination(),
+        '@@FORM_ALIAS@@': C.lead_alias(),
         '@@FORM_ENDPOINT@@': getattr(C, 'FORM_ENDPOINT', '/api/lead'),
         '@@FORM_PROVIDER@@': C.FORM_PROVIDER,
         '@@REPLY_GUIDE@@': json.dumps(C.guide_autoresponse(C.SITE)),
@@ -1410,6 +1410,11 @@ def check_scripts(page_list):
 
 
 def main():
+    if getattr(C, 'LEAD_TEST_MODE', False):
+        print('   ' + '!' * 66)
+        print('   !  LEAD TEST MODE: form submissions go to ' + C.LEAD_TEST_EMAIL)
+        print('   !  Ben will NOT receive them. Set LEAD_TEST_MODE = False before launch.')
+        print('   ' + '!' * 66)
     page_list = pages()
     # stylesheet + fonts are shared and cached across pages
     shutil.copyfile(os.path.join(HERE, 'src/site.css'), os.path.join(HERE, 'assets/site.css'))

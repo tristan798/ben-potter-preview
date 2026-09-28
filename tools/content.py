@@ -13,6 +13,25 @@ GSC_TOKEN     = ""            # Search Console HTML-tag verification token, if t
 # confirm the verification email, paste the key here and rebuild. Until it is set, forms show
 # the thank-you state but nothing is sent.
 LEAD_EMAIL    = "ben.potter@harcourts.co.nz"
+
+# ---- TESTING ONLY -------------------------------------------------------------
+# While this is True every form submission is delivered to LEAD_TEST_EMAIL instead
+# of Ben, so the flow can be checked without landing in a client's inbox. The site
+# still displays and marks up Ben's address; only delivery is diverted.
+# SET THIS TO False BEFORE LAUNCH. build.py prints a warning while it is on.
+LEAD_TEST_MODE  = True
+LEAD_TEST_EMAIL = "tristan@harbourstudios.nz"
+# -------------------------------------------------------------------------------
+
+
+def lead_destination():
+    """Where form submissions are actually delivered."""
+    return LEAD_TEST_EMAIL if LEAD_TEST_MODE else LEAD_EMAIL
+
+
+def lead_alias():
+    """FormSubmit's hashed alias only maps to Ben, so it cannot be used while testing."""
+    return "" if LEAD_TEST_MODE else FORM_ALIAS
 # Delivery provider. "formsubmit" needs no account: the first submission triggers a one-time
 # confirmation email to LEAD_EMAIL, and once Ben clicks it every later lead is forwarded.
 # "web3forms" needs an access key in FORM_KEY instead. "none" disables sending.

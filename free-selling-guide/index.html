@@ -286,8 +286,8 @@
       // Where appraisal and guide submissions are emailed. See tools/content.py.
       provider: 'formsubmit',
       formKey: '',
-      leadEmail: 'ben.potter@harcourts.co.nz',
-      formAlias: '834c42471a791eaf2dbcfd7e8233efd3',
+      leadEmail: 'tristan@harbourstudios.nz',
+      formAlias: '',
       formEndpoint: '/api/lead',
       guideUrl: '../guide/ben-potter-selling-guide.pdf',                           // the selling guide PDF
       replyGuide: "Thanks for requesting the guide.\n\nHere it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and positioning a home for sale so it reaches the widest pool of buyers.\n\nDownload it here:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf you'd like a written appraisal of your own home, just reply to this email or call me on 027 953 0210. No cost and no obligation.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz",                         // confirmation emailed to the requester
@@ -436,7 +436,7 @@
     // If the provider is unreachable, hand the visitor a way to reach Ben anyway.
     function deliveryFailed(fields){
       var lines = Object.keys(fields).map(function(k){ return k + ': ' + fields[k]; }).join('%0D%0A');
-      var href = 'mailto:ben.potter@harcourts.co.nz?subject=' + encodeURIComponent('Appraisal enquiry') + '&body=' + lines;
+      var href = 'mailto:tristan@harbourstudios.nz?subject=' + encodeURIComponent('Appraisal enquiry') + '&body=' + lines;
       var box = document.createElement('div');
       box.className = 'send-failed';
       box.innerHTML = '<p><b>That did not send.</b> Please call Ben on <a href="tel:+64279530210">027 953 0210</a> ' +

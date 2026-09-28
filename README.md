@@ -26,6 +26,9 @@ python3 build.py        # regenerates every page, sitemap.xml, robots.txt and de
 
 Everything below lives in `tools/content.py` unless noted.
 
+0. **`LEAD_TEST_MODE = False`** — while it is `True`, every form submission is delivered
+   to `LEAD_TEST_EMAIL` and Ben receives nothing. `build.py` prints a warning on every
+   build while it is on. This is the easiest thing to forget.
 1. `PREVIEW = False` — removes `noindex` from every page and switches `robots.txt` from
    disallow-all to allow-all with the sitemap reference.
 2. `SITE` — `https://www.ben-potter.com`, confirmed on Ben's selling guide. Canonicals, Open Graph
