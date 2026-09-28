@@ -523,7 +523,7 @@ def funnel_body():
             <div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" data-required="1"></div>
           </div>'''
         if st['type'] == 'contact':
-            nav = '<button class="btn btn-blue" type="submit">Send me my appraisal</button>'
+            nav = '<button class="btn btn-blue" type="submit">Request my free appraisal</button>'
         elif st['type'] == 'choice':
             nav = ''
         else:

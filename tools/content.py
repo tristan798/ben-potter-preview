@@ -528,8 +528,8 @@ FUNNEL_STEPS = [
     {"key": "timeframe", "q": "When are you thinking of selling?", "type": "choice",
      "options": ["In the next 3 months", "In 3 to 12 months", "Next year or later",
                  "Just curious about the value"]},
-    {"key": "contact", "q": "Where should Ben send it?",
-     "help": "He replies personally, usually the same day.", "type": "contact"},
+    {"key": "contact", "q": "How can Ben reach you?",
+     "help": "He calls personally, usually within one business day.", "type": "contact"},
 ]
 
 FUNNEL_FAQ = [
