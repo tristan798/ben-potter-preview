@@ -167,35 +167,56 @@
         <a class="btn btn-blue" href="#form">Request an appraisal</a>
         <a class="btn btn-line" href="tel:+64279530210">Call 027 953 0210</a>
       </div>
+      <ul class="hero-facts">
+        <li>Free</li>
+        <li>No obligation</li>
+        <li>Usually a few days</li>
+        <li>Auckland's North Shore</li>
+      </ul>
     </div>
   </section>
 
   <section class="section on-light" aria-labelledby="stepsTitle">
-    <div class="wrap content">
-      <div class="content-main">
-        <div class="block">
-          <h2 id="stepsTitle">What happens</h2>
-          <p>An appraisal with Ben is a conversation about your home and your timing, not a listing pitch. Four things come out of it.</p>
+    <div class="wrap">
+      <div class="areas-head">
+        <div>
+          <p class="label blue">What happens</p>
+          <h2 id="stepsTitle">Four things come <em>out of it.</em></h2>
         </div>
-      <div class="block">
-        <h3>A walk through the house</h3>
-        <p>Ben visits in person, usually for half an hour to an hour. He looks at the home the way a buyer will, and asks what you're planning and when.</p>
+        <p class="lede">An appraisal with Ben is a conversation about your home and your timing, not a listing pitch.</p>
       </div>
-      <div class="block">
-        <h3>Comparable sales, in writing</h3>
-        <p>You receive a written estimate of value built from recent comparable sales near you, not a suburb average and not a number chosen to win your business.</p>
+      <div class="how-grid">
+        <div class="how-step">
+          <span class="how-n" aria-hidden="true">01</span>
+          <h3>A walk through the house</h3>
+          <p>Ben visits in person, usually for half an hour to an hour. He looks at the home the way a buyer will, and asks what you're planning and when.</p>
+        </div>
+        <div class="how-step">
+          <span class="how-n" aria-hidden="true">02</span>
+          <h3>Comparable sales, in writing</h3>
+          <p>You receive a written estimate of value built from recent comparable sales near you, not a suburb average and not a number chosen to win your business.</p>
+        </div>
+        <div class="how-step">
+          <span class="how-n" aria-hidden="true">03</span>
+          <h3>A recommended method and plan</h3>
+          <p>Auction, deadline sale or a price, with the reasoning, plus a marketing plan, a budget and a timeline so you can see the whole cost before you commit.</p>
+        </div>
+        <div class="how-step">
+          <span class="how-n" aria-hidden="true">04</span>
+          <h3>An honest view on preparation</h3>
+          <p>What to fix, what to leave alone and what is genuinely worth spending money on before the first open home. Often the most valuable part of the conversation.</p>
+        </div>
       </div>
-      <div class="block">
-        <h3>A recommended method and plan</h3>
-        <p>Auction, deadline sale or a price, with the reasoning, plus a marketing plan, a budget and a timeline so you can see the whole cost before you commit.</p>
+    </div>
+  </section>
+
+  <section class="section on-light white" id="faq" aria-labelledby="apprFaqTitle">
+    <div class="wrap split">
+      <div class="split-head">
+        <p class="label blue">Questions</p>
+        <h2 id="apprFaqTitle">Before you <em>book.</em></h2>
       </div>
-      <div class="block">
-        <h3>An honest view on preparation</h3>
-        <p>What to fix, what to leave alone and what is genuinely worth spending money on before the first open home. Often the most valuable part of the conversation.</p>
-      </div>
-        <div class="block">
-          <h2>Common questions</h2>
-          <div class="faq-list">
+      <div class="faq-list">
           <details open>
             <summary>Is the appraisal really free?</summary>
             <div class="faq-a"><div><p>Yes. There is no cost and no obligation to list. Plenty of the appraisals Ben does are for owners who are a year or two away from selling, and that's genuinely useful for both sides.</p></div></div>
@@ -212,21 +233,6 @@
             <summary>How quickly can Ben come out?</summary>
             <div class="faq-a"><div><p>Usually within a few days. Call 027 953 0210 if your timing is tight and he'll work around it.</p></div></div>
           </details>
-          </div>
-        </div>
-      </div>
-      <div class="aside">
-        <div class="panel">
-          <h3>Prefer to call?</h3>
-          <p>Ben answers his own phone and replies personally.</p>
-          <a class="btn btn-blue" href="tel:+64279530210">027 953 0210</a>
-        </div>
-        <dl class="keyfacts">
-          <div><dt>Cost</dt><dd>Free</dd></div>
-          <div><dt>Obligation</dt><dd>None</dd></div>
-          <div><dt>Turnaround</dt><dd>Usually a few days</dd></div>
-          <div><dt>Covers</dt><dd>Auckland's North Shore</dd></div>
-        </dl>
       </div>
     </div>
   </section>
@@ -668,11 +674,18 @@
     if(fForm){
       var steps = Array.prototype.slice.call(fForm.querySelectorAll('.step'));
       var answers = {}, at = 0;
-      var bar = $('progressBar'), now = $('stepNow');
+      var bar = $('progressBar'), now = $('stepNow'), cue = $('stepCue');
       function paint(){
         steps.forEach(function(s, i){ s.hidden = (i !== at); });
-        bar.style.width = Math.round(((at) / steps.length) * 100) + '%';
+        // Counts the step you are on, not the ones behind you, so the bar is never
+        // empty. An empty bar at question one reads as "this has not started yet".
+        bar.style.width = Math.round(((at + 1) / steps.length) * 100) + '%';
         now.textContent = at + 1;
+        var left = steps.length - at - 1;
+        cue.textContent = at === 0 ? 'Takes about 30 seconds'
+                        : left === 0 ? 'Last step'
+                        : left === 1 ? 'Almost done'
+                        : left + ' questions to go';
         var focusable = steps[at].querySelector('input, .opt');
         if(focusable && focusable.tagName === 'INPUT') focusable.focus({preventScroll:true});
       }

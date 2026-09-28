@@ -700,7 +700,10 @@ def funnel_body():
         <form id="funnelForm" novalidate>
           <div class="card-head">
             <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-            <p class="step-count">Step <span id="stepNow">1</span> of {len(C.FUNNEL_STEPS)}</p>
+            <div class="progress-meta">
+              <p class="step-cue" id="stepCue" aria-live="polite">Takes about 30 seconds</p>
+              <p class="step-count" aria-hidden="true"><b id="stepNow">1</b><i>/</i>{len(C.FUNNEL_STEPS)}</p>
+            </div>
           </div>
 {chr(10).join(steps)}
           <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -962,10 +965,11 @@ def guide_body():
 
 def appraisal_body():
     d = 1
-    steps = '\n'.join(f'''      <div class="block">
-        <h3>{t}</h3>
-        <p>{b}</p>
-      </div>''' for t, b in C.APPRAISAL_STEPS)
+    steps = '\n'.join(f'''        <div class="how-step">
+          <span class="how-n" aria-hidden="true">{i:02d}</span>
+          <h3>{t}</h3>
+          <p>{b}</p>
+        </div>''' for i, (t, b) in enumerate(C.APPRAISAL_STEPS, start=1))
     return f'''{header(d, 'contact')}
 
 <main>
@@ -980,36 +984,38 @@ def appraisal_body():
         <a class="btn btn-blue" href="#form">Request an appraisal</a>
         <a class="btn btn-line" href="tel:{C.PHONE_LINK}">Call {C.PHONE_DISPLAY}</a>
       </div>
+      <ul class="hero-facts">
+        <li>Free</li>
+        <li>No obligation</li>
+        <li>Usually a few days</li>
+        <li>Auckland's North Shore</li>
+      </ul>
     </div>
   </section>
 
   <section class="section on-light" aria-labelledby="stepsTitle">
-    <div class="wrap content">
-      <div class="content-main">
-        <div class="block">
-          <h2 id="stepsTitle">What happens</h2>
-          <p>An appraisal with Ben is a conversation about your home and your timing, not a listing pitch. Four things come out of it.</p>
+    <div class="wrap">
+      <div class="areas-head">
+        <div>
+          <p class="label blue">What happens</p>
+          <h2 id="stepsTitle">Four things come <em>out of it.</em></h2>
         </div>
-{steps}
-        <div class="block">
-          <h2>Common questions</h2>
-          <div class="faq-list">
-{faq_block(C.FAQ_APPRAISAL)}
-          </div>
-        </div>
+        <p class="lede">An appraisal with Ben is a conversation about your home and your timing, not a listing pitch.</p>
       </div>
-      <div class="aside">
-        <div class="panel">
-          <h3>Prefer to call?</h3>
-          <p>Ben answers his own phone and replies personally.</p>
-          <a class="btn btn-blue" href="tel:{C.PHONE_LINK}">{C.PHONE_DISPLAY}</a>
-        </div>
-        <dl class="keyfacts">
-          <div><dt>Cost</dt><dd>Free</dd></div>
-          <div><dt>Obligation</dt><dd>None</dd></div>
-          <div><dt>Turnaround</dt><dd>Usually a few days</dd></div>
-          <div><dt>Covers</dt><dd>Auckland's North Shore</dd></div>
-        </dl>
+      <div class="how-grid">
+{steps}
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-light white" id="faq" aria-labelledby="apprFaqTitle">
+    <div class="wrap split">
+      <div class="split-head">
+        <p class="label blue">Questions</p>
+        <h2 id="apprFaqTitle">Before you <em>book.</em></h2>
+      </div>
+      <div class="faq-list">
+{faq_block(C.FAQ_APPRAISAL)}
       </div>
     </div>
   </section>
@@ -1562,11 +1568,18 @@ def script_block(depth=0):
     if(fForm){
       var steps = Array.prototype.slice.call(fForm.querySelectorAll('.step'));
       var answers = {}, at = 0;
-      var bar = $('progressBar'), now = $('stepNow');
+      var bar = $('progressBar'), now = $('stepNow'), cue = $('stepCue');
       function paint(){
         steps.forEach(function(s, i){ s.hidden = (i !== at); });
-        bar.style.width = Math.round(((at) / steps.length) * 100) + '%';
+        // Counts the step you are on, not the ones behind you, so the bar is never
+        // empty. An empty bar at question one reads as "this has not started yet".
+        bar.style.width = Math.round(((at + 1) / steps.length) * 100) + '%';
         now.textContent = at + 1;
+        var left = steps.length - at - 1;
+        cue.textContent = at === 0 ? 'Takes about 30 seconds'
+                        : left === 0 ? 'Last step'
+                        : left === 1 ? 'Almost done'
+                        : left + ' questions to go';
         var focusable = steps[at].querySelector('input, .opt');
         if(focusable && focusable.tagName === 'INPUT') focusable.focus({preventScroll:true});
       }

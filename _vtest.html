@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><body><pre id="out">PENDING</pre>
+<iframe id="f" src="/whats-my-home-worth/" width="1200" height="1000"></iframe>
+<script>
+document.getElementById('f').onload = function(){
+  var d = this.contentDocument, log = [];
+  setTimeout(function(){
+    var form = d.getElementById('funnelForm');
+    var bar = d.getElementById('progressBar'), cue = d.getElementById('stepCue'), now = d.getElementById('stepNow');
+    function snap(tag){ log.push(tag + ' | bar=' + bar.style.width + ' cue="' + cue.textContent + '" count=' + now.textContent); }
+    snap('step 1');
+    var i = 0;
+    (function next(){
+      if(i++ >= 4){ document.getElementById('out').textContent = log.join('\n'); return; }
+      var step = d.querySelector('.step:not([hidden])');
+      var opt = step.querySelector('.opt');
+      var inp = step.querySelector('.step-input');
+      if(opt){ opt.click(); }
+      else if(inp){ inp.value = '5 Test Street, Devonport'; step.querySelector('.step-next').click(); }
+      else { log.push('reached contact step'); document.getElementById('out').textContent = log.join('\n'); return; }
+      setTimeout(function(){ snap('after advance ' + i); next(); }, 420);
+    })();
+  }, 900);
+};
+</script>

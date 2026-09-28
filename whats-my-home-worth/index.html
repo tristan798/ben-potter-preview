@@ -84,12 +84,15 @@
         <form id="funnelForm" novalidate>
           <div class="card-head">
             <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-            <p class="step-count">Step <span id="stepNow">1</span> of 5</p>
+            <div class="progress-meta">
+              <p class="step-cue" id="stepCue" aria-live="polite">Takes about 30 seconds</p>
+              <p class="step-count" aria-hidden="true"><b id="stepNow">1</b><i>/</i>5</p>
+            </div>
           </div>
         <fieldset class="step" data-step="1" >
           <legend class="step-q">What's the property address?</legend>
           <p class="step-help">Street and suburb is enough.</p>
-          <input class="step-input" id="q-address" name="address" type="text" autocomplete="street-address" placeholder="12 Cheltenham Road, Devonport" inputmode="text" data-required="1">
+          <input class="step-input" id="q-address" name="address" type="text" autocomplete="street-address" placeholder="" inputmode="text" data-required="1">
           <div class="step-nav"><button class="btn btn-blue step-next" type="button">Continue</button></div>
         </fieldset>
         <fieldset class="step" data-step="2" hidden>
@@ -592,11 +595,18 @@
     if(fForm){
       var steps = Array.prototype.slice.call(fForm.querySelectorAll('.step'));
       var answers = {}, at = 0;
-      var bar = $('progressBar'), now = $('stepNow');
+      var bar = $('progressBar'), now = $('stepNow'), cue = $('stepCue');
       function paint(){
         steps.forEach(function(s, i){ s.hidden = (i !== at); });
-        bar.style.width = Math.round(((at) / steps.length) * 100) + '%';
+        // Counts the step you are on, not the ones behind you, so the bar is never
+        // empty. An empty bar at question one reads as "this has not started yet".
+        bar.style.width = Math.round(((at + 1) / steps.length) * 100) + '%';
         now.textContent = at + 1;
+        var left = steps.length - at - 1;
+        cue.textContent = at === 0 ? 'Takes about 30 seconds'
+                        : left === 0 ? 'Last step'
+                        : left === 1 ? 'Almost done'
+                        : left + ' questions to go';
         var focusable = steps[at].querySelector('input, .opt');
         if(focusable && focusable.tagName === 'INPUT') focusable.focus({preventScroll:true});
       }

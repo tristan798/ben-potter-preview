@@ -525,8 +525,7 @@ FUNNEL_PROMISE = [
 # The interactive steps. Each is one question, so nobody faces a wall of fields.
 FUNNEL_STEPS = [
     {"key": "address", "q": "What's the property address?",
-     "help": "Street and suburb is enough.", "type": "text",
-     "placeholder": "12 Cheltenham Road, Devonport"},
+     "help": "Street and suburb is enough.", "type": "text"},
     {"key": "type", "q": "What kind of home is it?", "type": "choice",
      "options": ["House", "Townhouse", "Apartment", "Section or land"]},
     {"key": "bedrooms", "q": "How many bedrooms?", "type": "choice",
