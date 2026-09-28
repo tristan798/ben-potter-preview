@@ -1,5 +1,6 @@
-# Checks the listings feed hourly. If anything changed, rebuilds the site and commits,
-# which publishes the new listing automatically. Nothing happens when nothing changed.
+# Checks Ben's Harcourts profile hourly. If anything changed, rebuilds the site and
+# commits, which publishes the new listing automatically. Nothing happens when nothing
+# changed. Set the LISTINGS_SOURCE repo variable to "feed" to use an agency feed instead.
 name: Sync listings
 
 on:
@@ -25,7 +26,7 @@ jobs:
       - name: Pull listings
         id: pull
         env:
-          LISTINGS_SOURCE: ${{ vars.LISTINGS_SOURCE }}
+          LISTINGS_SOURCE: ${{ vars.LISTINGS_SOURCE || 'harcourts' }}
           LISTINGS_FEED_URL: ${{ secrets.LISTINGS_FEED_URL }}
           LISTINGS_AGENT: ${{ vars.LISTINGS_AGENT }}
         run: |
@@ -37,12 +38,16 @@ jobs:
           elif [ "$code" != "0" ]; then exit $code
           else echo "changed=no" >> "$GITHUB_OUTPUT"; fi
 
+      - name: Encode WebP for any new photos
+        if: steps.pull.outputs.changed == 'yes'
+        run: python3 tools/webp.py
+
       - name: Rebuild and publish
         if: steps.pull.outputs.changed == 'yes'
         run: |
           python3 build.py
           git config user.name "listings-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/listings.json *.html */index.html sitemap.xml
+          git add data/listings.json img/listings *.html */index.html sitemap.xml
           git commit -m "Listings update $(date -u +%Y-%m-%d\ %H:%M) UTC"
           git push
