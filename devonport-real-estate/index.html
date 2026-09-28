@@ -152,7 +152,7 @@
       <a href="../#areas" class="active" aria-current="page">Areas</a>
       <a href="../recently-sold/">Sold</a>
       <a href="../#reviews">Reviews</a>
-      <a href="../property-appraisal/">Contact</a>
+      <a href="../contact/">Contact</a>
     </nav>
     <a class="btn btn-ink" href="../property-appraisal/">Book a Free Appraisal</a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
@@ -165,7 +165,7 @@
       <a href="../#areas">Areas</a>
       <a href="../recently-sold/">Sold</a>
       <a href="../#reviews">Reviews</a>
-      <a href="../property-appraisal/">Contact</a>
+      <a href="../contact/">Contact</a>
       <a href="../property-appraisal/">Book a Free Appraisal</a>
     </div>
   </nav>
@@ -359,6 +359,7 @@
         <a href="../recently-sold/">Recently sold</a>
         <a href="../free-selling-guide/">Selling guide</a>
         <a href="../property-appraisal/">Appraisal</a>
+        <a href="../contact/">Contact</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -399,7 +400,8 @@
       formEndpoint: '/api/lead',
       guideUrl: '../guide/ben-potter-selling-guide.pdf',                           // the selling guide PDF
       replyGuide: "Thanks for requesting the guide.\n\nHere it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and positioning a home for sale so it reaches the widest pool of buyers.\n\nDownload it here:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf you'd like a written appraisal of your own home, just reply to this email or call me on 027 953 0210. No cost and no obligation.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz",                         // confirmation emailed to the requester
-      replyAppraisal: "Thanks for getting in touch.\n\nI've received your appraisal request and I'll call you within one business day to arrange a time to see the property.\n\nIn the meantime you're welcome to read my selling guide, which covers how to prepare and position a home for sale:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf anything is urgent, call me on 027 953 0210.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz"
+      replyAppraisal: "Thanks for getting in touch.\n\nI've received your appraisal request and I'll call you within one business day to arrange a time to see the property.\n\nIn the meantime you're welcome to read my selling guide, which covers how to prepare and position a home for sale:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf anything is urgent, call me on 027 953 0210.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz",
+      replyContact: "Thanks for getting in touch.\n\nYour message has come through and I'll come back to you within one business day.\n\nIf anything is urgent, the fastest way to reach me is on 027 953 0210.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz"
     };
     var PHONE = '027 953 0210', PHONE_LINK = '+64279530210';
     var $ = function(id){ return document.getElementById(id); };
@@ -503,6 +505,7 @@
       }
       var label = kind === 'guide' ? 'Selling guide download'
                 : kind === 'funnel' ? 'Appraisal request (Meta ad)'
+                : kind === 'contact' ? ('Website enquiry: ' + (data.topic || 'general'))
                 : 'Appraisal request';
       var subject = label + ' from ' + (data.name || 'the website') + (data.address ? ', ' + data.address : '');
       var fields = {
@@ -512,6 +515,8 @@
         Email: data.email || '',
         Property: data.address || '',
         Timeframe: data.timeframe || '',
+        About: data.topic || '',
+        Message: data.message || '',
         PropertyType: data.type || '',
         Bedrooms: data.bedrooms || '',
         Page: location.href
@@ -529,7 +534,9 @@
         url = 'https://formsubmit.co/ajax/' + (CONFIG.formAlias || CONFIG.leadEmail);
         payload = Object.assign({ _subject: subject, _template: 'table',
                                   _replyto: data.email || '',
-                                  _autoresponse: (kind === 'guide' ? CONFIG.replyGuide : CONFIG.replyAppraisal),
+                                  _autoresponse: (kind === 'guide' ? CONFIG.replyGuide
+                                                  : kind === 'contact' ? CONFIG.replyContact
+                                                  : CONFIG.replyAppraisal),
                                   _honey: data.botcheck ? 'bot' : '' }, fields);
       } else {
         console.warn('Lead delivery is off: this submission was not emailed. See README.');
@@ -620,6 +627,17 @@
     function done(form, html){
       form.innerHTML = '<div class="form-done">' + html + '</div>';
       var h = form.querySelector('h3'); h.setAttribute('tabindex','-1'); h.focus();
+    }
+
+    var cform = $('contactForm');
+    if(cform){
+      cform.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!validate(cform)) return;
+        var name = clean(firstName(cform));
+        sendLead('contact', cform);
+        done(cform, '<p class="label blue">Sent</p><h3>Thanks, ' + name + '.</h3><p>Ben has your message and will come back to you within one business day. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+      });
     }
 
     var form = $('appraisal');

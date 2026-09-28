@@ -557,6 +557,28 @@ FUNNEL_FAQ = [
 # ---------------------------------------------------------------- autoresponders
 # Plain text, sent to the person who submitted. FormSubmit does not render HTML here,
 # so the download is a link on its own line rather than a styled button.
+CONTACT_TOPICS = [
+    "Selling my home",
+    "Buying on the North Shore",
+    "A property currently listed",
+    "A free appraisal",
+    "Something else",
+]
+
+CONTACT_H1 = "Talk to <em>Ben.</em>"
+CONTACT_LEDE = ("Whether you are thinking about selling, looking to buy, or just after a straight "
+                "answer about the market, Ben reads and replies to every message himself.")
+
+
+def contact_autoresponse(site):
+    return (
+        "Thanks for getting in touch.\n\n"
+        "Your message has come through and I'll come back to you within one business day.\n\n"
+        "If anything is urgent, the fastest way to reach me is on " + PHONE_DISPLAY + ".\n\n"
+        "Ben Potter\n" + AGENT_TITLE + "\n" + AGENCY + "\n" + PHONE_DISPLAY + "\n" + EMAIL
+    )
+
+
 def guide_autoresponse(site):
     return (
         "Thanks for requesting the guide.\n\n"

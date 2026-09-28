@@ -57,6 +57,12 @@ def pages():
         {'path': C.FUNNEL_SLUG + '/', 'file': C.FUNNEL_SLUG + '/index.html',
          'title': C.FUNNEL_TITLE.replace('&', '&amp;'), 'desc': C.FUNNEL_DESC,
          'crumbs': [], 'nav': None, 'funnel': True, 'noindex': True},
+        {'path': 'contact/', 'file': 'contact/index.html',
+         'title': 'Contact Ben Potter | Harcourts Cooper &amp; Co, Devonport',
+         'desc': ('Get in touch with Ben Potter, Harcourts Cooper & Co salesperson for Devonport, '
+                  'Belmont and Bayswater. Call 027 953 0210, email, or send a message and he will '
+                  'reply within one business day.'),
+         'crumbs': [('Contact', None)], 'nav': 'contact'},
         {'path': 'property-appraisal/', 'file': 'property-appraisal/index.html',
          'title': 'Free Property Appraisal | Ben Potter, Harcourts Cooper &amp; Co',
          'desc': ('Book a free, no obligation property appraisal anywhere on Auckland\'s North Shore. A '
@@ -68,7 +74,7 @@ def pages():
 
 NAV = [('About', '#about', 'about'), ('Areas', 'areas', 'areas'),
        ('Sold', 'recently-sold/', 'sold'), ('Reviews', '#reviews', 'reviews'),
-       ('Contact', 'property-appraisal/', 'contact')]
+       ('Contact', 'contact/', 'contact')]
 
 
 def rel(depth):
@@ -270,6 +276,81 @@ def appraisal_form(depth, heading='Request appraisal'):
         </form>'''
 
 
+def contact_form(depth):
+    opts = '\n'.join(f'              <option>{t}</option>' for t in C.CONTACT_TOPICS)
+    return f"""        <form id="contactForm" novalidate aria-label="Contact Ben">
+          <div class="field">
+            <label for="c-topic">What is your enquiry about?</label>
+            <select id="c-topic" name="topic" required>
+{opts}
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="c-name">Name</label>
+              <input id="c-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="c-phone">Mobile</label>
+              <input id="c-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-email">Email</label>
+            <input id="c-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="c-message">Message</label>
+            <textarea id="c-message" name="message" rows="4" required></textarea>
+          </div>
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="form-foot">
+            <button class="btn btn-blue" type="submit">Send message</button>
+            <small>Ben replies personally, usually within one business day.</small>
+          </div>
+        </form>"""
+
+
+def contact_body():
+    d = 1
+    return f"""{header(d, 'contact')}
+
+<main>
+  <section class="page-hero" aria-labelledby="pageTitle">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      {crumbs([('Contact', None)], d)}
+      <p class="label blue">Contact</p>
+      <h1 id="pageTitle">{C.CONTACT_H1}</h1>
+      <p class="lede">{C.CONTACT_LEDE}</p>
+    </div>
+  </section>
+
+  <section class="section appraise on-light stone" id="form" aria-labelledby="formTitle">
+    <div class="wrap">
+      <div class="appraise-copy">
+        <p class="label blue">Send a message</p>
+        <h2 id="formTitle">Tell Ben what you <em>need.</em></h2>
+
+        <div class="reach">
+          <p class="reach-lead">Not one for forms? Call or email him directly. Both reach Ben himself, not an office queue.</p>
+          <div class="reach-actions">
+            <a class="btn btn-blue" href="tel:{C.PHONE_LINK}">Call {C.PHONE_DISPLAY}</a>
+            <a class="btn btn-line" href="mailto:{C.EMAIL}">Email Ben</a>
+          </div>
+          <p class="reach-note">{C.AGENCY} &nbsp;·&nbsp; Licensed under the REA Act 2008</p>
+        </div>
+      </div>
+      <div class="form-card">
+{contact_form(d)}
+      </div>
+    </div>
+  </section>
+</main>
+
+{footer(d)}"""
+
+
 def contact_section(depth):
     return f'''  <section class="section appraise on-light stone" id="contact" aria-labelledby="contactTitle">
     <div class="wrap">
@@ -312,7 +393,8 @@ def footer(depth):
              ('Current listings', d + 'current-listings/'),
              ('Recently sold', d + 'recently-sold/'),
              ('Selling guide', d + 'free-selling-guide/'),
-             ('Appraisal', d + 'property-appraisal/')]
+             ('Appraisal', d + 'property-appraisal/'),
+             ('Contact', d + 'contact/')]
     ls = '\n'.join(f'        <a href="{h}">{t}</a>' for t, h in links)
     return f'''<footer class="footer">
   <div class="wrap">
@@ -1046,7 +1128,8 @@ def schema_for(page):
         for i, (label, _) in enumerate(page['crumbs'], start=2):
             crumb_items.append({"@type": "ListItem", "position": i, "name": esc(label), "item": url})
         graph.append({"@type": "BreadcrumbList", "@id": url + "#breadcrumb", "itemListElement": crumb_items})
-        graph.append({"@type": "WebPage", "@id": url + "#webpage", "url": url,
+        page_type = "ContactPage" if page['path'] == 'contact/' else "WebPage"
+        graph.append({"@type": page_type, "@id": url + "#webpage", "url": url,
                       "name": esc(page['title']), "description": esc(page['desc']),
                       "isPartOf": {"@id": C.SITE + "/#website"},
                       "breadcrumb": {"@id": url + "#breadcrumb"},
@@ -1166,7 +1249,8 @@ def script_block(depth=0):
       formEndpoint: '@@FORM_ENDPOINT@@',
       guideUrl: '@@GUIDE_URL@@',                           // the selling guide PDF
       replyGuide: @@REPLY_GUIDE@@,                         // confirmation emailed to the requester
-      replyAppraisal: @@REPLY_APPRAISAL@@
+      replyAppraisal: @@REPLY_APPRAISAL@@,
+      replyContact: @@REPLY_CONTACT@@
     };
     var PHONE = '@@PHONE_DISPLAY@@', PHONE_LINK = '@@PHONE_LINK@@';
     var $ = function(id){ return document.getElementById(id); };
@@ -1254,6 +1338,7 @@ def script_block(depth=0):
       }
       var label = kind === 'guide' ? 'Selling guide download'
                 : kind === 'funnel' ? 'Appraisal request (Meta ad)'
+                : kind === 'contact' ? ('Website enquiry: ' + (data.topic || 'general'))
                 : 'Appraisal request';
       var subject = label + ' from ' + (data.name || 'the website') + (data.address ? ', ' + data.address : '');
       var fields = {
@@ -1263,6 +1348,8 @@ def script_block(depth=0):
         Email: data.email || '',
         Property: data.address || '',
         Timeframe: data.timeframe || '',
+        About: data.topic || '',
+        Message: data.message || '',
         PropertyType: data.type || '',
         Bedrooms: data.bedrooms || '',
         Page: location.href
@@ -1280,7 +1367,9 @@ def script_block(depth=0):
         url = 'https://formsubmit.co/ajax/' + (CONFIG.formAlias || CONFIG.leadEmail);
         payload = Object.assign({ _subject: subject, _template: 'table',
                                   _replyto: data.email || '',
-                                  _autoresponse: (kind === 'guide' ? CONFIG.replyGuide : CONFIG.replyAppraisal),
+                                  _autoresponse: (kind === 'guide' ? CONFIG.replyGuide
+                                                  : kind === 'contact' ? CONFIG.replyContact
+                                                  : CONFIG.replyAppraisal),
                                   _honey: data.botcheck ? 'bot' : '' }, fields);
       } else {
         console.warn('Lead delivery is off: this submission was not emailed. See README.');
@@ -1371,6 +1460,17 @@ def script_block(depth=0):
     function done(form, html){
       form.innerHTML = '<div class="form-done">' + html + '</div>';
       var h = form.querySelector('h3'); h.setAttribute('tabindex','-1'); h.focus();
+    }
+
+    var cform = $('contactForm');
+    if(cform){
+      cform.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!validate(cform)) return;
+        var name = clean(firstName(cform));
+        sendLead('contact', cform);
+        done(cform, '<p class="label blue">Sent</p><h3>Thanks, ' + name + '.</h3><p>Ben has your message and will come back to you within one business day. If it\\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+      });
     }
 
     var form = $('appraisal');
@@ -1551,6 +1651,7 @@ def script_block(depth=0):
         '@@FORM_PROVIDER@@': C.FORM_PROVIDER,
         '@@REPLY_GUIDE@@': json.dumps(C.guide_autoresponse(C.SITE)),
         '@@REPLY_APPRAISAL@@': json.dumps(C.appraisal_autoresponse(C.SITE)),
+        '@@REPLY_CONTACT@@': json.dumps(C.contact_autoresponse(C.SITE)),
     }
     for k, v in tokens.items():
         js = js.replace(k, v)
@@ -1636,7 +1737,7 @@ def main():
     bodies = {'': home_body(), 'recently-sold/': sold_body(),
               'current-listings/': current_listings_body(),
               'free-selling-guide/': guide_body(), 'property-appraisal/': appraisal_body(),
-              C.FUNNEL_SLUG + '/': funnel_body()}
+              'contact/': contact_body(), C.FUNNEL_SLUG + '/': funnel_body()}
     for s in C.SUBURBS:
         bodies[s['slug'] + '/'] = suburb_body(s)
 
