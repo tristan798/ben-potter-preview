@@ -1,2 +1,4 @@
 debug.html
 .DS_Store
+.vercel
+.env*

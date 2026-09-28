@@ -22,7 +22,7 @@
 
       <tr><td style="padding:34px 32px 30px"><p style="margin:0 0 6px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:#0A84FF">{{kind}}</p>
         <h1 style="margin:0 0 6px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:27px; font-weight:bold; letter-spacing:-0.6px; color:#17181B">{{name}}</h1>
-        <p style="margin:0 0 24px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:16px; color:#75767A">{{property}}</p>
+        <p style="margin:0 0 24px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:16px; color:#75767A">{{subtitle}}</p>
 
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 26px">
           <tr>
@@ -33,21 +33,29 @@
             <td width="132" style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:1.3px; text-transform:uppercase; color:#75767A; vertical-align:top">Email</td>
             <td style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#17181B"><a href="mailto:{{email}}" style="color:#17181B; text-decoration:none">{{email}}</a></td>
           </tr>
-          <tr>
+          <tr data-optional="topic">
+            <td width="132" style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:1.3px; text-transform:uppercase; color:#75767A; vertical-align:top">About</td>
+            <td style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#17181B">{{topic}}</td>
+          </tr>
+          <tr data-optional="property">
             <td width="132" style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:1.3px; text-transform:uppercase; color:#75767A; vertical-align:top">Property</td>
             <td style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#17181B">{{property}}</td>
           </tr>
-          <tr>
+          <tr data-optional="type">
             <td width="132" style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:1.3px; text-transform:uppercase; color:#75767A; vertical-align:top">Type</td>
             <td style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#17181B">{{type}}</td>
           </tr>
-          <tr>
+          <tr data-optional="bedrooms">
             <td width="132" style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:1.3px; text-transform:uppercase; color:#75767A; vertical-align:top">Bedrooms</td>
             <td style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#17181B">{{bedrooms}}</td>
           </tr>
-          <tr>
+          <tr data-optional="timeframe">
             <td width="132" style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:1.3px; text-transform:uppercase; color:#75767A; vertical-align:top">Timeframe</td>
             <td style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#17181B">{{timeframe}}</td>
+          </tr>
+          <tr data-optional="message">
+            <td width="132" style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:1.3px; text-transform:uppercase; color:#75767A; vertical-align:top">Message</td>
+            <td style="padding:11px 0; border-bottom:1px solid #E2DFD9; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#17181B">{{message}}</td>
           </tr>
         </table>
 
@@ -66,7 +74,7 @@
                   </td></tr>
                 </table>
 
-        <p style="margin:18px 0 0; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:12px; color:#75767A">Came in from <a href="{{page}}" style="color:#75767A">{{page}}</a></p></td></tr>
+        <p data-optional="page" style="margin:18px 0 0; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:12px; color:#75767A">Came in from <a href="{{page}}" style="color:#75767A">{{page}}</a></p></td></tr>
 
       <tr><td style="padding:0 32px"><div style="height:1px; background:#E2DFD9; line-height:1px">&nbsp;</div></td></tr>
       <tr><td style="padding:22px 32px 30px">

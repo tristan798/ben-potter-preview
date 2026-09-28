@@ -77,9 +77,12 @@ def shell(preheader, body, footer_note=""):
 '''
 
 
-def row(label, value, mono=False):
+def row(label, value, mono=False, field=None):
+    """field marks the row droppable: the sender strips it when that value is empty, so
+    a contact enquiry does not arrive with "Property: Not given" sitting under it."""
     fam = "'SF Mono', Consolas, monospace" if mono else SANS
-    return f'''<tr>
+    tag = ('<tr data-optional="%s">' % field) if field else '<tr>'
+    return f'''{tag}
             <td width="132" style="padding:11px 0; border-bottom:1px solid {RULE}; font-family:{SANS}; font-size:11px; letter-spacing:1.3px; text-transform:uppercase; color:{MUTED}; vertical-align:top">{label}</td>
             <td style="padding:11px 0; border-bottom:1px solid {RULE}; font-family:{fam}; font-size:15px; color:{TEXT}">{value}</td>
           </tr>'''
@@ -88,21 +91,23 @@ def row(label, value, mono=False):
 # ---------------------------------------------------------------- 1. lead notification, to Ben
 lead_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:{BLUE}">{{{{kind}}}}</p>
         <h1 style="margin:0 0 6px; font-family:{SANS}; font-size:27px; font-weight:bold; letter-spacing:-0.6px; color:{TEXT}">{{{{name}}}}</h1>
-        <p style="margin:0 0 24px; font-family:{SANS}; font-size:16px; color:{MUTED}">{{{{property}}}}</p>
+        <p style="margin:0 0 24px; font-family:{SANS}; font-size:16px; color:{MUTED}">{{{{subtitle}}}}</p>
 
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 26px">
           {row("Mobile", '<a href="tel:{{phone_link}}" style="color:' + TEXT + '; text-decoration:none">{{phone}}</a>', mono=True)}
           {row("Email", '<a href="mailto:{{email}}" style="color:' + TEXT + '; text-decoration:none">{{email}}</a>')}
-          {row("Property", "{{property}}")}
-          {row("Type", "{{type}}")}
-          {row("Bedrooms", "{{bedrooms}}")}
-          {row("Timeframe", "{{timeframe}}")}
+          {row("About", "{{topic}}", field="topic")}
+          {row("Property", "{{property}}", field="property")}
+          {row("Type", "{{type}}", field="type")}
+          {row("Bedrooms", "{{bedrooms}}", field="bedrooms")}
+          {row("Timeframe", "{{timeframe}}", field="timeframe")}
+          {row("Message", "{{message}}", field="message")}
         </table>
 
         {button("Call {{name_first}}", "tel:{{phone_link}}")}
         {button("Reply by email", "mailto:{{email}}", bg="#FFFFFF", fg=TEXT).replace('border-radius:3px"', 'border-radius:3px; border:1px solid ' + RULE + '"')}
 
-        <p style="margin:18px 0 0; font-family:{SANS}; font-size:12px; color:{MUTED}">Came in from <a href="{{{{page}}}}" style="color:{MUTED}">{{{{page}}}}</a></p>'''
+        <p data-optional="page" style="margin:18px 0 0; font-family:{SANS}; font-size:12px; color:{MUTED}">Came in from <a href="{{{{page}}}}" style="color:{MUTED}">{{{{page}}}}</a></p>'''
 
 # ---------------------------------------------------------------- 2. guide confirmation, to the enquirer
 guide_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:{BLUE}">Your free guide</p>

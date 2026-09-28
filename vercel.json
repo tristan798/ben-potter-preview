@@ -1,10 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
-  "trailingSlash": true,
-  "functions": { "api/lead.js": { "memory": 128, "maxDuration": 10 } },
+  "functions": {
+    "api/lead.js": {
+      "memory": 128,
+      "maxDuration": 10
+    }
+  },
   "redirects": [
-    { "source": "/listings", "destination": "/recently-sold/", "permanent": true },
-    { "source": "/listings/", "destination": "/recently-sold/", "permanent": true }
+    {
+      "source": "/listings",
+      "destination": "/recently-sold/",
+      "permanent": true
+    },
+    {
+      "source": "/listings/",
+      "destination": "/recently-sold/",
+      "permanent": true
+    }
   ]
 }

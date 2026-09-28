@@ -29,7 +29,14 @@ function escapeHtml(v) {
 }
 
 function render(name, values) {
-  return template(name).replace(/\{\{(\w+)\}\}/g, (_, k) =>
+  let html = template(name);
+  // Drop the rows this kind of enquiry has nothing to say about, so a contact message
+  // does not arrive with "Property: Not given" sitting under it.
+  html = html.replace(/<tr data-optional="(\w+)">[\s\S]*?<\/tr>/g, (block, key) =>
+    values[key] ? block : '');
+  html = html.replace(/<p data-optional="(\w+)"[\s\S]*?<\/p>/g, (block, key) =>
+    values[key] ? block : '');
+  return html.replace(/\{\{(\w+)\}\}/g, (_, k) =>
     escapeHtml(values[k] !== undefined && values[k] !== '' ? values[k] : 'Not given'));
 }
 
@@ -75,6 +82,9 @@ async function handle(body) {
     message: body.message || '',
     page: body.page || '',
   };
+  // The line under the name: the address when there is one, otherwise what they asked
+  // about. Never the words "Not given".
+  values.subtitle = values.property || values.topic || kind;
 
   const subject = body.kind === 'contact'
     ? `Website enquiry${values.topic ? ': ' + values.topic : ''}${name ? ' from ' + name : ''}`

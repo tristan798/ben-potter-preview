@@ -39,8 +39,8 @@ def lead_alias():
 # That is the only option that sends the branded HTML emails in email/, because an email
 # API key cannot safely live in client-side JavaScript. It needs hosting with functions
 # (Netlify, Vercel or Cloudflare), not GitHub Pages.
-FORM_PROVIDER = "formsubmit"
-FORM_ENDPOINT = "/api/lead"
+FORM_PROVIDER = "endpoint"
+FORM_ENDPOINT = "https://ben-potter.vercel.app/api/lead"
 # FormSubmit's hashed alias for LEAD_EMAIL. Using it instead of the raw address keeps Ben's
 # email out of the page source, where scrapers would find it. Activation is per domain:
 # when the site moves to ben-potter.com the first submission there triggers a fresh
