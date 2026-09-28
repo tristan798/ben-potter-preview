@@ -243,23 +243,23 @@
       <div class="faq-list">
           <details open>
             <summary>What is my Devonport home worth?</summary>
-            <p>In Devonport, the street, the section and the condition of the house can matter more than the floor area. Two villas of the same size a few blocks apart can be a long way apart in value. Ben tracks every peninsula sale and gives you a range built from comparable Devonport sales in the last six months, rather than a headline number designed to win the listing.</p>
+            <div class="faq-a"><div><p>In Devonport, the street, the section and the condition of the house can matter more than the floor area. Two villas of the same size a few blocks apart can be a long way apart in value. Ben tracks every peninsula sale and gives you a range built from comparable Devonport sales in the last six months, rather than a headline number designed to win the listing.</p></div></div>
           </details>
           <details>
             <summary>Can I renovate or extend a villa in Devonport?</summary>
-            <p>Often yes, but much of Devonport sits under a special character overlay, so what you can do to the street-facing form of the house is more limited than in most Auckland suburbs. Rear and internal alterations are usually more achievable. Talk to a planner and council early, and keep the paperwork, because buyers will ask for it.</p>
+            <div class="faq-a"><div><p>Often yes, but much of Devonport sits under a special character overlay, so what you can do to the street-facing form of the house is more limited than in most Auckland suburbs. Rear and internal alterations are usually more achievable. Talk to a planner and council early, and keep the paperwork, because buyers will ask for it.</p></div></div>
           </details>
           <details>
             <summary>Which Devonport streets are the most tightly held?</summary>
-            <p>Cheltenham, the waterfront and the streets close to the village are among the areas where homes can be held for long periods. When a well-positioned property does come to market, it can attract buyers who have been waiting specifically for that location. In those situations, a competitive auction campaign can be particularly effective.</p>
+            <div class="faq-a"><div><p>Cheltenham, the waterfront and the streets close to the village are among the areas where homes can be held for long periods. When a well-positioned property does come to market, it can attract buyers who have been waiting specifically for that location. In those situations, a competitive auction campaign can be particularly effective.</p></div></div>
           </details>
           <details>
             <summary>Is Devonport a good place to live with children?</summary>
-            <p>One of the best areas for families. Devonport Primary, Vauxhall School and Stanley Bay School serve different parts of the suburb; Belmont Intermediate and Takapuna Grammar take the older years, and children can walk to beaches and parks safely.</p>
+            <div class="faq-a"><div><p>One of the best areas for families. Devonport Primary, Vauxhall School and Stanley Bay School serve different parts of the suburb; Belmont Intermediate and Takapuna Grammar take the older years, and children can walk to beaches and parks safely.</p></div></div>
           </details>
           <details>
             <summary>How long does a Devonport home take to sell?</summary>
-            <p>A well-prepared, sensibly priced Devonport home usually sells within four to six weeks, and character homes on sought-after streets often sell faster. Homes that stall are almost always priced against hope rather than against recent comparable sales.</p>
+            <div class="faq-a"><div><p>A well-prepared, sensibly priced Devonport home usually sells within four to six weeks, and character homes on sought-after streets often sell faster. Homes that stall are almost always priced against hope rather than against recent comparable sales.</p></div></div>
           </details>
       </div>
     </div>
@@ -308,7 +308,7 @@
         <form id="appraisal" novalidate aria-label="Appraisal request">
           <div class="field">
             <label for="f-address">Property address</label>
-            <input id="f-address" name="address" type="text" autocomplete="street-address" placeholder="12 Cheltenham Road, Devonport" required>
+            <input id="f-address" name="address" type="text" autocomplete="street-address" required>
           </div>
           <div class="field-row">
             <div class="field">
@@ -322,7 +322,7 @@
           </div>
           <div class="field">
             <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" autocomplete="email">
+            <input id="f-email" name="email" type="email" autocomplete="email" required>
           </div>
           <div class="field">
             <label for="f-when">Timeframe</label>
@@ -381,7 +381,7 @@
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="form-foot"><button class="btn btn-blue" type="submit">Email me the guide</button><small>One email with the guide. No list, no spam.</small></div>
     </form>
@@ -546,16 +546,64 @@
           throw new Error('lead delivery failed');
         });
     }
-    function validate(form){
-      var ok = true;
-      form.querySelectorAll('[required]').forEach(function(el){
-        var bad = !el.value.trim() || (el.type === 'email' && el.value.indexOf('@') < 0);
-        el.style.borderColor = bad ? '#D0342C' : '';
-        if(bad){ ok = false; el.setAttribute('aria-invalid','true'); } else { el.removeAttribute('aria-invalid'); }
-      });
-      if(!ok) form.querySelector('[aria-invalid]').focus();
-      return ok;
+    // Says what is wrong, field by field, rather than only turning a line red.
+    function fieldLabel(el){
+      var lab = el.form && el.form.querySelector('label[for="' + el.id + '"]');
+      return lab ? lab.textContent.trim().toLowerCase() : 'this field';
     }
+    function problem(el){
+      var v = el.value.trim();
+      if(!v){
+        if(el.tagName === 'SELECT') return 'Please choose an option.';
+        return 'Please enter your ' + fieldLabel(el) + '.';
+      }
+      if(el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))
+        return 'That email address does not look right.';
+      if(el.type === 'tel' && (v.replace(/[^0-9]/g, '').length < 8))
+        return 'Please enter a full mobile number.';
+      return '';
+    }
+    function clearProblem(el){
+      el.removeAttribute('aria-invalid');
+      el.classList.remove('is-bad');
+      var msg = el.parentNode.querySelector('.field-msg');
+      if(msg) msg.parentNode.removeChild(msg);
+    }
+    function showProblem(el, text){
+      el.setAttribute('aria-invalid','true');
+      el.classList.add('is-bad');
+      var msg = el.parentNode.querySelector('.field-msg');
+      if(!msg){
+        msg = document.createElement('p');
+        msg.className = 'field-msg';
+        msg.id = (el.id || el.name) + '-msg';
+        el.parentNode.appendChild(msg);
+      }
+      msg.textContent = text;
+      el.setAttribute('aria-describedby', msg.id);
+    }
+    function validate(form){
+      var first = null;
+      form.querySelectorAll('[required], [data-required]').forEach(function(el){
+        if(el.offsetParent === null && el.type !== 'hidden') return;   // a step that is not on screen
+        var why = problem(el);
+        if(why){ showProblem(el, why); if(!first) first = el; }
+        else clearProblem(el);
+      });
+      if(first){
+        first.focus();
+        if(first.scrollIntoView) first.scrollIntoView({block:'center', behavior:'smooth'});
+        return false;
+      }
+      return true;
+    }
+    // Once someone starts fixing a field, stop shouting about it.
+    document.addEventListener('input', function(e){
+      if(e.target.hasAttribute && e.target.hasAttribute('aria-invalid')) clearProblem(e.target);
+    }, true);
+    document.addEventListener('change', function(e){
+      if(e.target.hasAttribute && e.target.hasAttribute('aria-invalid')) clearProblem(e.target);
+    }, true);
     var clean = function(s){ return s.replace(/[<>&]/g, ''); };
     // If the provider is unreachable, hand the visitor a way to reach Ben anyway.
     function deliveryFailed(fields){
@@ -584,6 +632,38 @@
         done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
       });
     }
+
+    // ---- FAQ: one answer open at a time, and both directions animated.
+    // ---- A <details> hides its content the instant `open` goes away, so the close is
+    // ---- held open by a class until the transition has finished.
+    (function(){
+      var lists = document.querySelectorAll('.faq-list');
+      if(!lists.length) return;
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var WAIT = reduced ? 0 : 360;
+      function shut(d, then){
+        if(!d.open){ if(then) then(); return; }
+        if(reduced){ d.open = false; if(then) then(); return; }
+        d.classList.add('is-closing');
+        setTimeout(function(){
+          d.classList.remove('is-closing');
+          d.open = false;
+          if(then) then();
+        }, WAIT);
+      }
+      Array.prototype.forEach.call(lists, function(list){
+        list.addEventListener('click', function(e){
+          var sum = e.target.closest('summary');
+          if(!sum || !list.contains(sum)) return;
+          var d = sum.parentNode;
+          e.preventDefault();
+          if(d.open){ shut(d); return; }
+          var open = list.querySelector('details[open]');
+          if(open && open !== d) shut(open);
+          d.open = true;
+        });
+      });
+    })();
 
     // ---- Scroll reveal, applied globally. The class is added by script, so if this file
     // ---- ever fails to run the content is still visible rather than stuck at opacity 0.
@@ -640,13 +720,14 @@
         if(focusable && focusable.tagName === 'INPUT') focusable.focus({preventScroll:true});
       }
       function valid(step){
-        var ok = true;
+        var first = null;
         step.querySelectorAll('[data-required]').forEach(function(el){
-          var bad = !el.value.trim() || (el.type === 'email' && el.value.indexOf('@') < 0);
-          el.classList.toggle('bad', bad);
-          if(bad) ok = false;
+          var why = problem(el);
+          if(why){ showProblem(el, why); if(!first) first = el; }
+          else clearProblem(el);
         });
-        return ok;
+        if(first){ first.focus(); return false; }
+        return true;
       }
       function go(n){
         if(n > at && !valid(steps[at])) return;

@@ -139,7 +139,7 @@ def faq_block(items, open_first=True):
         o = ' open' if (i == 0 and open_first) else ''
         out.append(f'''          <details{o}>
             <summary>{q}</summary>
-            <p>{a}</p>
+            <div class="faq-a"><div><p>{a}</p></div></div>
           </details>''')
     return '\n'.join(out)
 
@@ -201,20 +201,35 @@ def offmarket(depth):
 
 
 def reviews_section(depth):
+    # An invisible copy of every review, all sharing one grid cell, so the block is
+    # always as tall as the longest quote and switching reviews cannot resize it.
+    sizer = '\n'.join(
+        f'''          <div>
+            <blockquote class="quote">{q}</blockquote>
+            <div class="quote-by"><b>{who}</b><span>{where}</span></div>
+          </div>''' for q, who, where in C.REVIEWS)
     return f'''  <section class="section words" id="reviews" aria-labelledby="reviewsTitle">
     <div class="wrap">
       <h2 class="label" id="reviewsTitle">In their words</h2>
       <p class="stars" aria-hidden="true" style="margin-top:1.4rem">★★★★★</p>
-      <div class="quote-slide" id="quoteSlide">
-        <blockquote class="quote" id="quoteText">{C.REVIEWS[0][0]}</blockquote>
-        <div class="quote-by"><b id="quoteName">{C.REVIEWS[0][1]}</b><span id="quoteWhere">{C.REVIEWS[0][2]}</span></div>
+      <div class="quote-stack">
+        <div class="quote-sizer" aria-hidden="true">
+{sizer}
+        </div>
+        <div class="quote-slide" id="quoteSlide">
+          <blockquote class="quote" id="quoteText">{C.REVIEWS[0][0]}</blockquote>
+          <div class="quote-by"><b id="quoteName">{C.REVIEWS[0][1]}</b><span id="quoteWhere">{C.REVIEWS[0][2]}</span></div>
+        </div>
       </div>
       <div class="quote-nav">
         <button type="button" id="qPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
         <span class="count" id="qCount" aria-live="polite">1 / {len(C.REVIEWS)}</span>
         <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-      <p class="trust"><a href="{C.RATEMYAGENT}" rel="noopener">Over {C.REVIEW_COUNT} five-star reviews on RateMyAgent</a></p>
+      <div class="reviews-cta">
+        <a class="btn btn-blue btn-lg" href="{C.RATEMYAGENT}" target="_blank" rel="noopener">Read all {C.REVIEW_COUNT} five-star reviews {ARROW}</a>
+        <p class="reviews-cta-note">Verified on RateMyAgent. Every review, unedited.</p>
+      </div>
     </div>
   </section>'''
 
@@ -223,7 +238,7 @@ def appraisal_form(depth, heading='Request appraisal'):
     return f'''        <form id="appraisal" novalidate aria-label="Appraisal request">
           <div class="field">
             <label for="f-address">Property address</label>
-            <input id="f-address" name="address" type="text" autocomplete="street-address" placeholder="12 Cheltenham Road, Devonport" required>
+            <input id="f-address" name="address" type="text" autocomplete="street-address" required>
           </div>
           <div class="field-row">
             <div class="field">
@@ -237,7 +252,7 @@ def appraisal_form(depth, heading='Request appraisal'):
           </div>
           <div class="field">
             <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" autocomplete="email">
+            <input id="f-email" name="email" type="email" autocomplete="email" required>
           </div>
           <div class="field">
             <label for="f-when">Timeframe</label>
@@ -330,7 +345,7 @@ def footer(depth):
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="form-foot"><button class="btn btn-blue" type="submit">Email me the guide</button><small>One email with the guide. No list, no spam.</small></div>
     </form>
@@ -385,10 +400,7 @@ def home_body():
       </div>
       <div>
         <h2 id="aboutTitle" class="statement">Most agents can show you a map of the Peninsula. Ben can tell you <em>who lives on it.</em></h2>
-        <div class="prose">
-          <p>{C.ABOUT[0]}</p>
-          <p>{C.ABOUT[1]}</p>
-        </div>
+        <div class="about-row">
         <figure class="reel-wrap">
           <div class="reel" id="reelBtn" role="button" tabindex="0" aria-label="Play the reel: {C.REEL_TITLE}">
             <video id="reelVideo" poster="{C.REEL_POSTER}" preload="none" playsinline
@@ -399,6 +411,11 @@ def home_body():
           </div>
           <figcaption class="reel-caption"><b>{C.REEL_TITLE}</b><span>Watch the reel &nbsp;·&nbsp; {C.REEL_SECONDS} sec</span></figcaption>
         </figure>
+        <div class="prose">
+          <p>{C.ABOUT[0]}</p>
+          <p>{C.ABOUT[1]}</p>
+        </div>
+        </div>
       </div>
     </div>
   </section>
@@ -412,7 +429,7 @@ def home_body():
         </div>
         <p class="lede">Each of these suburbs has its own housing stock, its own buyers and its own rhythm. Choose one for a closer look at what sells there and what it takes to sell well.</p>
       </div>
-      <div class="switch" style="margin-top:clamp(40px, 5vw, 64px)">
+      <div class="switch">
 {switcher(d)}
       </div>
       <div class="secondary">
@@ -1280,16 +1297,64 @@ def script_block(depth=0):
           throw new Error('lead delivery failed');
         });
     }
-    function validate(form){
-      var ok = true;
-      form.querySelectorAll('[required]').forEach(function(el){
-        var bad = !el.value.trim() || (el.type === 'email' && el.value.indexOf('@') < 0);
-        el.style.borderColor = bad ? '#D0342C' : '';
-        if(bad){ ok = false; el.setAttribute('aria-invalid','true'); } else { el.removeAttribute('aria-invalid'); }
-      });
-      if(!ok) form.querySelector('[aria-invalid]').focus();
-      return ok;
+    // Says what is wrong, field by field, rather than only turning a line red.
+    function fieldLabel(el){
+      var lab = el.form && el.form.querySelector('label[for="' + el.id + '"]');
+      return lab ? lab.textContent.trim().toLowerCase() : 'this field';
     }
+    function problem(el){
+      var v = el.value.trim();
+      if(!v){
+        if(el.tagName === 'SELECT') return 'Please choose an option.';
+        return 'Please enter your ' + fieldLabel(el) + '.';
+      }
+      if(el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))
+        return 'That email address does not look right.';
+      if(el.type === 'tel' && (v.replace(/[^0-9]/g, '').length < 8))
+        return 'Please enter a full mobile number.';
+      return '';
+    }
+    function clearProblem(el){
+      el.removeAttribute('aria-invalid');
+      el.classList.remove('is-bad');
+      var msg = el.parentNode.querySelector('.field-msg');
+      if(msg) msg.parentNode.removeChild(msg);
+    }
+    function showProblem(el, text){
+      el.setAttribute('aria-invalid','true');
+      el.classList.add('is-bad');
+      var msg = el.parentNode.querySelector('.field-msg');
+      if(!msg){
+        msg = document.createElement('p');
+        msg.className = 'field-msg';
+        msg.id = (el.id || el.name) + '-msg';
+        el.parentNode.appendChild(msg);
+      }
+      msg.textContent = text;
+      el.setAttribute('aria-describedby', msg.id);
+    }
+    function validate(form){
+      var first = null;
+      form.querySelectorAll('[required], [data-required]').forEach(function(el){
+        if(el.offsetParent === null && el.type !== 'hidden') return;   // a step that is not on screen
+        var why = problem(el);
+        if(why){ showProblem(el, why); if(!first) first = el; }
+        else clearProblem(el);
+      });
+      if(first){
+        first.focus();
+        if(first.scrollIntoView) first.scrollIntoView({block:'center', behavior:'smooth'});
+        return false;
+      }
+      return true;
+    }
+    // Once someone starts fixing a field, stop shouting about it.
+    document.addEventListener('input', function(e){
+      if(e.target.hasAttribute && e.target.hasAttribute('aria-invalid')) clearProblem(e.target);
+    }, true);
+    document.addEventListener('change', function(e){
+      if(e.target.hasAttribute && e.target.hasAttribute('aria-invalid')) clearProblem(e.target);
+    }, true);
     var clean = function(s){ return s.replace(/[<>&]/g, ''); };
     // If the provider is unreachable, hand the visitor a way to reach Ben anyway.
     function deliveryFailed(fields){
@@ -1318,6 +1383,38 @@ def script_block(depth=0):
         done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
       });
     }
+
+    // ---- FAQ: one answer open at a time, and both directions animated.
+    // ---- A <details> hides its content the instant `open` goes away, so the close is
+    // ---- held open by a class until the transition has finished.
+    (function(){
+      var lists = document.querySelectorAll('.faq-list');
+      if(!lists.length) return;
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var WAIT = reduced ? 0 : 360;
+      function shut(d, then){
+        if(!d.open){ if(then) then(); return; }
+        if(reduced){ d.open = false; if(then) then(); return; }
+        d.classList.add('is-closing');
+        setTimeout(function(){
+          d.classList.remove('is-closing');
+          d.open = false;
+          if(then) then();
+        }, WAIT);
+      }
+      Array.prototype.forEach.call(lists, function(list){
+        list.addEventListener('click', function(e){
+          var sum = e.target.closest('summary');
+          if(!sum || !list.contains(sum)) return;
+          var d = sum.parentNode;
+          e.preventDefault();
+          if(d.open){ shut(d); return; }
+          var open = list.querySelector('details[open]');
+          if(open && open !== d) shut(open);
+          d.open = true;
+        });
+      });
+    })();
 
     // ---- Scroll reveal, applied globally. The class is added by script, so if this file
     // ---- ever fails to run the content is still visible rather than stuck at opacity 0.
@@ -1374,13 +1471,14 @@ def script_block(depth=0):
         if(focusable && focusable.tagName === 'INPUT') focusable.focus({preventScroll:true});
       }
       function valid(step){
-        var ok = true;
+        var first = null;
         step.querySelectorAll('[data-required]').forEach(function(el){
-          var bad = !el.value.trim() || (el.type === 'email' && el.value.indexOf('@') < 0);
-          el.classList.toggle('bad', bad);
-          if(bad) ok = false;
+          var why = problem(el);
+          if(why){ showProblem(el, why); if(!first) first = el; }
+          else clearProblem(el);
         });
-        return ok;
+        if(first){ first.focus(); return false; }
+        return true;
       }
       function go(n){
         if(n > at && !valid(steps[at])) return;

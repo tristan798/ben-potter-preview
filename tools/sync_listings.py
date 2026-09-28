@@ -163,7 +163,9 @@ def detail_record(doc, url, status, price=''):
         if v:
             rec[key] = v
     park = 0
-    for cls in ('garage', 'carport', 'carpad', 'openspaces'):
+    # Deliberately not openspaces: those are uncovered spots, and adding them turns a
+    # two-car garage into "6 car". Their own card counts covered parking only.
+    for cls in ('garage', 'carport', 'carpad'):
         m = re.search(r'<li class="%s"><span>(\d+)</span>' % cls, body)
         if m:
             park += int(m.group(1))
@@ -177,8 +179,9 @@ def detail_record(doc, url, status, price=''):
     # "(USP)" is Unless Sold Prior, trade shorthand that means nothing to a seller.
     label = re.sub(r'\s*\((?:USP|BEO|PBN)\)\s*$', '', price.strip(), flags=re.I)
     if status == 'sold':
-        rec['status_label'] = 'Sold'
-        rec['sold_on'] = ''            # their card does not publish the date
+        # No status_label: build.py derives "Sold 17 Sep 2026" from sold_on when a date
+        # is known, and falls back to plain "Sold" when it is not. Their card has no date.
+        pass
     else:
         rec['status_label'] = label or 'For sale'
 

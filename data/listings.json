@@ -32,7 +32,7 @@
       "id": "42a-old-lake-road-devonport",
       "bedrooms": 4,
       "bathrooms": 2,
-      "parking": 3,
+      "parking": 1,
       "land_m2": 637,
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l41977698-42a-old-lake-road-devonport-nz-0624",
       "status_label": "Asking Price $2,285,000",
@@ -56,7 +56,7 @@
       "id": "2-6-maleme-avenue-belmont",
       "bedrooms": 3,
       "bathrooms": 2,
-      "parking": 4,
+      "parking": 2,
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l42658804-2-6-maleme-avenue-belmont-nz-0622",
       "status_label": "Auction 15th October at 12pm",
       "photo": "img/listings/2-6-maleme-avenue-belmont.jpg"
@@ -83,7 +83,6 @@
       "bathrooms": 3,
       "parking": 1,
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l41409665-lot-8-3-corrella-road-belmont-nz-0622",
-      "status_label": "Sold",
       "photo": "img/listings/8-3-corrella-road-belmont.jpg",
       "sold_on": "2026-09-17",
       "photo_w": 1600,
@@ -95,10 +94,9 @@
       "id": "13a-bayswater-avenue-bayswater",
       "bedrooms": 6,
       "bathrooms": 2,
-      "parking": 6,
+      "parking": 2,
       "land_m2": 648,
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l41464513-13a-bayswater-avenue-bayswater-nz-0622",
-      "status_label": "Sold",
       "photo": "img/listings/13a-bayswater-avenue-bayswater.jpg",
       "sold_on": "2026-08-04",
       "photo_w": 1600,
@@ -120,7 +118,6 @@
       "bedrooms": 3,
       "bathrooms": 2,
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l40348255-1-171-bayswater-avenue-bayswater-nz-0622",
-      "status_label": "Sold",
       "photo": "img/listings/1-171-bayswater-avenue-bayswater.jpg"
     },
     {
@@ -129,10 +126,9 @@
       "id": "28-fraser-road-devonport",
       "bedrooms": 3,
       "bathrooms": 1,
-      "parking": 2,
+      "parking": 1,
       "land_m2": 414,
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l40588239-28-fraser-road-devonport-nz-0624",
-      "status_label": "Sold",
       "photo": "img/listings/28-fraser-road-devonport.jpg"
     },
     {
@@ -143,7 +139,6 @@
       "bathrooms": 3,
       "parking": 1,
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l41453205-lot-5-3-corrella-road-belmont-nz-0622",
-      "status_label": "Sold",
       "photo": "img/listings/5-3-corrella-road-belmont.jpg"
     },
     {
@@ -155,7 +150,6 @@
       "parking": 1,
       "land_m2": 179,
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l41857906-lot-4-3-corrella-road-belmont-nz-0622",
-      "status_label": "Sold",
       "photo": "img/listings/4-3-corrella-road-belmont.jpg"
     }
   ]

@@ -347,10 +347,7 @@
       </div>
       <div>
         <h2 id="aboutTitle" class="statement">Most agents can show you a map of the Peninsula. Ben can tell you <em>who lives on it.</em></h2>
-        <div class="prose">
-          <p>Ben Potter brings a rare blend of energy, experience and a fresh outlook to real estate on Auckland's North Shore. Nearly 40 years living and working around Devonport, Belmont and Bayswater have given him the kind of knowledge you can't learn online. Which streets are tightly held, which buyers are waiting, and what a home needs to look like before they walk through the door.</p>
-          <p>His drive to deliver premium results, paired with a genuine passion for people and property, is why locals trust him with the Peninsula's most sought-after homes.</p>
-        </div>
+        <div class="about-row">
         <figure class="reel-wrap">
           <div class="reel" id="reelBtn" role="button" tabindex="0" aria-label="Play the reel: Ben Potter on Devonport, Belmont and Bayswater">
             <video id="reelVideo" poster="img/ben-potter-reel-devonport-belmont-bayswater.jpg" preload="none" playsinline
@@ -361,6 +358,11 @@
           </div>
           <figcaption class="reel-caption"><b>Ben Potter on Devonport, Belmont and Bayswater</b><span>Watch the reel &nbsp;·&nbsp; 22 sec</span></figcaption>
         </figure>
+        <div class="prose">
+          <p>Ben Potter brings a rare blend of energy, experience and a fresh outlook to real estate on Auckland's North Shore. Nearly 40 years living and working around Devonport, Belmont and Bayswater have given him the kind of knowledge you can't learn online. Which streets are tightly held, which buyers are waiting, and what a home needs to look like before they walk through the door.</p>
+          <p>His drive to deliver premium results, paired with a genuine passion for people and property, is why locals trust him with the Peninsula's most sought-after homes.</p>
+        </div>
+        </div>
       </div>
     </div>
   </section>
@@ -374,7 +376,7 @@
         </div>
         <p class="lede">Each of these suburbs has its own housing stock, its own buyers and its own rhythm. Choose one for a closer look at what sells there and what it takes to sell well.</p>
       </div>
-      <div class="switch" style="margin-top:clamp(40px, 5vw, 64px)">
+      <div class="switch">
         <a href="devonport-real-estate/">
           <p class="coord">36.8290° S · 174.7961° E</p>
           <h3>Devonport</h3>
@@ -418,7 +420,7 @@
             <h3>8/3 Corrella Road</h3>
             <p class="card-meta">4 bed · 3 bath · 1 car</p>
             
-            <p class="card-status">Sold</p>
+            <p class="card-status">Sold 17 Sep 2026</p>
           </div>
         </a>
 
@@ -427,9 +429,9 @@
           <div class="card-body">
             <p class="label">Bayswater</p>
             <h3>13A Bayswater Avenue</h3>
-            <p class="card-meta">6 bed · 2 bath · 6 car · 648 m²</p>
+            <p class="card-meta">6 bed · 2 bath · 2 car · 648 m²</p>
             
-            <p class="card-status">Sold</p>
+            <p class="card-status">Sold 4 Aug 2026</p>
           </div>
         </a>
 
@@ -452,16 +454,35 @@
     <div class="wrap">
       <h2 class="label" id="reviewsTitle">In their words</h2>
       <p class="stars" aria-hidden="true" style="margin-top:1.4rem">★★★★★</p>
-      <div class="quote-slide" id="quoteSlide">
-        <blockquote class="quote" id="quoteText">He was professional, helpful, and <mark>always available to answer my questions</mark> throughout the process. He made everything much less stressful and kept me informed every step of the way</blockquote>
-        <div class="quote-by"><b id="quoteName">Heidi</b><span id="quoteWhere">Sold in Devonport</span></div>
+      <div class="quote-stack">
+        <div class="quote-sizer" aria-hidden="true">
+          <div>
+            <blockquote class="quote">He was professional, helpful, and <mark>always available to answer my questions</mark> throughout the process. He made everything much less stressful and kept me informed every step of the way</blockquote>
+            <div class="quote-by"><b>Heidi</b><span>Sold in Devonport</span></div>
+          </div>
+          <div>
+            <blockquote class="quote">Ben helped me from the very beginning, with great advice on staging, marketing and quick responses throughout the campaign. He is very knowledgeable and professional and <mark>brought me the best result!</mark></blockquote>
+            <div class="quote-by"><b>Alex</b><span>Sold in Bayswater</span></div>
+          </div>
+          <div>
+            <blockquote class="quote">Ben ran a comprehensive campaign. Marketing activities were thoroughly explored and tuned to the market conditions and time of the year. <mark>He worked hard, actively generating awareness and interest in the property.</mark></blockquote>
+            <div class="quote-by"><b>Trevor</b><span>Sold in Belmont</span></div>
+          </div>
+        </div>
+        <div class="quote-slide" id="quoteSlide">
+          <blockquote class="quote" id="quoteText">He was professional, helpful, and <mark>always available to answer my questions</mark> throughout the process. He made everything much less stressful and kept me informed every step of the way</blockquote>
+          <div class="quote-by"><b id="quoteName">Heidi</b><span id="quoteWhere">Sold in Devonport</span></div>
+        </div>
       </div>
       <div class="quote-nav">
         <button type="button" id="qPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
         <span class="count" id="qCount" aria-live="polite">1 / 3</span>
         <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-      <p class="trust"><a href="https://www.ratemyagent.co.nz/real-estate-agent/ben-potter-as455/sales/overview" rel="noopener">Over 110 five-star reviews on RateMyAgent</a></p>
+      <div class="reviews-cta">
+        <a class="btn btn-blue btn-lg" href="https://www.ratemyagent.co.nz/real-estate-agent/ben-potter-as455/sales/overview" target="_blank" rel="noopener">Read all 110 five-star reviews <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <p class="reviews-cta-note">Verified on RateMyAgent. Every review, unedited.</p>
+      </div>
     </div>
   </section>
 
@@ -475,35 +496,35 @@
       <div class="faq-list">
           <details open>
             <summary>Who is Ben Potter?</summary>
-            <p>Ben Potter is a licensed real estate salesperson with Harcourts Cooper &amp; Co in Devonport. He has been on the Devonport Peninsula for 38 years and sells homes across Devonport, Belmont, and Bayswater, as well as Narrow Neck, Stanley Point, Hauraki, and Takapuna. His father, Gary Potter, has been a trusted real estate agent in the same areas for close to 25 years.</p>
+            <div class="faq-a"><div><p>Ben Potter is a licensed real estate salesperson with Harcourts Cooper &amp; Co in Devonport. He has been on the Devonport Peninsula for 38 years and sells homes across Devonport, Belmont, and Bayswater, as well as Narrow Neck, Stanley Point, Hauraki, and Takapuna. His father, Gary Potter, has been a trusted real estate agent in the same areas for close to 25 years.</p></div></div>
           </details>
           <details>
             <summary>Which areas does Ben sell in?</summary>
-            <p>Devonport, Belmont and Bayswater are his core suburbs, and he regularly sells in the neighbouring pockets of Narrow Neck, Stanley Point, Hauraki and Takapuna. Working a small, well-defined patch is deliberate: it means he knows the properties, the streets, and the buyers already looking in the neighbourhoods.</p>
+            <div class="faq-a"><div><p>Devonport, Belmont and Bayswater are his core suburbs, and he regularly sells in the neighbouring pockets of Narrow Neck, Stanley Point, Hauraki and Takapuna. Working a small, well-defined patch is deliberate: it means he knows the properties, the streets, and the buyers already looking in the neighbourhoods.</p></div></div>
           </details>
           <details>
             <summary>How do I get a free property appraisal?</summary>
-            <p>Fill in the form on the appraisal page or call Ben on 027 953 0210. Appraisals are free and obligation-free. You'll get a written estimate of value based on recent comparable sales near you, a recommended method of sale, and a marketing plan and budget before you commit to anything.</p>
+            <div class="faq-a"><div><p>Fill in the form on the appraisal page or call Ben on 027 953 0210. Appraisals are free and obligation-free. You'll get a written estimate of value based on recent comparable sales near you, a recommended method of sale, and a marketing plan and budget before you commit to anything.</p></div></div>
           </details>
           <details>
             <summary>How long does it take to sell a home on the peninsula?</summary>
-            <p>Most well-priced homes in Devonport, Belmont and Bayswater sell within four to six weeks of going to market. Homes that are prepared properly before they list tend to sell faster and for more, which is why Ben prefers to talk to owners well before the sign goes up.</p>
+            <div class="faq-a"><div><p>Most well-priced homes in Devonport, Belmont and Bayswater sell within four to six weeks of going to market. Homes that are prepared properly before they list tend to sell faster and for more, which is why Ben prefers to talk to owners well before the sign goes up.</p></div></div>
           </details>
           <details>
             <summary>Should I sell by auction, deadline sale, tender or a price?</summary>
-            <p>The right method depends on the property, the likely buyer pool and the level of competition we expect to create. Auction can work particularly well when several buyers are likely to compete for the same home. A deadline sale can suit properties with broad appeal where buyers need time to complete their checks, while a priced campaign may work better when buyers are closely comparing similar properties. Tender can also help when flexibility around terms or timing matters. Ben recommends the method as part of the appraisal and explains the reasoning behind it, so the campaign is tailored to the property rather than following a one-size-fits-all approach.</p>
+            <div class="faq-a"><div><p>The right method depends on the property, the likely buyer pool and the level of competition we expect to create. Auction can work particularly well when several buyers are likely to compete for the same home. A deadline sale can suit properties with broad appeal where buyers need time to complete their checks, while a priced campaign may work better when buyers are closely comparing similar properties. Tender can also help when flexibility around terms or timing matters. Ben recommends the method as part of the appraisal and explains the reasoning behind it, so the campaign is tailored to the property rather than following a one-size-fits-all approach.</p></div></div>
           </details>
           <details>
             <summary>What does it cost to sell a house?</summary>
-            <p>Commission is agreed up front and is only payable when your home sells. Marketing costs depend on the campaign you choose. Ben provides a written estimate of both before you sign an agency agreement, so there are no surprises later.</p>
+            <div class="faq-a"><div><p>Commission is agreed up front and is only payable when your home sells. Marketing costs depend on the campaign you choose. Ben provides a written estimate of both before you sign an agency agreement, so there are no surprises later.</p></div></div>
           </details>
           <details>
             <summary>Does Ben sell homes off market?</summary>
-            <p>Regularly. A good share of Peninsula homes change hands quietly, to buyers already registered with Ben. If you're buying, register your brief so you hear about homes before they're advertised. If you're selling, a quiet approach to the right buyer can be part of the plan, though it's worth understanding the trade-offs first.</p>
+            <div class="faq-a"><div><p>Regularly. A good share of Peninsula homes change hands quietly, to buyers already registered with Ben. If you're buying, register your brief so you hear about homes before they're advertised. If you're selling, a quiet approach to the right buyer can be part of the plan, though it's worth understanding the trade-offs first.</p></div></div>
           </details>
           <details>
             <summary>Is now a good time to sell my home?</summary>
-            <p>Well-presented homes on the North Shore continue to attract local buyers waiting for the right property. Whether now suits you depends on your home and your timing, and Ben will tell you honestly if he thinks you're better off preparing and waiting.</p>
+            <div class="faq-a"><div><p>Well-presented homes on the North Shore continue to attract local buyers waiting for the right property. Whether now suits you depends on your home and your timing, and Ben will tell you honestly if he thinks you're better off preparing and waiting.</p></div></div>
           </details>
       </div>
     </div>
@@ -525,7 +546,7 @@
         <form id="appraisal" novalidate aria-label="Appraisal request">
           <div class="field">
             <label for="f-address">Property address</label>
-            <input id="f-address" name="address" type="text" autocomplete="street-address" placeholder="12 Cheltenham Road, Devonport" required>
+            <input id="f-address" name="address" type="text" autocomplete="street-address" required>
           </div>
           <div class="field-row">
             <div class="field">
@@ -539,7 +560,7 @@
           </div>
           <div class="field">
             <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" autocomplete="email">
+            <input id="f-email" name="email" type="email" autocomplete="email" required>
           </div>
           <div class="field">
             <label for="f-when">Timeframe</label>
@@ -598,7 +619,7 @@
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="field"><label for="g-phone">Mobile</label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="form-foot"><button class="btn btn-blue" type="submit">Email me the guide</button><small>One email with the guide. No list, no spam.</small></div>
     </form>
@@ -763,16 +784,64 @@
           throw new Error('lead delivery failed');
         });
     }
-    function validate(form){
-      var ok = true;
-      form.querySelectorAll('[required]').forEach(function(el){
-        var bad = !el.value.trim() || (el.type === 'email' && el.value.indexOf('@') < 0);
-        el.style.borderColor = bad ? '#D0342C' : '';
-        if(bad){ ok = false; el.setAttribute('aria-invalid','true'); } else { el.removeAttribute('aria-invalid'); }
-      });
-      if(!ok) form.querySelector('[aria-invalid]').focus();
-      return ok;
+    // Says what is wrong, field by field, rather than only turning a line red.
+    function fieldLabel(el){
+      var lab = el.form && el.form.querySelector('label[for="' + el.id + '"]');
+      return lab ? lab.textContent.trim().toLowerCase() : 'this field';
     }
+    function problem(el){
+      var v = el.value.trim();
+      if(!v){
+        if(el.tagName === 'SELECT') return 'Please choose an option.';
+        return 'Please enter your ' + fieldLabel(el) + '.';
+      }
+      if(el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))
+        return 'That email address does not look right.';
+      if(el.type === 'tel' && (v.replace(/[^0-9]/g, '').length < 8))
+        return 'Please enter a full mobile number.';
+      return '';
+    }
+    function clearProblem(el){
+      el.removeAttribute('aria-invalid');
+      el.classList.remove('is-bad');
+      var msg = el.parentNode.querySelector('.field-msg');
+      if(msg) msg.parentNode.removeChild(msg);
+    }
+    function showProblem(el, text){
+      el.setAttribute('aria-invalid','true');
+      el.classList.add('is-bad');
+      var msg = el.parentNode.querySelector('.field-msg');
+      if(!msg){
+        msg = document.createElement('p');
+        msg.className = 'field-msg';
+        msg.id = (el.id || el.name) + '-msg';
+        el.parentNode.appendChild(msg);
+      }
+      msg.textContent = text;
+      el.setAttribute('aria-describedby', msg.id);
+    }
+    function validate(form){
+      var first = null;
+      form.querySelectorAll('[required], [data-required]').forEach(function(el){
+        if(el.offsetParent === null && el.type !== 'hidden') return;   // a step that is not on screen
+        var why = problem(el);
+        if(why){ showProblem(el, why); if(!first) first = el; }
+        else clearProblem(el);
+      });
+      if(first){
+        first.focus();
+        if(first.scrollIntoView) first.scrollIntoView({block:'center', behavior:'smooth'});
+        return false;
+      }
+      return true;
+    }
+    // Once someone starts fixing a field, stop shouting about it.
+    document.addEventListener('input', function(e){
+      if(e.target.hasAttribute && e.target.hasAttribute('aria-invalid')) clearProblem(e.target);
+    }, true);
+    document.addEventListener('change', function(e){
+      if(e.target.hasAttribute && e.target.hasAttribute('aria-invalid')) clearProblem(e.target);
+    }, true);
     var clean = function(s){ return s.replace(/[<>&]/g, ''); };
     // If the provider is unreachable, hand the visitor a way to reach Ben anyway.
     function deliveryFailed(fields){
@@ -801,6 +870,38 @@
         done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
       });
     }
+
+    // ---- FAQ: one answer open at a time, and both directions animated.
+    // ---- A <details> hides its content the instant `open` goes away, so the close is
+    // ---- held open by a class until the transition has finished.
+    (function(){
+      var lists = document.querySelectorAll('.faq-list');
+      if(!lists.length) return;
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var WAIT = reduced ? 0 : 360;
+      function shut(d, then){
+        if(!d.open){ if(then) then(); return; }
+        if(reduced){ d.open = false; if(then) then(); return; }
+        d.classList.add('is-closing');
+        setTimeout(function(){
+          d.classList.remove('is-closing');
+          d.open = false;
+          if(then) then();
+        }, WAIT);
+      }
+      Array.prototype.forEach.call(lists, function(list){
+        list.addEventListener('click', function(e){
+          var sum = e.target.closest('summary');
+          if(!sum || !list.contains(sum)) return;
+          var d = sum.parentNode;
+          e.preventDefault();
+          if(d.open){ shut(d); return; }
+          var open = list.querySelector('details[open]');
+          if(open && open !== d) shut(open);
+          d.open = true;
+        });
+      });
+    })();
 
     // ---- Scroll reveal, applied globally. The class is added by script, so if this file
     // ---- ever fails to run the content is still visible rather than stuck at opacity 0.
@@ -857,13 +958,14 @@
         if(focusable && focusable.tagName === 'INPUT') focusable.focus({preventScroll:true});
       }
       function valid(step){
-        var ok = true;
+        var first = null;
         step.querySelectorAll('[data-required]').forEach(function(el){
-          var bad = !el.value.trim() || (el.type === 'email' && el.value.indexOf('@') < 0);
-          el.classList.toggle('bad', bad);
-          if(bad) ok = false;
+          var why = problem(el);
+          if(why){ showProblem(el, why); if(!first) first = el; }
+          else clearProblem(el);
         });
-        return ok;
+        if(first){ first.focus(); return false; }
+        return true;
       }
       function go(n){
         if(n > at && !valid(steps[at])) return;
