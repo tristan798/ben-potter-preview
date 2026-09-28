@@ -48,6 +48,9 @@ def pages():
          'desc': ('A free guide to preparing, pricing and selling a home on the Devonport Peninsula, written '
                   'by Ben Potter from 38 years selling in Devonport, Belmont and Bayswater.'),
          'crumbs': [('Free selling guide', None)], 'nav': 'guide'},
+        {'path': C.FUNNEL_SLUG + '/', 'file': C.FUNNEL_SLUG + '/index.html',
+         'title': C.FUNNEL_TITLE.replace('&', '&amp;'), 'desc': C.FUNNEL_DESC,
+         'crumbs': [], 'nav': None, 'funnel': True, 'noindex': True},
         {'path': 'property-appraisal/', 'file': 'property-appraisal/index.html',
          'title': 'Free Property Appraisal, Devonport Peninsula | Ben Potter',
          'desc': ('Book a free, no obligation property appraisal for your Devonport, Belmont or Bayswater '
@@ -498,6 +501,148 @@ def suburb_body(s):
 {footer(d)}'''
 
 
+def funnel_body():
+    d = 1
+    steps = []
+    for i, st in enumerate(C.FUNNEL_STEPS):
+        n = i + 1
+        help_html = f'<p class="step-help">{st["help"]}</p>' if st.get('help') else ''
+        if st['type'] == 'text':
+            field = (f'<input class="step-input" id="q-{st["key"]}" name="{st["key"]}" type="text" '
+                     f'autocomplete="street-address" placeholder="{st.get("placeholder","")}" '
+                     f'inputmode="text" data-required="1">')
+        elif st['type'] == 'choice':
+            opts = '\n'.join(
+                f'          <button class="opt" type="button" data-field="{st["key"]}" data-value="{o}">{o}</button>'
+                for o in st['options'])
+            field = f'<div class="opts" role="group" aria-label="{st["q"]}">\n{opts}\n        </div>'
+        else:
+            field = f'''<div class="step-fields">
+          <div class="field"><label for="q-name">Name</label><input id="q-name" name="name" type="text" autocomplete="name" data-required="1"></div>
+          <div class="field"><label for="q-phone">Mobile</label><input id="q-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" data-required="1"></div>
+          <div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" data-required="1"></div>
+        </div>'''
+        nav = ('<button class="btn btn-blue step-next" type="button">Continue</button>'
+               if st['type'] != 'contact'
+               else '<button class="btn btn-blue" type="submit">Send me my appraisal</button>')
+        if st['type'] == 'choice':
+            nav = '<button class="btn btn-line step-next" type="button" hidden>Continue</button>'
+        back = '<button class="step-back" type="button">Back</button>' if i else ''
+        steps.append(f'''      <fieldset class="step" data-step="{n}" {"" if i == 0 else "hidden"}>
+        <legend class="step-q">{st["q"]}</legend>
+        {help_html}
+        {field}
+        <div class="step-nav">{nav}{back}</div>
+      </fieldset>''')
+
+    promise = '\n'.join(f'''        <div class="promise">
+          <h3>{t}</h3>
+          <p>{b}</p>
+        </div>''' for t, b in C.FUNNEL_PROMISE)
+    faq = faq_block(C.FUNNEL_FAQ, open_first=False)
+
+    return f'''<header class="header funnel-header">
+  <div class="wrap">
+    <span class="wordmark">Ben Potter</span>
+    <a class="phone-link" href="tel:{C.PHONE_LINK}">{C.PHONE_DISPLAY}</a>
+  </div>
+</header>
+
+<main>
+  <section class="funnel-hero" aria-labelledby="funnelTitle">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap funnel-grid">
+      <div class="funnel-copy">
+        <p class="label blue">Devonport &nbsp;·&nbsp; Belmont &nbsp;·&nbsp; Bayswater</p>
+        <h1 id="funnelTitle">{C.FUNNEL_H1}</h1>
+        <p class="lede">{C.FUNNEL_LEDE}</p>
+        <figure class="reel-wrap funnel-reel">
+          <div class="reel" id="reelBtn" role="button" tabindex="0" aria-label="Play the reel: {C.REEL_TITLE}">
+            <video id="reelVideo" poster="../{C.REEL_POSTER}" preload="none" playsinline width="720" height="1280" aria-label="{C.REEL_TITLE}">
+              <source src="../{C.REEL_FILE}" type="video/mp4">
+            </video>
+            <span class="reel-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+          </div>
+        </figure>
+      </div>
+
+      <div class="funnel-card">
+        <form id="funnelForm" novalidate>
+          <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+          <p class="step-count"><span id="stepNow">1</span> of {len(C.FUNNEL_STEPS)}</p>
+{chr(10).join(steps)}
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="step-foot">Free and no obligation. Ben replies personally.</p>
+        </form>
+        <div class="funnel-done" id="funnelDone" hidden>
+          <p class="label blue">Received</p>
+          <h2 id="doneTitle">Thanks, <span id="doneName">there</span>.</h2>
+          <p>Ben will call you within one business day to arrange a time to see the property.</p>
+          <p class="done-actions">
+            <a class="btn btn-blue" href="tel:{C.PHONE_LINK}">Call Ben now</a>
+            <a class="btn btn-line" href="../free-selling-guide/">Read the selling guide</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-light" aria-labelledby="promiseTitle">
+    <div class="wrap">
+      <p class="label blue">What you get</p>
+      <h2 id="promiseTitle" style="margin-bottom:clamp(32px,4vw,52px)">More than a number.</h2>
+      <div class="promises">
+{promise}
+      </div>
+    </div>
+  </section>
+
+  <section class="section words" aria-labelledby="fReviews">
+    <div class="wrap">
+      <h2 class="label" id="fReviews">In their words</h2>
+      <p class="stars" aria-hidden="true" style="margin-top:1.4rem">★★★★★</p>
+      <blockquote class="quote" id="quoteText">{C.REVIEWS[0][0]}</blockquote>
+      <div class="quote-by"><b id="quoteName">{C.REVIEWS[0][1]}</b><span id="quoteWhere">{C.REVIEWS[0][2]}</span></div>
+      <div class="quote-nav">
+        <button type="button" id="qPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+        <span class="count" id="qCount" aria-live="polite">1 / {len(C.REVIEWS)}</span>
+        <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <p class="trust"><a href="{C.RATEMYAGENT}" rel="noopener">Over {C.REVIEW_COUNT} five-star reviews on RateMyAgent</a></p>
+    </div>
+  </section>
+
+  <section class="section on-light" aria-labelledby="fFaq">
+    <div class="wrap split">
+      <div class="split-head">
+        <p class="label blue">Before you ask</p>
+        <h2 id="fFaq">The honest answers.</h2>
+      </div>
+      <div class="faq-list">
+{faq}
+      </div>
+    </div>
+  </section>
+
+  <section class="section funnel-close">
+    <div class="wrap">
+      <h2>Ready when you are.</h2>
+      <p class="lede" style="margin:1rem auto 2rem; text-align:center">Takes about a minute, and there's nothing to sign.</p>
+      <p style="text-align:center"><a class="btn btn-blue" href="#funnelForm">Start my appraisal</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer funnel-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>© {date.today().year} {C.AGENT_NAME} · {C.AGENCY} · Licensed under the REA Act 2008</span>
+      <span><a href="tel:{C.PHONE_LINK}">{C.PHONE_DISPLAY}</a></span>
+    </div>
+  </div>
+</footer>'''
+
+
 def sold_body():
     d = 1
     sold = '\n'.join(card(*r, depth=d) for r in C.SOLD)
@@ -843,7 +988,7 @@ def head(page, depth):
     d = rel(depth)
     url = C.SITE + '/' + page['path']
     robots = ('<meta name="robots" content="noindex, nofollow">'
-              if C.PREVIEW else
+              if (C.PREVIEW or page.get('noindex')) else
               '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">')
     gsc = f'\n<meta name="google-site-verification" content="{C.GSC_TOKEN}">' if C.GSC_TOKEN else ''
     ga = ''
@@ -851,6 +996,14 @@ def head(page, depth):
         ga = f'''
 <script async src="https://www.googletagmanager.com/gtag/js?id={C.GA4_ID}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{C.GA4_ID}');</script>'''
+    pixel = ''
+    if page.get('funnel') and C.META_PIXEL_ID:
+        pixel = ('\n<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?'
+                 'n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;'
+                 'n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;'
+                 't.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}'
+                 '(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");'
+                 f'fbq("init","{C.META_PIXEL_ID}");fbq("track","PageView");</script>')
     schema = json.dumps(schema_for(page), indent=2, ensure_ascii=False)
     return f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -877,7 +1030,7 @@ def head(page, depth):
 <link rel="apple-touch-icon" href="{d}apple-touch-icon.png">
 <link rel="preload" href="{d}assets/fonts/clash-display-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{d}assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{d}assets/site.css">{ga}
+<link rel="stylesheet" href="{d}assets/site.css">{ga}{pixel}
 <script type="application/ld+json">
 {schema}
 </script>'''
@@ -946,20 +1099,26 @@ def script_block(depth=0):
       function step(n){ stop(); showQuote(n); start(); }
       $('qPrev').addEventListener('click', function(){ step(qi - 1); });
       $('qNext').addEventListener('click', function(){ step(qi + 1); });
-      var band = document.getElementById('reviews');
-      ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });
-      ['mouseleave','focusout'].forEach(function(e){ band.addEventListener(e, start); });
+      var band = qText.closest('section');
+      if(band){
+        ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });
+        ['mouseleave','focusout'].forEach(function(e){ band.addEventListener(e, start); });
+      }
       document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
       start();
     }
 
-    function sendLead(kind, form){
-      var data = {};
-      form.querySelectorAll('input, select, textarea').forEach(function(el){
-        if(!el.name) return;
-        data[el.name] = (el.type === 'checkbox') ? el.checked : el.value.trim();
-      });
-      var label = (kind === 'guide') ? 'Selling guide download' : 'Appraisal request';
+    function sendLead(kind, form, preset){
+      var data = preset || {};
+      if(!preset){
+        form.querySelectorAll('input, select, textarea').forEach(function(el){
+          if(!el.name) return;
+          data[el.name] = (el.type === 'checkbox') ? el.checked : el.value.trim();
+        });
+      }
+      var label = kind === 'guide' ? 'Selling guide download'
+                : kind === 'funnel' ? 'Appraisal request (Meta ad)'
+                : 'Appraisal request';
       var subject = label + ' from ' + (data.name || 'the website') + (data.address ? ', ' + data.address : '');
       var fields = {
         Enquiry: label,
@@ -968,6 +1127,8 @@ def script_block(depth=0):
         Email: data.email || '',
         Property: data.address || '',
         Timeframe: data.timeframe || '',
+        PropertyType: data.type || '',
+        Bedrooms: data.bedrooms || '',
         Page: location.href
       };
       var url, payload;
@@ -1019,6 +1180,110 @@ def script_block(depth=0):
       });
     }
 
+    // ---- Scroll reveal, applied globally. The class is added by script, so if this file
+    // ---- ever fails to run the content is still visible rather than stuck at opacity 0.
+    (function(){
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if(!('IntersectionObserver' in window)) return;
+      var sel = ['.section .split-head', '.section .areas-head', '.section .list-head',
+                 '.content-main > .block', '.aside > *', '.card', '.switch > a', '.stat',
+                 '.faq-list details', '.form-card', '.appraise-copy', '.promise',
+                 '.reel-wrap', '.quote-by', '.secondary', '.page-hero .lede',
+                 '.page-hero h1', '.page-hero .crumbs', '.funnel-close > .wrap > *'].join(',');
+      var els = Array.prototype.slice.call(document.querySelectorAll(sel));
+      if(!els.length) return;
+      els.forEach(function(el){
+        el.classList.add('reveal');
+        var sibs = el.parentNode ? Array.prototype.slice.call(el.parentNode.children) : [];
+        var i = sibs.indexOf(el);
+        if(i > 0 && i < 8) el.style.transitionDelay = (i * 70) + 'ms';
+      });
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(!en.isIntersecting) return;
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
+      function inView(el){
+        var r = el.getBoundingClientRect();
+        return r.top < window.innerHeight && r.bottom > 0;
+      }
+      requestAnimationFrame(function(){
+        els.forEach(function(el){
+          if(inView(el)){ el.style.transitionDelay = '0ms'; el.classList.add('in'); }
+          else { io.observe(el); }
+        });
+      });
+      // safety net: never leave something on screen stuck invisible
+      setTimeout(function(){
+        els.forEach(function(el){ if(inView(el)) el.classList.add('in'); });
+      }, 1200);
+    })();
+
+    // ---- Paid-ads funnel: one question at a time ----
+    var fForm = $('funnelForm');
+    if(fForm){
+      var steps = Array.prototype.slice.call(fForm.querySelectorAll('.step'));
+      var answers = {}, at = 0;
+      var bar = $('progressBar'), now = $('stepNow');
+      function paint(){
+        steps.forEach(function(s, i){ s.hidden = (i !== at); });
+        bar.style.width = Math.round(((at) / steps.length) * 100) + '%';
+        now.textContent = at + 1;
+        var focusable = steps[at].querySelector('input, .opt');
+        if(focusable && focusable.tagName === 'INPUT') focusable.focus({preventScroll:true});
+      }
+      function valid(step){
+        var ok = true;
+        step.querySelectorAll('[data-required]').forEach(function(el){
+          var bad = !el.value.trim() || (el.type === 'email' && el.value.indexOf('@') < 0);
+          el.classList.toggle('bad', bad);
+          if(bad) ok = false;
+        });
+        return ok;
+      }
+      function go(n){
+        if(n > at && !valid(steps[at])) return;
+        at = Math.max(0, Math.min(steps.length - 1, n));
+        paint();
+      }
+      fForm.addEventListener('click', function(e){
+        var opt = e.target.closest('.opt');
+        if(opt){
+          answers[opt.getAttribute('data-field')] = opt.getAttribute('data-value');
+          opt.parentNode.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('on'); });
+          opt.classList.add('on');
+          setTimeout(function(){ go(at + 1); }, 180);
+          return;
+        }
+        if(e.target.closest('.step-next')) go(at + 1);
+        if(e.target.closest('.step-back')) go(at - 1);
+      });
+      fForm.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' && e.target.classList.contains('step-input')){
+          e.preventDefault(); go(at + 1);
+        }
+      });
+      fForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!valid(steps[at])) return;
+        fForm.querySelectorAll('input').forEach(function(el){
+          if(el.name && el.type !== 'checkbox') answers[el.name] = el.value.trim();
+        });
+        answers.botcheck = fForm.querySelector('[name=botcheck]').checked;
+        sendLead('funnel', fForm, answers);
+        if(window.fbq) fbq('track', 'Lead', { content_name: 'Home appraisal funnel' });
+        $('doneName').textContent = clean((answers.name || 'there').split(' ')[0]);
+        fForm.hidden = true;
+        var done = $('funnelDone');
+        done.hidden = false;
+        done.querySelector('h2').setAttribute('tabindex', '-1');
+        done.querySelector('h2').focus();
+      });
+      paint();
+    }
+
     var modal = $('guideModal'), guideBtn = $('guideBtn');
     if(modal && guideBtn){
       guideBtn.addEventListener('click', function(){ modal.showModal(); });
@@ -1055,6 +1320,8 @@ def script_block(depth=0):
 def sitemap(page_list):
     rows = []
     for p in page_list:
+        if p.get('noindex'):
+            continue
         prio = '1.0' if p['path'] == '' else ('0.9' if p.get('suburb') else '0.8')
         rows.append(f'''  <url>
     <loc>{C.SITE}/{p['path']}</loc>
@@ -1103,7 +1370,8 @@ def main():
     shutil.copyfile(os.path.join(HERE, 'src/site.css'), os.path.join(HERE, 'assets/site.css'))
 
     bodies = {'': home_body(), 'recently-sold/': sold_body(),
-              'free-selling-guide/': guide_body(), 'property-appraisal/': appraisal_body()}
+              'free-selling-guide/': guide_body(), 'property-appraisal/': appraisal_body(),
+              C.FUNNEL_SLUG + '/': funnel_body()}
     for s in C.SUBURBS:
         bodies[s['slug'] + '/'] = suburb_body(s)
 

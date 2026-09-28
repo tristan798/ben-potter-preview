@@ -676,20 +676,26 @@
       function step(n){ stop(); showQuote(n); start(); }
       $('qPrev').addEventListener('click', function(){ step(qi - 1); });
       $('qNext').addEventListener('click', function(){ step(qi + 1); });
-      var band = document.getElementById('reviews');
-      ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });
-      ['mouseleave','focusout'].forEach(function(e){ band.addEventListener(e, start); });
+      var band = qText.closest('section');
+      if(band){
+        ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });
+        ['mouseleave','focusout'].forEach(function(e){ band.addEventListener(e, start); });
+      }
       document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
       start();
     }
 
-    function sendLead(kind, form){
-      var data = {};
-      form.querySelectorAll('input, select, textarea').forEach(function(el){
-        if(!el.name) return;
-        data[el.name] = (el.type === 'checkbox') ? el.checked : el.value.trim();
-      });
-      var label = (kind === 'guide') ? 'Selling guide download' : 'Appraisal request';
+    function sendLead(kind, form, preset){
+      var data = preset || {};
+      if(!preset){
+        form.querySelectorAll('input, select, textarea').forEach(function(el){
+          if(!el.name) return;
+          data[el.name] = (el.type === 'checkbox') ? el.checked : el.value.trim();
+        });
+      }
+      var label = kind === 'guide' ? 'Selling guide download'
+                : kind === 'funnel' ? 'Appraisal request (Meta ad)'
+                : 'Appraisal request';
       var subject = label + ' from ' + (data.name || 'the website') + (data.address ? ', ' + data.address : '');
       var fields = {
         Enquiry: label,
@@ -698,6 +704,8 @@
         Email: data.email || '',
         Property: data.address || '',
         Timeframe: data.timeframe || '',
+        PropertyType: data.type || '',
+        Bedrooms: data.bedrooms || '',
         Page: location.href
       };
       var url, payload;
@@ -747,6 +755,110 @@
         sendLead('appraisal', form);
         done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
       });
+    }
+
+    // ---- Scroll reveal, applied globally. The class is added by script, so if this file
+    // ---- ever fails to run the content is still visible rather than stuck at opacity 0.
+    (function(){
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if(!('IntersectionObserver' in window)) return;
+      var sel = ['.section .split-head', '.section .areas-head', '.section .list-head',
+                 '.content-main > .block', '.aside > *', '.card', '.switch > a', '.stat',
+                 '.faq-list details', '.form-card', '.appraise-copy', '.promise',
+                 '.reel-wrap', '.quote-by', '.secondary', '.page-hero .lede',
+                 '.page-hero h1', '.page-hero .crumbs', '.funnel-close > .wrap > *'].join(',');
+      var els = Array.prototype.slice.call(document.querySelectorAll(sel));
+      if(!els.length) return;
+      els.forEach(function(el){
+        el.classList.add('reveal');
+        var sibs = el.parentNode ? Array.prototype.slice.call(el.parentNode.children) : [];
+        var i = sibs.indexOf(el);
+        if(i > 0 && i < 8) el.style.transitionDelay = (i * 70) + 'ms';
+      });
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(!en.isIntersecting) return;
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
+      function inView(el){
+        var r = el.getBoundingClientRect();
+        return r.top < window.innerHeight && r.bottom > 0;
+      }
+      requestAnimationFrame(function(){
+        els.forEach(function(el){
+          if(inView(el)){ el.style.transitionDelay = '0ms'; el.classList.add('in'); }
+          else { io.observe(el); }
+        });
+      });
+      // safety net: never leave something on screen stuck invisible
+      setTimeout(function(){
+        els.forEach(function(el){ if(inView(el)) el.classList.add('in'); });
+      }, 1200);
+    })();
+
+    // ---- Paid-ads funnel: one question at a time ----
+    var fForm = $('funnelForm');
+    if(fForm){
+      var steps = Array.prototype.slice.call(fForm.querySelectorAll('.step'));
+      var answers = {}, at = 0;
+      var bar = $('progressBar'), now = $('stepNow');
+      function paint(){
+        steps.forEach(function(s, i){ s.hidden = (i !== at); });
+        bar.style.width = Math.round(((at) / steps.length) * 100) + '%';
+        now.textContent = at + 1;
+        var focusable = steps[at].querySelector('input, .opt');
+        if(focusable && focusable.tagName === 'INPUT') focusable.focus({preventScroll:true});
+      }
+      function valid(step){
+        var ok = true;
+        step.querySelectorAll('[data-required]').forEach(function(el){
+          var bad = !el.value.trim() || (el.type === 'email' && el.value.indexOf('@') < 0);
+          el.classList.toggle('bad', bad);
+          if(bad) ok = false;
+        });
+        return ok;
+      }
+      function go(n){
+        if(n > at && !valid(steps[at])) return;
+        at = Math.max(0, Math.min(steps.length - 1, n));
+        paint();
+      }
+      fForm.addEventListener('click', function(e){
+        var opt = e.target.closest('.opt');
+        if(opt){
+          answers[opt.getAttribute('data-field')] = opt.getAttribute('data-value');
+          opt.parentNode.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('on'); });
+          opt.classList.add('on');
+          setTimeout(function(){ go(at + 1); }, 180);
+          return;
+        }
+        if(e.target.closest('.step-next')) go(at + 1);
+        if(e.target.closest('.step-back')) go(at - 1);
+      });
+      fForm.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' && e.target.classList.contains('step-input')){
+          e.preventDefault(); go(at + 1);
+        }
+      });
+      fForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!valid(steps[at])) return;
+        fForm.querySelectorAll('input').forEach(function(el){
+          if(el.name && el.type !== 'checkbox') answers[el.name] = el.value.trim();
+        });
+        answers.botcheck = fForm.querySelector('[name=botcheck]').checked;
+        sendLead('funnel', fForm, answers);
+        if(window.fbq) fbq('track', 'Lead', { content_name: 'Home appraisal funnel' });
+        $('doneName').textContent = clean((answers.name || 'there').split(' ')[0]);
+        fForm.hidden = true;
+        var done = $('funnelDone');
+        done.hidden = false;
+        done.querySelector('h2').setAttribute('tabindex', '-1');
+        done.querySelector('h2').focus();
+      });
+      paint();
     }
 
     var modal = $('guideModal'), guideBtn = $('guideBtn');

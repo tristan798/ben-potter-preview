@@ -484,3 +484,51 @@ GUIDE_BLOCKS = [
         "buyers pay for what they see rather than what you have spent.",
     ]),
 ]
+
+# ---------------------------------------------------------------- paid ads funnel
+# Landing page for Ben's Meta video ad. Deliberately separate from the main site:
+# no nav, one goal, noindex so it never competes with the suburb pages in search.
+META_PIXEL_ID = ""     # Meta pixel id, e.g. "123456789012345"; empty omits the pixel entirely
+
+FUNNEL_SLUG    = "whats-my-home-worth"
+FUNNEL_TITLE   = "What's My Home Worth? | Free Appraisal, Devonport Peninsula"
+FUNNEL_DESC    = ("Find out what your Devonport, Belmont or Bayswater home is worth. A free, written "
+                  "appraisal from Ben Potter, Harcourts Cooper & Co. Takes about a minute.")
+FUNNEL_H1      = "What's your home <em>actually</em> worth?"
+FUNNEL_LEDE    = ("Ben Potter has been on the Devonport Peninsula for 38 years. Answer five quick "
+                  "questions and he'll send you a written appraisal built from recent sales on your "
+                  "street, not a number designed to win your business.")
+FUNNEL_PROMISE = [
+    ("A real number, in writing", "A range built from comparable sales near you in the last six months."),
+    ("What to fix, what to skip", "An honest view on preparation, including the jobs that don't pay you back."),
+    ("A method and a budget", "Auction, deadline sale, tender or price, with marketing costs up front."),
+    ("No cost, no obligation", "Plenty of these are for owners who are a year away from selling."),
+]
+
+# The interactive steps. Each is one question, so nobody faces a wall of fields.
+FUNNEL_STEPS = [
+    {"key": "address", "q": "What's the property address?",
+     "help": "Street and suburb is enough.", "type": "text",
+     "placeholder": "12 Cheltenham Road, Devonport"},
+    {"key": "type", "q": "What kind of home is it?", "type": "choice",
+     "options": ["House", "Townhouse", "Apartment", "Section or land"]},
+    {"key": "bedrooms", "q": "How many bedrooms?", "type": "choice",
+     "options": ["1", "2", "3", "4", "5 or more"]},
+    {"key": "timeframe", "q": "When are you thinking of selling?", "type": "choice",
+     "options": ["In the next 3 months", "In 3 to 12 months", "Next year or later",
+                 "Just curious about the value"]},
+    {"key": "contact", "q": "Where should Ben send it?",
+     "help": "He replies personally, usually the same day.", "type": "contact"},
+]
+
+FUNNEL_FAQ = [
+    ("Is it really free?",
+     "Yes. No cost, and no obligation to list with Ben. A good share of the appraisals he does are "
+     "for owners who are a year or two away from selling."),
+    ("What happens after I submit?",
+     "Ben calls you to arrange a time to see the property, usually within one business day. The "
+     "written appraisal follows after that visit."),
+    ("Will I get spammed?",
+     "No. Your details go to Ben directly, not to a call centre or a lead pool, and they are not "
+     "passed on to anyone else."),
+]
