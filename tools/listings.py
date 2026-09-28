@@ -32,7 +32,21 @@ def load():
             item.setdefault('id', '')
             item['sold_label'] = 'Sold ' + _fmt(item.get('sold_on')) if item.get('sold_on') else 'Sold'
     data['sold'].sort(key=lambda i: i.get('sold_on') or '', reverse=True)
+    # Newest listing first. 'ref' is Harcourts' own listing number, issued in order.
+    data['for_sale'].sort(key=lambda i: i.get('ref') or 0, reverse=True)
     return data
+
+
+def featured_sold(data, n=3):
+    """What the homepage shows. Sales Ben has given a date for are the hand-picked ones,
+    and they lead. Anything short of n is topped up from their own ordering."""
+    dated = [i for i in data['sold'] if i.get('sold_on')]
+    dated.sort(key=lambda i: i['sold_on'], reverse=True)
+    out = dated[:n]
+    if len(out) < n:
+        seen = {id(i) for i in out}
+        out += [i for i in data['sold'] if id(i) not in seen][:n - len(out)]
+    return out
 
 
 def meta_line(item):

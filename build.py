@@ -46,8 +46,8 @@ def pages():
          'crumbs': [('Recently sold', None)], 'nav': 'sold'},
         {'path': 'current-listings/', 'file': 'current-listings/index.html',
          'title': 'Current Listings | Ben Potter, Harcourts Cooper &amp; Co',
-         'desc': ('Homes currently for sale with Ben Potter across Devonport, Belmont, Bayswater and '
-                  'the wider North Shore, with open home times.'),
+         'desc': ('Every home currently for sale with Ben Potter, across Devonport, Belmont, '
+                  'Bayswater and the wider North Shore.'),
          'crumbs': [('Current listings', None)], 'nav': 'sold'},
         {'path': 'free-selling-guide/', 'file': 'free-selling-guide/index.html',
          'title': 'Free Selling Guide for Devonport, Belmont &amp; Bayswater | Ben Potter',
@@ -333,7 +333,7 @@ def contact_body():
         <h2 id="formTitle">Tell Ben what you <em>need.</em></h2>
 
         <div class="reach">
-          <p class="reach-lead">Not one for forms? Call or email him directly. Both reach Ben himself, not an office queue.</p>
+          <p class="reach-lead">Not one for forms? Call or email him directly.</p>
           <div class="reach-actions">
             <a class="btn btn-blue" href="tel:{C.PHONE_LINK}">Call {C.PHONE_DISPLAY}</a>
             <a class="btn btn-line" href="mailto:{C.EMAIL}">Email Ben</a>
@@ -438,7 +438,7 @@ def footer(depth):
 # ---------------------------------------------------------------- page bodies
 def home_body():
     d = 0
-    sold = '\n'.join(card(i, depth=d) for i in L.load()['sold'][:3])
+    sold = '\n'.join(card(i, depth=d) for i in L.featured_sold(L.load()))
     return f'''{header(d, 'home')}
 
 <main>
@@ -531,7 +531,7 @@ def home_body():
       <div class="cards">
 {sold}
       </div>
-{photo_note(L.load()['sold'][:3])}    </div>
+{photo_note(L.featured_sold(L.load()))}    </div>
   </section>
 
 {reviews_section(d)}

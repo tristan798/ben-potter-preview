@@ -47,7 +47,7 @@ AGENT_NAME  = os.environ.get('LISTINGS_AGENT', 'Ben Potter')
 PROFILE_URL = os.environ.get('LISTINGS_PROFILE_URL',
                              'https://harcourts.net/nz/office/devonport/people/ben-potter')
 IMG_DIR     = os.path.join(HERE, '..', 'img', 'listings')
-PHOTO_W     = 1600
+PHOTO_W     = 1000        # cards never render wider than ~600px, so 1000 covers 2x
 UA = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
       '(KHTML, like Gecko) Chrome/140.0 Safari/537.36')
 
@@ -72,7 +72,7 @@ def normalise(raw):
         return None
     out['id'] = slugify(out['address'], out['suburb'])
     for key in ('bedrooms', 'bathrooms', 'parking', 'land_m2', 'url', 'photo',
-                'photo_w', 'photo_h', 'result', 'status_label', 'sold_on'):
+                'photo_w', 'photo_h', 'result', 'status_label', 'sold_on', 'ref'):
         if raw.get(key):
             out[key] = raw[key]
     return out
@@ -120,48 +120,74 @@ def strip_tags(chunk):
     return H.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', chunk))).strip()
 
 
-def profile_listings(doc):
-    """Every listing card on Ben's profile, with the status and price the page states.
+def index_cards(doc):
+    """Every listing card on one index page, with what the card itself states.
 
-    The price is read here rather than from the listing page, because the card puts it
-    in one span while the listing page spreads it over an auction/negotiation block."""
+    The card is the cheap source: address, status, price and photo all live here, and
+    the price is the field that actually changes (an auction date moving, a price
+    dropping). Physical specs come from the listing page, once, and are then cached.
+    """
     found = {}
     for block in re.split(r'(?=<div class="property-item card)', doc):
-        m = re.search(r'href="(/nz/[^"]*?/listing/[^"#?]+)"[^>]*data-category="[^"]*"'
+        m = re.search(r'href="(/nz/[^"#?]*?/listing/[^"#?]+)"[^>]*data-category="[^"]*"'
                       r'[^>]*data-status="([^"]*)"', block)
         if not m:
             continue
         url = 'https://harcourts.net' + m.group(1)
         if url in found:
             continue
+        addr = re.search(r'<span class="address">(.*?)</span>', block, re.S)
+        if not addr:
+            continue
+        parts = [x.strip() for x in strip_tags(addr.group(1)).split(',') if x.strip()]
         price = re.search(r'<span class="price[^"]*">(.*?)</span>', block, re.S)
-        found[url] = {'status': m.group(2).strip().lower(),
-                      'price': strip_tags(price.group(1)) if price else ''}
+        photo = re.search(r'data-src="(https://listings-photos[^"]+?\.jpe?g)/\d+x\d+"', block)
+        ref = re.search(r'/listing/l(\d+)', url)
+        found[url] = {
+            'url': url,
+            'status': m.group(2).strip().lower(),
+            'address': parts[0] if parts else '',
+            'suburb': parts[1] if len(parts) > 1 else '',
+            'price': strip_tags(price.group(1)) if price else '',
+            'photo_src': photo.group(1) if photo else None,
+            'ref': int(ref.group(1)) if ref else 0,
+        }
     return found
 
 
-def detail_record(doc, url, status, price=''):
-    """Read one listing page. Specs come from labelled classes, never icon order."""
+def walk_index(path, max_pages=25):
+    """Their index pages paginate with ?page=N and show no pagination links at all.
+    Walk until a page adds nothing new, which is also how we know we reached the end."""
+    import time
+    seen, order = {}, 0
+    for page in range(1, max_pages + 1):
+        url = PROFILE_URL + '/' + path + ('' if page == 1 else
+                                          ('&' if '?' in path else '?') + 'page=%d' % page)
+        try:
+            cards = index_cards(fetch(url))
+        except Exception as e:
+            print('   ! %s page %d: %s' % (path, page, e))
+            break
+        fresh = {k: v for k, v in cards.items() if k not in seen}
+        if not fresh:
+            break
+        for k, v in fresh.items():
+            v['order'] = order
+            order += 1
+            seen[k] = v
+        time.sleep(0.6)
+    return seen
+
+
+def detail_specs(doc):
+    """Bed, bath, parking and land, read from labelled classes on the listing page.
+    These never change once a listing is up, so they are fetched once and then cached."""
     body = re.sub(r'<script.*?</script>', '', doc, flags=re.S)
-
-    addr = re.search(r'<span class="address">(.*?)</span>', body, re.S)
-    if not addr:
-        addr = re.search(r'<h1[^>]*>(.*?)</h1>', body, re.S)
-    if not addr:
-        return None
-    parts = [p.strip() for p in strip_tags(addr.group(1)).split(',') if p.strip()]
-    if not parts:
-        return None
-    rec = {'address': parts[0], 'suburb': parts[1] if len(parts) > 1 else '', 'url': url}
-
-    def labelled(cls):
-        m = re.search(r'<li class="%s"><span>(\d+)</span>' % cls, body)
-        return int(m.group(1)) if m else None
-
+    out = {}
     for key, cls in (('bedrooms', 'bed'), ('bathrooms', 'bath')):
-        v = labelled(cls)
-        if v:
-            rec[key] = v
+        m = re.search(r'<li class="%s"><span>(\d+)</span>' % cls, body)
+        if m and int(m.group(1)):
+            out[key] = int(m.group(1))
     park = 0
     # Deliberately not openspaces: those are uncovered spots, and adding them turns a
     # two-car garage into "6 car". Their own card counts covered parking only.
@@ -170,31 +196,18 @@ def detail_record(doc, url, status, price=''):
         if m:
             park += int(m.group(1))
     if park:
-        rec['parking'] = park
+        out['parking'] = park
     # icon-square-meters is the land area; icon-floorarea beside it is the house.
     land = re.search(r'<span>([\d,]+)\s*<i class="mini-icn icon-square-meters"', body)
     if land:
-        rec['land_m2'] = int(land.group(1).replace(',', ''))
-
-    # "(USP)" is Unless Sold Prior, trade shorthand that means nothing to a seller.
-    label = re.sub(r'\s*\((?:USP|BEO|PBN)\)\s*$', '', price.strip(), flags=re.I)
-    if status == 'sold':
-        # No status_label: build.py derives "Sold 17 Sep 2026" from sold_on when a date
-        # is known, and falls back to plain "Sold" when it is not. Their card has no date.
-        pass
-    else:
-        rec['status_label'] = label or 'For sale'
-
-    photo = re.search(r'(https://listings-photos[^"\' ]+?\.jpe?g)/\d+x\d+', doc)
-    if photo:
-        rec['_photo_src'] = photo.group(1)
-    return rec
+        out['land_m2'] = int(land.group(1).replace(',', ''))
+    return out
 
 
 def grab_photo(rec, slug, dry=False):
     """Copy the hero shot into the repo at PHOTO_W wide. We do not hotlink their CDN."""
     import urllib.request
-    src = rec.pop('_photo_src', None)
+    src = rec.pop('photo_src', None)
     if not src:
         return
     dest_rel = 'img/listings/%s.jpg' % slug
@@ -205,16 +218,14 @@ def grab_photo(rec, slug, dry=False):
     if os.path.exists(dest) and not os.path.exists(stamp):
         rec['photo'] = dest_rel
         return
-    # Skip the download when this exact photo is already sitting on disk.
     if os.path.exists(dest) and os.path.exists(stamp):
         if open(stamp, encoding='utf-8').read().strip() == src:
             rec['photo'] = dest_rel
             return
     if dry:
         print('   would fetch photo for %s' % slug)
-        rec['photo'] = dest_rel if os.path.exists(dest) else None
-        if not rec['photo']:
-            rec.pop('photo')
+        if os.path.exists(dest):
+            rec['photo'] = dest_rel
         return
     os.makedirs(IMG_DIR, exist_ok=True)
     req = urllib.request.Request('%s/%dx%d' % (src, PHOTO_W, int(PHOTO_W * 2 / 3)),
@@ -231,40 +242,65 @@ def grab_photo(rec, slug, dry=False):
     open(dest, 'wb').write(blob)
     open(stamp, 'w', encoding='utf-8').write(src + '\n')
     rec['photo'] = dest_rel
-    print('   photo %s (%d KB)' % (dest_rel, len(blob) // 1024))
 
 
-def from_harcourts(dry=False):
+def from_harcourts(current, dry=False):
+    """Ben's own listings pages: /listings for what is on the market, /listings/sold for
+    what he has sold. Both are scoped to him, which is the filter Trade Me does not have.
+
+    Only listings we have never seen cost a page fetch. Everything already in the file
+    is refreshed from its index card, so a moved auction date or a price change still
+    lands, without re-reading sixty listing pages every hour."""
     import time
-    print('Reading %s' % PROFILE_URL)
-    cards = profile_listings(fetch(PROFILE_URL))
-    if not cards:
-        raise SystemExit(
-            'No listing cards found on the profile page. Their markup has probably\n'
-            'changed. Check the page by hand before trusting this sync again.')
-    print('   %d listings on the profile' % len(cards))
+    known = {}
+    for bucket in ('for_sale', 'sold'):
+        for item in current.get(bucket, []):
+            if item.get('id'):
+                known[item['id']] = item
 
     live, sold = [], []
-    for url, card in sorted(cards.items()):
-        status = card['status']
-        try:
-            rec = detail_record(fetch(url), url, status, card.get('price', ''))
-        except Exception as e:
-            print('   ! %s: %s' % (url.rsplit('/', 1)[1], e))
-            continue
-        if not rec:
-            continue
-        item = normalise(rec)
-        if not item:
-            print('   ! skipped, no address/suburb: %s' % url)
-            continue
-        grab_photo(rec, item['id'], dry=dry)
-        for k in ('photo',):
-            if rec.get(k):
-                item[k] = rec[k]
-        print('   %-8s %s, %s' % (status, item['address'], item['suburb']))
-        (sold if status == 'sold' else live).append(item)
-        time.sleep(1.0)                          # be a polite visitor
+    for path, bucket in (('listings', live), ('listings/sold', sold)):
+        cards = walk_index(path)
+        if not cards:
+            raise SystemExit(
+                'No listing cards found at %s/%s. Their markup has probably changed.\n'
+                'Check the page by hand before trusting this sync again.' % (PROFILE_URL, path))
+        print('   %-14s %d listings' % (path, len(cards)))
+        for card in sorted(cards.values(), key=lambda c: c['order']):
+            item = normalise(card)
+            if not item:
+                print('   ! skipped, no address/suburb: %s' % card['url'])
+                continue
+            was = known.get(item['id'])
+            if was:
+                # Specs do not change. Carry them over rather than re-reading the page.
+                for k in ('bedrooms', 'bathrooms', 'parking', 'land_m2'):
+                    if was.get(k):
+                        item[k] = was[k]
+            else:
+                try:
+                    item.update(detail_specs(fetch(card['url'])))
+                except Exception as e:
+                    print('   ! could not read %s: %s' % (card['url'].rsplit('/', 1)[1], e))
+                time.sleep(0.8)                  # be a polite visitor
+            item['order'] = card['order']
+            # "(USP)" is Unless Sold Prior, trade shorthand that means nothing to a seller.
+            label = re.sub(r'\s*\((?:USP|BEO|PBN)\)\s*$', '', (card.get('price') or '').strip(),
+                           flags=re.I)
+            if card['status'] != 'sold':
+                # No status_label on a sale: build.py turns sold_on into "Sold 17 Sep 2026"
+                # when a date is known, and falls back to plain "Sold" when it is not.
+                item['status_label'] = label or 'For sale'
+            rec = {'photo_src': card.get('photo_src')}
+            grab_photo(rec, item['id'], dry=dry)
+            if rec.get('photo'):
+                item['photo'] = rec['photo']
+            bucket.append(item)
+
+    # Newest listing first, which is what the reference number orders by.
+    live.sort(key=lambda i: i.get('ref') or 0, reverse=True)
+    # Their sold page is already ordered most recent first, so keep their order.
+    sold.sort(key=lambda i: i.get('order', 0))
     return live, sold
 
 
@@ -284,7 +320,7 @@ def main():
         print('LISTINGS_SOURCE=manual, nothing to pull.')
         return 0
     elif SOURCE == 'harcourts':
-        live, sold = from_harcourts(dry=dry)
+        live, sold = from_harcourts(current, dry=dry)
     elif SOURCE == 'trademe':
         from_trademe()
         return 0
@@ -305,9 +341,14 @@ def main():
             for k in KEEP:
                 if old.get(k):
                     item[k] = old[k]
-    # Sales the profile page no longer shows are still Ben's history. Keep them.
-    sold.extend(previous.values())
-    sold.sort(key=lambda i: i.get('sold_on') or '', reverse=True)
+    # Sales their pages no longer show are still Ben's history. Keep them, after the
+    # ones they do show, so their ordering survives.
+    tail = len(sold)
+    for leftover in previous.values():
+        leftover['order'] = tail
+        tail += 1
+        sold.append(leftover)
+    sold.sort(key=lambda i: i.get('order', 0))
 
     live_prev = {i.get('id'): i for i in current.get('for_sale', [])}
     for item in live:
