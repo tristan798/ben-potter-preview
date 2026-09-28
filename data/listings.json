@@ -9,21 +9,27 @@
       "address": "8/3 Corrella Road",
       "suburb": "Belmont",
       "sold_on": "2026-09-17",
-      "photo": null
+      "photo": "img/listings/8-3-corrella-road-belmont.jpg",
+      "photo_w": 1600,
+      "photo_h": 1066
     },
     {
       "id": "13a-bayswater-avenue-bayswater",
       "address": "13A Bayswater Avenue",
       "suburb": "Bayswater",
       "sold_on": "2026-08-04",
-      "photo": null
+      "photo": "img/listings/13a-bayswater-avenue-bayswater.jpg",
+      "photo_w": 1600,
+      "photo_h": 1066
     },
     {
       "id": "16-kiwi-road-devonport",
       "address": "16 Kiwi Road",
       "suburb": "Devonport",
       "sold_on": "2026-05-21",
-      "photo": null
+      "photo": "img/listings/16-kiwi-road-devonport.jpg",
+      "photo_w": 1448,
+      "photo_h": 965
     }
   ]
 }

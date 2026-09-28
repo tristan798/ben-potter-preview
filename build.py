@@ -150,7 +150,14 @@ def card(item, depth=0, live=False):
     alt = f"{addr}, {suburb}"
     photo = item.get('photo')
     if photo:
-        media = (f'<img src="{rel(depth)}{photo}" alt="{alt}" width="800" height="600" loading="lazy">')
+        w, h = item.get('photo_w', 1600), item.get('photo_h', 1066)
+        img = (f'<img src="{rel(depth)}{photo}" alt="{alt}" width="{w}" height="{h}" loading="lazy" decoding="async">')
+        webp = re.sub(r'\.jpe?g$', '.webp', photo)
+        # Only offer the WebP if it is actually sitting there. A feed can hand us a remote URL.
+        if webp != photo and os.path.exists(os.path.join(HERE, webp)):
+            media = (f'<picture><source srcset="{rel(depth)}{webp}" type="image/webp">{img}</picture>')
+        else:
+            media = img
         note = ''
     else:
         media = f'<!-- drop the photo at img/listings/{slug}.jpg and set "photo" in data/listings.json -->'
@@ -173,6 +180,13 @@ def card(item, depth=0, live=False):
           </div>
         </a>
 '''
+
+
+def photo_note(items, extra=''):
+    """Only apologise for missing photography while something is actually missing it."""
+    if not items or all(i.get('photo') for i in items):
+        return ''
+    return '      <p class="card-note">Photography follows shortly.%s</p>\n' % extra
 
 
 def offmarket(depth):
@@ -420,8 +434,7 @@ def home_body():
       <div class="cards">
 {sold}
       </div>
-      <p class="card-note">Photography follows shortly.</p>
-    </div>
+{photo_note(L.load()['sold'][:3])}    </div>
   </section>
 
 {reviews_section(d)}
@@ -769,7 +782,7 @@ def sold_body():
         <a class="ruled" href="../current-listings/">See all current listings {ARROW}</a>
       </div>
 {sale}
-      <p class="card-note">Photography follows shortly. Ask Ben what your own home would achieve.</p>
+{photo_note(data['for_sale'], ' Ask Ben what your own home would achieve.')}
     </div>
   </section>
 

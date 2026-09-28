@@ -51,7 +51,7 @@ def normalise(raw):
         return None
     out['id'] = slugify(out['address'], out['suburb'])
     for key in ('bedrooms', 'bathrooms', 'parking', 'land_m2', 'url', 'photo',
-                'result', 'status_label', 'sold_on'):
+                'photo_w', 'photo_h', 'result', 'status_label', 'sold_on'):
         if raw.get(key):
             out[key] = raw[key]
     return out
