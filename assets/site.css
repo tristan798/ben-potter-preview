@@ -361,60 +361,84 @@
   /* ---- Paid-ads funnel ---- */
   .funnel-header{position:static}
   .funnel-header .wrap{justify-content:space-between}
-  .phone-link{font-size:.9rem; font-weight:500; text-decoration:none; color:var(--fg)}
+  .phone-link{font-size:.92rem; font-weight:500; text-decoration:none; color:var(--fg); font-variant-numeric:tabular-nums}
   .phone-link:hover{color:var(--accent)}
-  .funnel-hero{position:relative; overflow:hidden; background:radial-gradient(80% 90% at 74% 42%, #34353A 0%, #1B1C1F 48%, #0F1012 100%); color:var(--fg); padding-block:clamp(40px, 6vw, 84px) clamp(56px, 7vw, 104px)}
-  .funnel-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.92fr); gap:clamp(32px, 5vw, 72px); align-items:start}
-  .funnel-copy{display:flex; flex-direction:column; gap:22px}
-  .funnel-copy h1{font-size:clamp(2.3rem, 4.4vw, 3.9rem); max-width:15ch}
-  .funnel-copy .lede{max-width:52ch}
-  .funnel-reel{max-width:240px; margin-top:8px}
 
-  .funnel-card{background:var(--white); color:var(--ink); border-radius:3px; padding:clamp(24px, 3vw, 38px); box-shadow:0 40px 80px -50px rgba(0,0,0,.8); --fg:#17181B; --fg-2:#4B4D53; --mute:#7C7A76; --rule:rgba(23,24,27,.13); --rule-2:rgba(23,24,27,.28); --accent:var(--blue)}
+  .funnel-hero{position:relative; overflow:hidden; color:var(--fg);
+    background:radial-gradient(80% 70% at 50% 22%, #35363B 0%, #1B1C1F 52%, #0F1012 100%);
+    padding-block:clamp(44px, 6vw, 76px) clamp(52px, 7vw, 88px)}
+  .funnel-stack{max-width:680px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px}
+  .funnel-stack h1{font-size:clamp(2.2rem, 5vw, 3.5rem); max-width:16ch}
+  .funnel-stack .lede{max-width:52ch; margin-bottom:6px}
+
+  .funnel-card{width:100%; margin-top:10px; text-align:left; background:var(--white); color:var(--ink);
+    border-radius:4px; padding:clamp(22px, 3vw, 34px); box-shadow:0 36px 70px -40px rgba(0,0,0,.85);
+    --fg:#17181B; --fg-2:#4B4D53; --mute:#75767A; --rule:rgba(23,24,27,.12); --rule-2:rgba(23,24,27,.26); --accent:var(--blue)}
+  .card-head{display:flex; flex-direction:column; gap:10px; padding-bottom:18px; border-bottom:1px solid var(--rule)}
   .progress{height:3px; background:rgba(23,24,27,.1); border-radius:2px; overflow:hidden}
-  .progress span{display:block; height:100%; width:0; background:var(--blue); transition:width .35s cubic-bezier(.2,.7,.2,1)}
-  .step-count{margin-top:12px; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--mute); font-weight:500}
-  .step{border:0; margin:0; padding:18px 0 0; min-width:0}
-  .step[hidden]{display:none}
-  .step-q{font-family:var(--display); font-weight:500; font-size:clamp(1.45rem, 2.2vw, 1.95rem); letter-spacing:-.02em; line-height:1.15; padding:0; color:var(--ink)}
+  .progress span{display:block; height:100%; width:20%; background:var(--blue); transition:width .35s cubic-bezier(.2,.7,.2,1)}
+  .step-count{font-size:.66rem; letter-spacing:.18em; text-transform:uppercase; color:var(--mute); font-weight:600}
+  .step{border:0; margin:0; padding:22px 0 0; min-width:0}
+  .step-q{font-family:var(--display); font-weight:500; font-size:clamp(1.35rem, 2.1vw, 1.75rem);
+    letter-spacing:-.02em; line-height:1.18; padding:0; color:var(--ink)}
   .step-help{margin-top:8px; font-size:.9rem; color:var(--mute)}
-  .step-input{width:100%; margin-top:20px; font:inherit; font-size:1.05rem; color:var(--ink); background:transparent; border:0; border-bottom:1px solid var(--rule-2); padding:10px 0 12px}
+  .step-input{width:100%; margin-top:18px; font:inherit; font-size:1.05rem; color:var(--ink);
+    background:transparent; border:0; border-bottom:1px solid var(--rule-2); padding:10px 0 12px}
   .step-input:focus{outline:none; border-color:var(--blue)}
   .step-input.bad, .step-fields input.bad{border-color:#D0342C}
-  .opts{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-top:20px}
-  .opt{font:inherit; font-size:.95rem; text-align:left; padding:16px 18px; background:transparent; border:1px solid var(--rule-2); border-radius:2px; cursor:pointer; color:var(--ink); transition:border-color .2s, background .2s, color .2s}
-  .opt:hover{border-color:var(--blue); color:var(--blue)}
+  .opts{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-top:18px}
+  .opt{font:inherit; font-size:.95rem; font-weight:500; text-align:left; padding:16px 18px; background:transparent;
+    border:1px solid var(--rule-2); border-radius:3px; cursor:pointer; color:var(--ink);
+    transition:border-color .18s, background .18s, color .18s, transform .18s}
+  .opt:hover{border-color:var(--blue); color:var(--blue); transform:translateY(-1px)}
   .opt.on{background:var(--blue); border-color:var(--blue); color:#fff}
-  .step-fields{display:flex; flex-direction:column; gap:18px; margin-top:20px}
+  .step-fields{display:flex; flex-direction:column; gap:16px; margin-top:18px}
   .step-fields .field label{color:var(--mute)}
-  .step-fields input{font:inherit; font-size:1.02rem; color:var(--ink); background:transparent; border:0; border-bottom:1px solid var(--rule-2); padding:9px 0 11px; width:100%}
+  .step-fields input{font:inherit; font-size:1.02rem; color:var(--ink); background:transparent; border:0;
+    border-bottom:1px solid var(--rule-2); padding:9px 0 11px; width:100%}
   .step-fields input:focus{outline:none; border-color:var(--blue)}
-  .step-nav{display:flex; align-items:center; gap:16px; margin-top:24px; flex-wrap:wrap}
-  .step-nav .btn{flex:1 1 auto}
-  .step-back{background:none; border:0; font:inherit; font-size:.8rem; letter-spacing:.06em; color:var(--mute); cursor:pointer; text-decoration:underline; text-underline-offset:4px; padding:6px 0}
+  .step-nav{display:flex; align-items:center; gap:18px; margin-top:22px; flex-wrap:wrap}
+  .step-nav .btn{flex:1 1 auto; padding-block:18px}
+  .step-back{background:none; border:0; font:inherit; font-size:.78rem; letter-spacing:.06em; color:var(--mute);
+    cursor:pointer; text-decoration:underline; text-underline-offset:4px; padding:6px 0}
   .step-back:hover{color:var(--ink)}
-  .step-foot{margin-top:18px; padding-top:16px; border-top:1px solid var(--rule); font-size:.78rem; color:var(--mute)}
-  .funnel-done{display:flex; flex-direction:column; gap:14px}
-  .funnel-done h2{font-size:clamp(1.7rem, 2.6vw, 2.2rem); color:var(--ink)}
+  .step-foot{margin-top:20px; padding-top:16px; border-top:1px solid var(--rule); font-size:.78rem; color:var(--mute)}
+  .funnel-done{display:flex; flex-direction:column; gap:12px}
+  .funnel-done h2{font-size:clamp(1.6rem, 2.4vw, 2rem); color:var(--ink)}
   .funnel-done p{color:var(--fg-2)}
   .done-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
 
-  .promises{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:clamp(24px, 3vw, 44px)}
-  .promise{display:flex; flex-direction:column; gap:10px; padding-top:22px; border-top:1px solid var(--rule)}
-  .promise h3{font-size:1.25rem}
-  .promise p{color:var(--fg-2); font-size:.98rem}
-  .funnel-close{background:var(--ink); color:var(--fg); text-align:center}
-  .funnel-close h2{text-align:center}
-  .funnel-footer{border-top:1px solid var(--rule)}
+  .trust-row{list-style:none; margin:26px 0 0; padding:22px 0 0; border-top:1px solid var(--rule);
+    width:100%; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px}
+  .trust-row li{display:flex; flex-direction:column; gap:5px}
+  .trust-row b{font-family:var(--display); font-weight:500; font-size:1.15rem; letter-spacing:-.02em}
+  .trust-row span{font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mute)}
 
-  @media (max-width: 900px){
-    .funnel-grid{grid-template-columns:minmax(0,1fr)}
-    .funnel-reel{max-width:200px}
-    .promises{grid-template-columns:minmax(0,1fr)}
-  }
-  @media (max-width: 480px){
+  .funnel-section{padding-block:clamp(56px, 7vw, 96px)}
+  .funnel-head{display:flex; flex-direction:column; gap:12px; align-items:center; text-align:center;
+    margin-bottom:clamp(32px, 4vw, 48px)}
+  .funnel-narrow{max-width:760px}
+  .promises{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:clamp(20px, 2.6vw, 36px);
+    max-width:900px; margin-inline:auto}
+  .promise{display:flex; flex-direction:column; gap:8px; padding:24px 26px; background:var(--panel); border-radius:3px}
+  .promise-n{font-family:var(--display); font-weight:500; font-size:.8rem; letter-spacing:.1em; color:var(--accent)}
+  .promise h3{font-size:1.2rem}
+  .promise p{color:var(--fg-2); font-size:.96rem}
+
+  .funnel-close{background:var(--ink); color:var(--fg); text-align:center}
+  .funnel-close .wrap{max-width:620px; display:flex; flex-direction:column; align-items:center; gap:16px}
+  .funnel-close h2{font-size:clamp(1.9rem, 3.4vw, 2.8rem)}
+  .funnel-close .lede{max-width:44ch}
+  .funnel-close .or{font-size:.9rem; color:var(--mute)}
+  .funnel-close .or a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--rule-2)}
+  .funnel-footer{border-top:1px solid var(--rule)}
+  .funnel-section .quote{max-width:24ch}
+
+  @media (max-width: 560px){
     .opts{grid-template-columns:minmax(0,1fr)}
+    .promises{grid-template-columns:minmax(0,1fr)}
+    .trust-row{grid-template-columns:minmax(0,1fr); gap:14px; text-align:left}
+    .trust-row li{flex-direction:row; align-items:baseline; gap:10px}
     .step-nav{flex-direction:column-reverse; align-items:stretch}
     .step-nav .btn{width:100%}
-    .funnel-reel{max-width:160px}
   }

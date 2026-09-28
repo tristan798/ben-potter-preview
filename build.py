@@ -513,32 +513,35 @@ def funnel_body():
                      f'inputmode="text" data-required="1">')
         elif st['type'] == 'choice':
             opts = '\n'.join(
-                f'          <button class="opt" type="button" data-field="{st["key"]}" data-value="{o}">{o}</button>'
+                f'            <button class="opt" type="button" data-field="{st["key"]}" data-value="{o}">{o}</button>'
                 for o in st['options'])
-            field = f'<div class="opts" role="group" aria-label="{st["q"]}">\n{opts}\n        </div>'
+            field = f'<div class="opts" role="group" aria-label="{st["q"]}">\n{opts}\n          </div>'
         else:
-            field = f'''<div class="step-fields">
-          <div class="field"><label for="q-name">Name</label><input id="q-name" name="name" type="text" autocomplete="name" data-required="1"></div>
-          <div class="field"><label for="q-phone">Mobile</label><input id="q-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" data-required="1"></div>
-          <div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" data-required="1"></div>
-        </div>'''
-        nav = ('<button class="btn btn-blue step-next" type="button">Continue</button>'
-               if st['type'] != 'contact'
-               else '<button class="btn btn-blue" type="submit">Send me my appraisal</button>')
-        if st['type'] == 'choice':
-            nav = '<button class="btn btn-line step-next" type="button" hidden>Continue</button>'
+            field = '''<div class="step-fields">
+            <div class="field"><label for="q-name">Name</label><input id="q-name" name="name" type="text" autocomplete="name" data-required="1"></div>
+            <div class="field"><label for="q-phone">Mobile</label><input id="q-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" data-required="1"></div>
+            <div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" data-required="1"></div>
+          </div>'''
+        if st['type'] == 'contact':
+            nav = '<button class="btn btn-blue" type="submit">Send me my appraisal</button>'
+        elif st['type'] == 'choice':
+            nav = ''
+        else:
+            nav = '<button class="btn btn-blue step-next" type="button">Continue</button>'
         back = '<button class="step-back" type="button">Back</button>' if i else ''
-        steps.append(f'''      <fieldset class="step" data-step="{n}" {"" if i == 0 else "hidden"}>
-        <legend class="step-q">{st["q"]}</legend>
-        {help_html}
-        {field}
-        <div class="step-nav">{nav}{back}</div>
-      </fieldset>''')
+        navrow = f'<div class="step-nav">{nav}{back}</div>' if (nav or back) else ''
+        steps.append(f'''        <fieldset class="step" data-step="{n}" {"" if i == 0 else "hidden"}>
+          <legend class="step-q">{st["q"]}</legend>
+          {help_html}
+          {field}
+          {navrow}
+        </fieldset>''')
 
     promise = '\n'.join(f'''        <div class="promise">
+          <span class="promise-n" aria-hidden="true">{i:02d}</span>
           <h3>{t}</h3>
           <p>{b}</p>
-        </div>''' for t, b in C.FUNNEL_PROMISE)
+        </div>''' for i, (t, b) in enumerate(C.FUNNEL_PROMISE, start=1))
     faq = faq_block(C.FUNNEL_FAQ, open_first=False)
 
     return f'''<header class="header funnel-header">
@@ -551,28 +554,20 @@ def funnel_body():
 <main>
   <section class="funnel-hero" aria-labelledby="funnelTitle">
     <div class="hero-glow" aria-hidden="true"></div>
-    <div class="wrap funnel-grid">
-      <div class="funnel-copy">
-        <p class="label blue">Devonport &nbsp;·&nbsp; Belmont &nbsp;·&nbsp; Bayswater</p>
-        <h1 id="funnelTitle">{C.FUNNEL_H1}</h1>
-        <p class="lede">{C.FUNNEL_LEDE}</p>
-        <figure class="reel-wrap funnel-reel">
-          <div class="reel" id="reelBtn" role="button" tabindex="0" aria-label="Play the reel: {C.REEL_TITLE}">
-            <video id="reelVideo" poster="../{C.REEL_POSTER}" preload="none" playsinline width="720" height="1280" aria-label="{C.REEL_TITLE}">
-              <source src="../{C.REEL_FILE}" type="video/mp4">
-            </video>
-            <span class="reel-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-          </div>
-        </figure>
-      </div>
+    <div class="wrap funnel-stack">
+      <p class="label blue">Devonport &nbsp;·&nbsp; Belmont &nbsp;·&nbsp; Bayswater</p>
+      <h1 id="funnelTitle">{C.FUNNEL_H1}</h1>
+      <p class="lede">{C.FUNNEL_LEDE}</p>
 
       <div class="funnel-card">
         <form id="funnelForm" novalidate>
-          <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-          <p class="step-count"><span id="stepNow">1</span> of {len(C.FUNNEL_STEPS)}</p>
+          <div class="card-head">
+            <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+            <p class="step-count">Step <span id="stepNow">1</span> of {len(C.FUNNEL_STEPS)}</p>
+          </div>
 {chr(10).join(steps)}
           <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <p class="step-foot">Free and no obligation. Ben replies personally.</p>
+          <p class="step-foot">Free, no obligation, and Ben replies personally.</p>
         </form>
         <div class="funnel-done" id="funnelDone" hidden>
           <p class="label blue">Received</p>
@@ -584,23 +579,31 @@ def funnel_body():
           </p>
         </div>
       </div>
+
+      <ul class="trust-row">
+        <li><b>38 years</b><span>On the Peninsula</span></li>
+        <li><b>{C.REVIEW_COUNT}+ five-star</b><span>Verified reviews</span></li>
+        <li><b>Harcourts</b><span>Cooper &amp; Co</span></li>
+      </ul>
     </div>
   </section>
 
-  <section class="section on-light" aria-labelledby="promiseTitle">
+  <section class="section on-light funnel-section" aria-labelledby="promiseTitle">
     <div class="wrap">
-      <p class="label blue">What you get</p>
-      <h2 id="promiseTitle" style="margin-bottom:clamp(32px,4vw,52px)">More than a number.</h2>
+      <div class="funnel-head">
+        <p class="label blue">What you get</p>
+        <h2 id="promiseTitle">More than a number.</h2>
+      </div>
       <div class="promises">
 {promise}
       </div>
     </div>
   </section>
 
-  <section class="section words" aria-labelledby="fReviews">
+  <section class="section words funnel-section" aria-labelledby="fReviews">
     <div class="wrap">
       <h2 class="label" id="fReviews">In their words</h2>
-      <p class="stars" aria-hidden="true" style="margin-top:1.4rem">★★★★★</p>
+      <p class="stars" aria-hidden="true" style="margin-top:1.2rem">★★★★★</p>
       <blockquote class="quote" id="quoteText">{C.REVIEWS[0][0]}</blockquote>
       <div class="quote-by"><b id="quoteName">{C.REVIEWS[0][1]}</b><span id="quoteWhere">{C.REVIEWS[0][2]}</span></div>
       <div class="quote-nav">
@@ -612,9 +615,9 @@ def funnel_body():
     </div>
   </section>
 
-  <section class="section on-light" aria-labelledby="fFaq">
-    <div class="wrap split">
-      <div class="split-head">
+  <section class="section on-light funnel-section" aria-labelledby="fFaq">
+    <div class="wrap funnel-narrow">
+      <div class="funnel-head">
         <p class="label blue">Before you ask</p>
         <h2 id="fFaq">The honest answers.</h2>
       </div>
@@ -627,8 +630,9 @@ def funnel_body():
   <section class="section funnel-close">
     <div class="wrap">
       <h2>Ready when you are.</h2>
-      <p class="lede" style="margin:1rem auto 2rem; text-align:center">Takes about a minute, and there's nothing to sign.</p>
-      <p style="text-align:center"><a class="btn btn-blue" href="#funnelForm">Start my appraisal</a></p>
+      <p class="lede">Five questions, about a minute, and nothing to sign.</p>
+      <p><a class="btn btn-blue" href="#funnelTitle">Start my appraisal</a></p>
+      <p class="or">or call Ben on <a href="tel:{C.PHONE_LINK}">{C.PHONE_DISPLAY}</a></p>
     </div>
   </section>
 </main>

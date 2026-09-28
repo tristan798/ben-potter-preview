@@ -75,77 +75,69 @@
 <main>
   <section class="funnel-hero" aria-labelledby="funnelTitle">
     <div class="hero-glow" aria-hidden="true"></div>
-    <div class="wrap funnel-grid">
-      <div class="funnel-copy">
-        <p class="label blue">Devonport &nbsp;·&nbsp; Belmont &nbsp;·&nbsp; Bayswater</p>
-        <h1 id="funnelTitle">What's your home <em>actually</em> worth?</h1>
-        <p class="lede">Ben Potter has been on the Devonport Peninsula for 38 years. Answer five quick questions and he'll send you a written appraisal built from recent sales on your street, not a number designed to win your business.</p>
-        <figure class="reel-wrap funnel-reel">
-          <div class="reel" id="reelBtn" role="button" tabindex="0" aria-label="Play the reel: Ben Potter on Devonport, Belmont and Bayswater">
-            <video id="reelVideo" poster="../img/ben-potter-reel-devonport-belmont-bayswater.jpg" preload="none" playsinline width="720" height="1280" aria-label="Ben Potter on Devonport, Belmont and Bayswater">
-              <source src="../video/ben-potter-devonport-belmont-bayswater-reel.mp4" type="video/mp4">
-            </video>
-            <span class="reel-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-          </div>
-        </figure>
-      </div>
+    <div class="wrap funnel-stack">
+      <p class="label blue">Devonport &nbsp;·&nbsp; Belmont &nbsp;·&nbsp; Bayswater</p>
+      <h1 id="funnelTitle">What's your home <em>actually</em> worth?</h1>
+      <p class="lede">Ben Potter has been on the Devonport Peninsula for 38 years. Answer five quick questions and he'll send you a written appraisal built from recent sales on your street, not a number designed to win your business.</p>
 
       <div class="funnel-card">
         <form id="funnelForm" novalidate>
-          <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-          <p class="step-count"><span id="stepNow">1</span> of 5</p>
-      <fieldset class="step" data-step="1" >
-        <legend class="step-q">What's the property address?</legend>
-        <p class="step-help">Street and suburb is enough.</p>
-        <input class="step-input" id="q-address" name="address" type="text" autocomplete="street-address" placeholder="12 Cheltenham Road, Devonport" inputmode="text" data-required="1">
-        <div class="step-nav"><button class="btn btn-blue step-next" type="button">Continue</button></div>
-      </fieldset>
-      <fieldset class="step" data-step="2" hidden>
-        <legend class="step-q">What kind of home is it?</legend>
-        
-        <div class="opts" role="group" aria-label="What kind of home is it?">
-          <button class="opt" type="button" data-field="type" data-value="House">House</button>
-          <button class="opt" type="button" data-field="type" data-value="Townhouse">Townhouse</button>
-          <button class="opt" type="button" data-field="type" data-value="Apartment">Apartment</button>
-          <button class="opt" type="button" data-field="type" data-value="Section or land">Section or land</button>
-        </div>
-        <div class="step-nav"><button class="btn btn-line step-next" type="button" hidden>Continue</button><button class="step-back" type="button">Back</button></div>
-      </fieldset>
-      <fieldset class="step" data-step="3" hidden>
-        <legend class="step-q">How many bedrooms?</legend>
-        
-        <div class="opts" role="group" aria-label="How many bedrooms?">
-          <button class="opt" type="button" data-field="bedrooms" data-value="1">1</button>
-          <button class="opt" type="button" data-field="bedrooms" data-value="2">2</button>
-          <button class="opt" type="button" data-field="bedrooms" data-value="3">3</button>
-          <button class="opt" type="button" data-field="bedrooms" data-value="4">4</button>
-          <button class="opt" type="button" data-field="bedrooms" data-value="5 or more">5 or more</button>
-        </div>
-        <div class="step-nav"><button class="btn btn-line step-next" type="button" hidden>Continue</button><button class="step-back" type="button">Back</button></div>
-      </fieldset>
-      <fieldset class="step" data-step="4" hidden>
-        <legend class="step-q">When are you thinking of selling?</legend>
-        
-        <div class="opts" role="group" aria-label="When are you thinking of selling?">
-          <button class="opt" type="button" data-field="timeframe" data-value="In the next 3 months">In the next 3 months</button>
-          <button class="opt" type="button" data-field="timeframe" data-value="In 3 to 12 months">In 3 to 12 months</button>
-          <button class="opt" type="button" data-field="timeframe" data-value="Next year or later">Next year or later</button>
-          <button class="opt" type="button" data-field="timeframe" data-value="Just curious about the value">Just curious about the value</button>
-        </div>
-        <div class="step-nav"><button class="btn btn-line step-next" type="button" hidden>Continue</button><button class="step-back" type="button">Back</button></div>
-      </fieldset>
-      <fieldset class="step" data-step="5" hidden>
-        <legend class="step-q">Where should Ben send it?</legend>
-        <p class="step-help">He replies personally, usually the same day.</p>
-        <div class="step-fields">
-          <div class="field"><label for="q-name">Name</label><input id="q-name" name="name" type="text" autocomplete="name" data-required="1"></div>
-          <div class="field"><label for="q-phone">Mobile</label><input id="q-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" data-required="1"></div>
-          <div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" data-required="1"></div>
-        </div>
-        <div class="step-nav"><button class="btn btn-blue" type="submit">Send me my appraisal</button><button class="step-back" type="button">Back</button></div>
-      </fieldset>
+          <div class="card-head">
+            <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+            <p class="step-count">Step <span id="stepNow">1</span> of 5</p>
+          </div>
+        <fieldset class="step" data-step="1" >
+          <legend class="step-q">What's the property address?</legend>
+          <p class="step-help">Street and suburb is enough.</p>
+          <input class="step-input" id="q-address" name="address" type="text" autocomplete="street-address" placeholder="12 Cheltenham Road, Devonport" inputmode="text" data-required="1">
+          <div class="step-nav"><button class="btn btn-blue step-next" type="button">Continue</button></div>
+        </fieldset>
+        <fieldset class="step" data-step="2" hidden>
+          <legend class="step-q">What kind of home is it?</legend>
+          
+          <div class="opts" role="group" aria-label="What kind of home is it?">
+            <button class="opt" type="button" data-field="type" data-value="House">House</button>
+            <button class="opt" type="button" data-field="type" data-value="Townhouse">Townhouse</button>
+            <button class="opt" type="button" data-field="type" data-value="Apartment">Apartment</button>
+            <button class="opt" type="button" data-field="type" data-value="Section or land">Section or land</button>
+          </div>
+          <div class="step-nav"><button class="step-back" type="button">Back</button></div>
+        </fieldset>
+        <fieldset class="step" data-step="3" hidden>
+          <legend class="step-q">How many bedrooms?</legend>
+          
+          <div class="opts" role="group" aria-label="How many bedrooms?">
+            <button class="opt" type="button" data-field="bedrooms" data-value="1">1</button>
+            <button class="opt" type="button" data-field="bedrooms" data-value="2">2</button>
+            <button class="opt" type="button" data-field="bedrooms" data-value="3">3</button>
+            <button class="opt" type="button" data-field="bedrooms" data-value="4">4</button>
+            <button class="opt" type="button" data-field="bedrooms" data-value="5 or more">5 or more</button>
+          </div>
+          <div class="step-nav"><button class="step-back" type="button">Back</button></div>
+        </fieldset>
+        <fieldset class="step" data-step="4" hidden>
+          <legend class="step-q">When are you thinking of selling?</legend>
+          
+          <div class="opts" role="group" aria-label="When are you thinking of selling?">
+            <button class="opt" type="button" data-field="timeframe" data-value="In the next 3 months">In the next 3 months</button>
+            <button class="opt" type="button" data-field="timeframe" data-value="In 3 to 12 months">In 3 to 12 months</button>
+            <button class="opt" type="button" data-field="timeframe" data-value="Next year or later">Next year or later</button>
+            <button class="opt" type="button" data-field="timeframe" data-value="Just curious about the value">Just curious about the value</button>
+          </div>
+          <div class="step-nav"><button class="step-back" type="button">Back</button></div>
+        </fieldset>
+        <fieldset class="step" data-step="5" hidden>
+          <legend class="step-q">Where should Ben send it?</legend>
+          <p class="step-help">He replies personally, usually the same day.</p>
+          <div class="step-fields">
+            <div class="field"><label for="q-name">Name</label><input id="q-name" name="name" type="text" autocomplete="name" data-required="1"></div>
+            <div class="field"><label for="q-phone">Mobile</label><input id="q-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" data-required="1"></div>
+            <div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" data-required="1"></div>
+          </div>
+          <div class="step-nav"><button class="btn btn-blue" type="submit">Send me my appraisal</button><button class="step-back" type="button">Back</button></div>
+        </fieldset>
           <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <p class="step-foot">Free and no obligation. Ben replies personally.</p>
+          <p class="step-foot">Free, no obligation, and Ben replies personally.</p>
         </form>
         <div class="funnel-done" id="funnelDone" hidden>
           <p class="label blue">Received</p>
@@ -157,27 +149,39 @@
           </p>
         </div>
       </div>
+
+      <ul class="trust-row">
+        <li><b>38 years</b><span>On the Peninsula</span></li>
+        <li><b>90+ five-star</b><span>Verified reviews</span></li>
+        <li><b>Harcourts</b><span>Cooper &amp; Co</span></li>
+      </ul>
     </div>
   </section>
 
-  <section class="section on-light" aria-labelledby="promiseTitle">
+  <section class="section on-light funnel-section" aria-labelledby="promiseTitle">
     <div class="wrap">
-      <p class="label blue">What you get</p>
-      <h2 id="promiseTitle" style="margin-bottom:clamp(32px,4vw,52px)">More than a number.</h2>
+      <div class="funnel-head">
+        <p class="label blue">What you get</p>
+        <h2 id="promiseTitle">More than a number.</h2>
+      </div>
       <div class="promises">
         <div class="promise">
+          <span class="promise-n" aria-hidden="true">01</span>
           <h3>A real number, in writing</h3>
           <p>A range built from comparable sales near you in the last six months.</p>
         </div>
         <div class="promise">
+          <span class="promise-n" aria-hidden="true">02</span>
           <h3>What to fix, what to skip</h3>
           <p>An honest view on preparation, including the jobs that don't pay you back.</p>
         </div>
         <div class="promise">
+          <span class="promise-n" aria-hidden="true">03</span>
           <h3>A method and a budget</h3>
           <p>Auction, deadline sale, tender or price, with marketing costs up front.</p>
         </div>
         <div class="promise">
+          <span class="promise-n" aria-hidden="true">04</span>
           <h3>No cost, no obligation</h3>
           <p>Plenty of these are for owners who are a year away from selling.</p>
         </div>
@@ -185,10 +189,10 @@
     </div>
   </section>
 
-  <section class="section words" aria-labelledby="fReviews">
+  <section class="section words funnel-section" aria-labelledby="fReviews">
     <div class="wrap">
       <h2 class="label" id="fReviews">In their words</h2>
-      <p class="stars" aria-hidden="true" style="margin-top:1.4rem">★★★★★</p>
+      <p class="stars" aria-hidden="true" style="margin-top:1.2rem">★★★★★</p>
       <blockquote class="quote" id="quoteText">He was professional, helpful, and <mark>always available to answer my questions</mark> throughout the process. He made everything much less stressful and kept me informed every step of the way</blockquote>
       <div class="quote-by"><b id="quoteName">Heidi</b><span id="quoteWhere">Sold in Devonport</span></div>
       <div class="quote-nav">
@@ -200,9 +204,9 @@
     </div>
   </section>
 
-  <section class="section on-light" aria-labelledby="fFaq">
-    <div class="wrap split">
-      <div class="split-head">
+  <section class="section on-light funnel-section" aria-labelledby="fFaq">
+    <div class="wrap funnel-narrow">
+      <div class="funnel-head">
         <p class="label blue">Before you ask</p>
         <h2 id="fFaq">The honest answers.</h2>
       </div>
@@ -226,8 +230,9 @@
   <section class="section funnel-close">
     <div class="wrap">
       <h2>Ready when you are.</h2>
-      <p class="lede" style="margin:1rem auto 2rem; text-align:center">Takes about a minute, and there's nothing to sign.</p>
-      <p style="text-align:center"><a class="btn btn-blue" href="#funnelForm">Start my appraisal</a></p>
+      <p class="lede">Five questions, about a minute, and nothing to sign.</p>
+      <p><a class="btn btn-blue" href="#funnelTitle">Start my appraisal</a></p>
+      <p class="or">or call Ben on <a href="tel:+64279530210">027 953 0210</a></p>
     </div>
   </section>
 </main>
