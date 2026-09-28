@@ -52,9 +52,9 @@ def pages():
          'title': C.FUNNEL_TITLE.replace('&', '&amp;'), 'desc': C.FUNNEL_DESC,
          'crumbs': [], 'nav': None, 'funnel': True, 'noindex': True},
         {'path': 'property-appraisal/', 'file': 'property-appraisal/index.html',
-         'title': 'Free Property Appraisal, Devonport Peninsula | Ben Potter',
-         'desc': ('Book a free, no obligation property appraisal for your Devonport, Belmont or Bayswater '
-                  'home. A written estimate from recent comparable sales, plus a recommended method of sale.'),
+         'title': 'Free Property Appraisal | Ben Potter, Harcourts Cooper &amp; Co',
+         'desc': ('Book a free, no obligation property appraisal anywhere on Auckland\'s North Shore. A '
+                  'written estimate from recent comparable sales, plus a recommended method of sale.'),
          'crumbs': [('Property appraisal', None)], 'nav': 'contact'},
     ]
     return p
@@ -223,7 +223,7 @@ def contact_section(depth):
       <div class="appraise-copy">
         <p class="label blue">Book a free appraisal</p>
         <h2 id="contactTitle">Talk to Ben <em>before</em> you list.</h2>
-        <p class="lede">A written appraisal of your property and an honest view on what it needs before the first open home.</p>
+        <p class="lede">A written appraisal of your home, built from recent comparable sales nearby, and an honest view on what it needs before the first open home.</p>
         <div class="details">
           <a href="tel:{C.PHONE_LINK}"><span>Mobile</span><b>{C.PHONE_DISPLAY}</b></a>
           <a href="mailto:{C.EMAIL}"><span>Email</span><b>{C.EMAIL}</b></a>
@@ -555,7 +555,7 @@ def funnel_body():
   <section class="funnel-hero" aria-labelledby="funnelTitle">
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="wrap funnel-stack">
-      <p class="label blue">Devonport &nbsp;·&nbsp; Belmont &nbsp;·&nbsp; Bayswater</p>
+      <p class="label blue">Free property appraisal</p>
       <h1 id="funnelTitle">{C.FUNNEL_H1}</h1>
       <p class="lede">{C.FUNNEL_LEDE}</p>
 
@@ -581,7 +581,7 @@ def funnel_body():
       </div>
 
       <ul class="trust-row">
-        <li><b>38 years</b><span>On the Peninsula</span></li>
+        <li><b>38 years</b><span>On the North Shore</span></li>
         <li><b>{C.REVIEW_COUNT}+ five-star</b><span>Verified reviews</span></li>
         <li><b>Harcourts</b><span>Cooper &amp; Co</span></li>
       </ul>
@@ -776,7 +776,7 @@ def appraisal_body():
       {crumbs([('Property appraisal', None)], d)}
       <p class="label blue">Free appraisal</p>
       <h1 id="pageTitle">Talk to Ben <em>before</em> you list.</h1>
-      <p class="lede">A written appraisal of your property, built from recent comparable sales, with an honest view on what it needs before the first open home.</p>
+      <p class="lede">A written appraisal of your property, built from recent comparable sales nearby, with an honest view on what it needs before the first open home. Anywhere on Auckland's North Shore.</p>
       <div class="page-actions">
         <a class="btn btn-blue" href="#form">Request an appraisal</a>
         <a class="btn btn-line" href="tel:{C.PHONE_LINK}">Call {C.PHONE_DISPLAY}</a>
@@ -809,7 +809,7 @@ def appraisal_body():
           <div><dt>Cost</dt><dd>Free</dd></div>
           <div><dt>Obligation</dt><dd>None</dd></div>
           <div><dt>Turnaround</dt><dd>Usually a few days</dd></div>
-          <div><dt>Covers</dt><dd>Devonport, Belmont, Bayswater</dd></div>
+          <div><dt>Covers</dt><dd>Auckland's North Shore</dd></div>
         </dl>
       </div>
     </div>
@@ -970,7 +970,7 @@ def schema_for(page):
                           "name": "Free property appraisal, Devonport Peninsula",
                           "serviceType": "Property appraisal",
                           "provider": {"@id": AGENT_ID},
-                          "areaServed": [{"@type": "Place", "name": x['name'] + ", Auckland"} for x in C.SUBURBS],
+                          "areaServed": {"@type": "Place", "name": "North Shore, Auckland, New Zealand"},
                           "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NZD",
                                      "description": "Free, no obligation written appraisal"}})
     return {"@context": "https://schema.org", "@graph": graph}
@@ -1046,6 +1046,7 @@ def script_block(depth=0):
       formKey: '@@FORM_KEY@@',
       leadEmail: '@@LEAD_EMAIL@@',
       formAlias: '@@FORM_ALIAS@@',
+      formEndpoint: '@@FORM_ENDPOINT@@',
       guideUrl: '@@GUIDE_URL@@',                           // the selling guide PDF
       replyGuide: @@REPLY_GUIDE@@,                         // confirmation emailed to the requester
       replyAppraisal: @@REPLY_APPRAISAL@@
@@ -1134,7 +1135,10 @@ def script_block(depth=0):
         Page: location.href
       };
       var url, payload;
-      if(CONFIG.provider === 'web3forms' && CONFIG.formKey){
+      if(CONFIG.provider === 'endpoint'){
+        url = CONFIG.formEndpoint;
+        payload = Object.assign({ kind: kind, botcheck: data.botcheck || false }, data);
+      } else if(CONFIG.provider === 'web3forms' && CONFIG.formKey){
         url = 'https://api.web3forms.com/submit';
         payload = Object.assign({ access_key: CONFIG.formKey, subject: subject,
                                   from_name: 'ben-potter.com', replyto: data.email || '',
@@ -1329,6 +1333,7 @@ def script_block(depth=0):
         '@@FORM_KEY@@': C.FORM_KEY,
         '@@LEAD_EMAIL@@': C.LEAD_EMAIL,
         '@@FORM_ALIAS@@': getattr(C, 'FORM_ALIAS', ''),
+        '@@FORM_ENDPOINT@@': getattr(C, 'FORM_ENDPOINT', '/api/lead'),
         '@@FORM_PROVIDER@@': C.FORM_PROVIDER,
         '@@REPLY_GUIDE@@': json.dumps(C.guide_autoresponse(C.SITE)),
         '@@REPLY_APPRAISAL@@': json.dumps(C.appraisal_autoresponse(C.SITE)),

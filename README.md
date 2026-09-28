@@ -61,3 +61,35 @@ real sold listings, CRM API details, and his RateMyAgent feed.
 
 Listing card photos drop into `img/listings/` using the filenames already commented into the card
 markup, e.g. `img/listings/old-lake-road-devonport.jpg`.
+
+## Branded emails
+
+`email/` holds three HTML templates, built by `python3 tools/emails.py` from
+`tools/content.py` so the phone number, address and guide title never drift:
+
+| File | Goes to | Contains |
+| --- | --- | --- |
+| `lead-notification.html` | Ben | The enquiry, with call and reply buttons |
+| `confirmation-guide.html` | The enquirer | A real Download the guide button |
+| `confirmation-appraisal.html` | The enquirer | What happens next, in four steps |
+
+They are table based with inline styles, 600px, no webfonts, with an Outlook
+fallback, because email clients are not browsers.
+
+**These only send through `FORM_PROVIDER = "endpoint"`.** FormSubmit cannot use custom
+HTML: its notification is a generic table and its autoresponder is plain text. Sending
+branded HTML needs an email API key, and a key cannot sit in client-side JavaScript,
+so `api/lead.js` exists to hold it. That needs hosting with functions.
+
+### Switching it on
+
+1. Move hosting to Netlify, Vercel or Cloudflare Pages. All free, and all three also
+   fix two other things GitHub Pages cannot do: the `/listings` redirect from the old
+   site, and instant cache purge on deploy.
+2. Create a Resend account, verify `ben-potter.com` (SPF and DKIM), which is also what
+   keeps these emails out of spam.
+3. Set `RESEND_API_KEY`, `MAIL_FROM` and `LEAD_TO` as environment variables.
+4. Set `FORM_PROVIDER = "endpoint"` in `tools/content.py` and rebuild.
+
+Until then `FORM_PROVIDER = "formsubmit"` keeps leads flowing, just in FormSubmit's
+plain styling.

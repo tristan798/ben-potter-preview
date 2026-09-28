@@ -297,7 +297,7 @@
       <div class="appraise-copy">
         <p class="label blue">Book a free appraisal</p>
         <h2 id="contactTitle">Talk to Ben <em>before</em> you list.</h2>
-        <p class="lede">A written appraisal of your property and an honest view on what it needs before the first open home.</p>
+        <p class="lede">A written appraisal of your home, built from recent comparable sales nearby, and an honest view on what it needs before the first open home.</p>
         <div class="details">
           <a href="tel:+64279530210"><span>Mobile</span><b>027 953 0210</b></a>
           <a href="mailto:ben.potter@harcourts.co.nz"><span>Email</span><b>ben.potter@harcourts.co.nz</b></a>
@@ -395,9 +395,10 @@
       formKey: '',
       leadEmail: 'ben.potter@harcourts.co.nz',
       formAlias: '834c42471a791eaf2dbcfd7e8233efd3',
+      formEndpoint: '/api/lead',
       guideUrl: '../guide/ben-potter-selling-guide.pdf',                           // the selling guide PDF
-      replyGuide: "Thanks for requesting the guide.\n\nHere it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and positioning a home on the Devonport Peninsula so it reaches the widest pool of buyers.\n\nDownload it here:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf you'd like a written appraisal of your own home, just reply to this email or call me on 027 953 0210. No cost and no obligation.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz",                         // confirmation emailed to the requester
-      replyAppraisal: "Thanks for getting in touch.\n\nI've received your appraisal request and I'll call you within one business day to arrange a time to see the property.\n\nIn the meantime you're welcome to read my selling guide, which covers how to prepare and position a home on the Peninsula:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf anything is urgent, call me on 027 953 0210.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz"
+      replyGuide: "Thanks for requesting the guide.\n\nHere it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and positioning a home for sale so it reaches the widest pool of buyers.\n\nDownload it here:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf you'd like a written appraisal of your own home, just reply to this email or call me on 027 953 0210. No cost and no obligation.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz",                         // confirmation emailed to the requester
+      replyAppraisal: "Thanks for getting in touch.\n\nI've received your appraisal request and I'll call you within one business day to arrange a time to see the property.\n\nIn the meantime you're welcome to read my selling guide, which covers how to prepare and position a home for sale:\nhttps://www.ben-potter.com/guide/ben-potter-selling-guide.pdf\n\nIf anything is urgent, call me on 027 953 0210.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz"
     };
     var PHONE = '027 953 0210', PHONE_LINK = '+64279530210';
     var $ = function(id){ return document.getElementById(id); };
@@ -499,7 +500,10 @@
         Page: location.href
       };
       var url, payload;
-      if(CONFIG.provider === 'web3forms' && CONFIG.formKey){
+      if(CONFIG.provider === 'endpoint'){
+        url = CONFIG.formEndpoint;
+        payload = Object.assign({ kind: kind, botcheck: data.botcheck || false }, data);
+      } else if(CONFIG.provider === 'web3forms' && CONFIG.formKey){
         url = 'https://api.web3forms.com/submit';
         payload = Object.assign({ access_key: CONFIG.formKey, subject: subject,
                                   from_name: 'ben-potter.com', replyto: data.email || '',

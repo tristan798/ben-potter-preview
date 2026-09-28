@@ -16,7 +16,12 @@ LEAD_EMAIL    = "ben.potter@harcourts.co.nz"
 # Delivery provider. "formsubmit" needs no account: the first submission triggers a one-time
 # confirmation email to LEAD_EMAIL, and once Ben clicks it every later lead is forwarded.
 # "web3forms" needs an access key in FORM_KEY instead. "none" disables sending.
+# "endpoint" posts to FORM_ENDPOINT instead, which is the serverless function in api/lead.js.
+# That is the only option that sends the branded HTML emails in email/, because an email
+# API key cannot safely live in client-side JavaScript. It needs hosting with functions
+# (Netlify, Vercel or Cloudflare), not GitHub Pages.
 FORM_PROVIDER = "formsubmit"
+FORM_ENDPOINT = "/api/lead"
 # FormSubmit's hashed alias for LEAD_EMAIL. Using it instead of the raw address keeps Ben's
 # email out of the page source, where scrapers would find it. Activation is per domain:
 # when the site moves to ben-potter.com the first submission there triggers a fresh
@@ -497,13 +502,13 @@ GUIDE_BLOCKS = [
 META_PIXEL_ID = ""     # Meta pixel id, e.g. "123456789012345"; empty omits the pixel entirely
 
 FUNNEL_SLUG    = "whats-my-home-worth"
-FUNNEL_TITLE   = "What's My Home Worth? | Free Appraisal, Devonport Peninsula"
-FUNNEL_DESC    = ("Find out what your Devonport, Belmont or Bayswater home is worth. A free, written "
-                  "appraisal from Ben Potter, Harcourts Cooper & Co. Takes about a minute.")
+FUNNEL_TITLE   = "What's My Home Worth? | Free Property Appraisal, Ben Potter"
+FUNNEL_DESC    = ("Find out what your home is worth. A free, written appraisal from Ben Potter, "
+                  "Harcourts Cooper & Co, anywhere on Auckland's North Shore. Takes about a minute.")
 FUNNEL_H1      = "What's your home <em>actually</em> worth?"
-FUNNEL_LEDE    = ("Ben Potter has been on the Devonport Peninsula for 38 years. Answer five quick "
-                  "questions and he'll send you a written appraisal built from recent sales on your "
-                  "street, not a number designed to win your business.")
+FUNNEL_LEDE    = ("Answer five quick questions and Ben will send you a written appraisal built from "
+                  "recent comparable sales near you, not a number designed to win your business. "
+                  "Nearly forty years selling on Auckland's North Shore.")
 FUNNEL_PROMISE = [
     ("A real number, in writing", "A range built from comparable sales near you in the last six months."),
     ("What to fix, what to skip", "An honest view on preparation, including the jobs that don't pay you back."),
@@ -531,6 +536,9 @@ FUNNEL_FAQ = [
     ("Is it really free?",
      "Yes. No cost, and no obligation to list with Ben. A good share of the appraisals he does are "
      "for owners who are a year or two away from selling."),
+    ("Which areas does Ben cover?",
+     "Ben works across Auckland's North Shore. If you are outside his usual patch he will still take "
+     "a look, and if someone else is better placed to sell your home he will tell you that too."),
     ("What happens after I submit?",
      "Ben calls you to arrange a time to see the property, usually within one business day. The "
      "written appraisal follows after that visit."),
@@ -547,7 +555,7 @@ def guide_autoresponse(site):
     return (
         "Thanks for requesting the guide.\n\n"
         "Here it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and "
-        "positioning a home on the Devonport Peninsula so it reaches the widest pool of buyers.\n\n"
+        "positioning a home for sale so it reaches the widest pool of buyers.\n\n"
         "Download it here:\n" + site + "/" + GUIDE_FILE + "\n\n"
         "If you'd like a written appraisal of your own home, just reply to this email or call me on "
         + PHONE_DISPLAY + ". No cost and no obligation.\n\n"
@@ -561,7 +569,7 @@ def appraisal_autoresponse(site):
         "I've received your appraisal request and I'll call you within one business day to arrange a "
         "time to see the property.\n\n"
         "In the meantime you're welcome to read my selling guide, which covers how to prepare and "
-        "position a home on the Peninsula:\n" + site + "/" + GUIDE_FILE + "\n\n"
+        "position a home for sale:\n" + site + "/" + GUIDE_FILE + "\n\n"
         "If anything is urgent, call me on " + PHONE_DISPLAY + ".\n\n"
         "Ben Potter\n" + AGENT_TITLE + "\n" + AGENCY + "\n" + PHONE_DISPLAY + "\n" + EMAIL
     )
