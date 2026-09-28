@@ -31,6 +31,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ben-potter.com/current-listings/</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ben-potter.com/free-selling-guide/</loc>
     <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>

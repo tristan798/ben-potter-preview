@@ -1,0 +1,29 @@
+{
+  "_comment": "Single source of truth for listings. Edit by hand, or let tools/sync_listings.py write it from a feed. build.py renders both the current-listings and recently-sold pages from here.",
+  "updated": "2026-09-28",
+  "source": "manual",
+  "for_sale": [],
+  "sold": [
+    {
+      "id": "8-3-corrella-road-belmont",
+      "address": "8/3 Corrella Road",
+      "suburb": "Belmont",
+      "sold_on": "2026-09-17",
+      "photo": null
+    },
+    {
+      "id": "13a-bayswater-avenue-bayswater",
+      "address": "13A Bayswater Avenue",
+      "suburb": "Bayswater",
+      "sold_on": "2026-08-04",
+      "photo": null
+    },
+    {
+      "id": "16-kiwi-road-devonport",
+      "address": "16 Kiwi Road",
+      "suburb": "Devonport",
+      "sold_on": "2026-05-21",
+      "photo": null
+    }
+  ]
+}

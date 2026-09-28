@@ -352,6 +352,7 @@
         <a href="../devonport-real-estate/">Devonport</a>
         <a href="../belmont-real-estate/">Belmont</a>
         <a href="../bayswater-real-estate/">Bayswater</a>
+        <a href="../current-listings/">Current listings</a>
         <a href="../recently-sold/">Recently sold</a>
         <a href="../free-selling-guide/">Selling guide</a>
         <a href="../property-appraisal/">Appraisal</a>
@@ -451,19 +452,35 @@
       }
 ];
     var qi = 0, qText = $('quoteText'), qName = $('quoteName'), qWhere = $('quoteWhere'), qCount = $('qCount');
-    function showQuote(i){
-      qi = (i + quotes.length) % quotes.length;
+    var slide = $('quoteSlide');
+    var slideReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function paintQuote(){
       qText.innerHTML = quotes[qi].t; qName.textContent = quotes[qi].n; qWhere.textContent = quotes[qi].w;
       qCount.textContent = (qi + 1) + ' / ' + quotes.length;
+    }
+    function showQuote(i, dir){
+      var next = (i + quotes.length) % quotes.length;
+      if(next === qi) return;
+      if(!slide || slideReduce){ qi = next; paintQuote(); return; }
+      var forward = dir === undefined ? true : dir > 0;
+      slide.classList.add(forward ? 'to-left' : 'to-right');
+      window.setTimeout(function(){
+        qi = next; paintQuote();
+        slide.classList.remove('to-left', 'to-right');
+        slide.classList.add(forward ? 'from-right' : 'from-left');
+        // force a reflow so the entry position applies before we transition back
+        void slide.offsetWidth;
+        slide.classList.remove('from-right', 'from-left');
+      }, 320);
     }
     if(qText){
       var timer = null, REVIEW_MS = 7000;
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      function start(){ if(!reduce && !timer) timer = setInterval(function(){ showQuote(qi + 1); }, REVIEW_MS); }
+      function start(){ if(!reduce && !timer) timer = setInterval(function(){ showQuote(qi + 1, 1); }, REVIEW_MS); }
       function stop(){ if(timer){ clearInterval(timer); timer = null; } }
-      function step(n){ stop(); showQuote(n); start(); }
-      $('qPrev').addEventListener('click', function(){ step(qi - 1); });
-      $('qNext').addEventListener('click', function(){ step(qi + 1); });
+      function step(n, dir){ stop(); showQuote(n, dir); start(); }
+      $('qPrev').addEventListener('click', function(){ step(qi - 1, -1); });
+      $('qNext').addEventListener('click', function(){ step(qi + 1, 1); });
       var band = qText.closest('section');
       if(band){
         ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });

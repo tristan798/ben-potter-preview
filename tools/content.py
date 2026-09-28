@@ -60,7 +60,7 @@ REEL_DATE     = "2026-09-28"   # upload date for VideoObject schema
 
 AGENT_NAME    = "Ben Potter"
 AGENT_TITLE   = "North Shore Real Estate Specialist"
-REVIEW_COUNT  = "90"   # five-star reviews, per Ben's selling guide
+REVIEW_COUNT  = "110"  # five-star reviews, per Ben (was 90 on the selling guide)
 AGENCY        = "Harcourts Cooper & Co"
 OFFICE        = "Harcourts Cooper & Co, Devonport"
 STREET        = ""            # TODO: Devonport office street address, needed for local SEO
@@ -109,20 +109,7 @@ ABOUT = [
     "why locals trust him with the Peninsula's most sought-after homes.",
 ]
 
-# ---------------------------------------------------------------- listings
-# (suburb, street, meta, result, status)
-SOLD = [
-    ("Bayswater", "Roberts Avenue", "4 bed · 2 bath · 612 m²", "Auction, three registered bidders", "Sold · Aug 2026"),
-    ("Devonport", "Old Lake Road", "4 bed · 2 bath · 506 m²", "Sold prior to auction in nine days", "Sold · Jul 2026"),
-    ("Belmont", "Kiri Place", "5 bed · 3 bath · 809 m²", "Deadline sale", "Sold · Jul 2026"),
-    ("Devonport", "Mozeley Avenue", "4 bed · 2 bath · 675 m²", "Off market to a local buyer", "Sold · Jun 2026"),
-    ("Belmont", "Seabreeze Road", "3 bed · 2 bath · 450 m²", "Auction, above reserve", "Sold · May 2026"),
-    ("Devonport", "Vauxhall Road", "3 bed · 1 bath · 380 m²", "By negotiation in three weeks", "Sold · May 2026"),
-]
-SALE = [
-    ("Devonport", "Cheltenham Road", "4 bed · 2 bath · 720 m²", "Open home Sat and Sun, 12.00", "Auction · 8 October"),
-    ("Belmont", "Bardia Street", "3 bed · 2 bath · 405 m²", "Open home Sun, 1.00", "Deadline · 2 October"),
-]
+# Listings now live in data/listings.json, rendered by tools/listings.py.
 
 REVIEWS = [
     ("He was professional, helpful, and <mark>always available to answer my questions</mark> throughout "

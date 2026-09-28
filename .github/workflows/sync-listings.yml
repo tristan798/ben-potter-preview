@@ -1,0 +1,48 @@
+# Checks the listings feed hourly. If anything changed, rebuilds the site and commits,
+# which publishes the new listing automatically. Nothing happens when nothing changed.
+name: Sync listings
+
+on:
+  schedule:
+    - cron: '7 * * * *'      # hourly, at 7 past
+  workflow_dispatch:          # or run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Pull listings
+        id: pull
+        env:
+          LISTINGS_SOURCE: ${{ vars.LISTINGS_SOURCE }}
+          LISTINGS_FEED_URL: ${{ secrets.LISTINGS_FEED_URL }}
+          LISTINGS_AGENT: ${{ vars.LISTINGS_AGENT }}
+        run: |
+          set +e
+          python3 tools/sync_listings.py
+          code=$?
+          set -e
+          if [ "$code" = "10" ]; then echo "changed=yes" >> "$GITHUB_OUTPUT"
+          elif [ "$code" != "0" ]; then exit $code
+          else echo "changed=no" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Rebuild and publish
+        if: steps.pull.outputs.changed == 'yes'
+        run: |
+          python3 build.py
+          git config user.name "listings-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/listings.json *.html */index.html sitemap.xml
+          git commit -m "Listings update $(date -u +%Y-%m-%d\ %H:%M) UTC"
+          git push

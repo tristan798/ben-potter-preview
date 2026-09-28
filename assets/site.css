@@ -477,3 +477,20 @@
     .guide-contents{grid-template-columns:minmax(0,1fr)}
     .guide-contents ul:last-child li:first-child{border-top:0}
   }
+
+  /* ---- Empty listings state ---- */
+  .empty-state{display:flex; flex-direction:column; gap:12px; align-items:flex-start;
+    padding:clamp(28px, 4vw, 48px); background:var(--panel); border-radius:3px; max-width:56ch}
+  .empty-state h3{font-size:clamp(1.4rem, 2.2vw, 1.9rem)}
+  .empty-state p{color:var(--fg-2)}
+  .empty-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+
+  /* ---- Testimonial slide ---- */
+  .quote-slide{transition:opacity .3s ease, transform .3s cubic-bezier(.3,.7,.2,1); will-change:opacity, transform}
+  .quote-slide.to-left{opacity:0; transform:translateX(-36px)}
+  .quote-slide.to-right{opacity:0; transform:translateX(36px)}
+  .quote-slide.from-right{opacity:0; transform:translateX(36px); transition:none}
+  .quote-slide.from-left{opacity:0; transform:translateX(-36px); transition:none}
+  @media (prefers-reduced-motion:reduce){
+    .quote-slide{transition:none !important; opacity:1 !important; transform:none !important}
+  }

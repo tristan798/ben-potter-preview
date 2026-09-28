@@ -10,6 +10,7 @@ from datetime import date
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, 'tools'))
 import content as C
+import listings as L
 
 TODAY = date.today().isoformat()
 ARROW = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
@@ -43,6 +44,11 @@ def pages():
          'desc': ('Homes recently sold by Ben Potter across Devonport, Belmont and Bayswater, plus current '
                   'listings and off-market opportunities on the Devonport Peninsula.'),
          'crumbs': [('Recently sold', None)], 'nav': 'sold'},
+        {'path': 'current-listings/', 'file': 'current-listings/index.html',
+         'title': 'Current Listings | Ben Potter, Harcourts Cooper &amp; Co',
+         'desc': ('Homes currently for sale with Ben Potter across Devonport, Belmont, Bayswater and '
+                  'the wider North Shore, with open home times.'),
+         'crumbs': [('Current listings', None)], 'nav': 'sold'},
         {'path': 'free-selling-guide/', 'file': 'free-selling-guide/index.html',
          'title': 'Free Selling Guide for Devonport, Belmont &amp; Bayswater | Ben Potter',
          'desc': ('A free guide to preparing, pricing and selling a home on the Devonport Peninsula, written '
@@ -138,19 +144,35 @@ def faq_block(items, open_first=True):
     return '\n'.join(out)
 
 
-def card(suburb, addr, meta, result, status, live=False, depth=0):
-    slug = re.sub(r'[^a-z0-9]+', '-', addr.lower()).strip('-')
-    alt = f'{addr}, {suburb}, sold by Ben Potter'
-    return f'''        <a class="card" href="{rel(depth)}property-appraisal/" aria-label="{addr}, {suburb}">
-          <div class="card-media" data-note="Photography to come"><!-- <img src="{rel(depth)}img/listings/{slug}-{suburb.lower()}.jpg" alt="{alt}" width="800" height="600" loading="lazy"> --></div>
+def card(item, depth=0, live=False):
+    slug = item.get('id') or re.sub(r'[^a-z0-9]+', '-', item['address'].lower()).strip('-')
+    addr, suburb = item['address'], item['suburb']
+    alt = f"{addr}, {suburb}"
+    photo = item.get('photo')
+    if photo:
+        media = (f'<img src="{rel(depth)}{photo}" alt="{alt}" width="800" height="600" loading="lazy">')
+        note = ''
+    else:
+        media = f'<!-- drop the photo at img/listings/{slug}.jpg and set "photo" in data/listings.json -->'
+        note = ' data-note="Photography to come"'
+    meta = L.meta_line(item)
+    meta_html = f'<p class="card-meta">{meta}</p>' if meta else ''
+    result = item.get('result') or ''
+    result_html = f'<p class="card-meta">{result}</p>' if result else ''
+    status = item.get('status_label') or item.get('sold_label') or ''
+    cls = ' live' if live else ''
+    href = item.get('url') or (rel(depth) + 'property-appraisal/')
+    return f'''        <a class="card" href="{href}" aria-label="{alt}">
+          <div class="card-media"{note}>{media}</div>
           <div class="card-body">
             <p class="label">{suburb}</p>
             <h3>{addr}</h3>
-            <p class="card-meta">{meta}</p>
-            <p class="card-meta">{result}</p>
-            <p class="card-status{' live' if live else ''}">{status}</p>
+            {meta_html}
+            {result_html}
+            <p class="card-status{cls}">{status}</p>
           </div>
-        </a>'''
+        </a>
+'''
 
 
 def offmarket(depth):
@@ -169,8 +191,10 @@ def reviews_section(depth):
     <div class="wrap">
       <h2 class="label" id="reviewsTitle">In their words</h2>
       <p class="stars" aria-hidden="true" style="margin-top:1.4rem">★★★★★</p>
-      <blockquote class="quote" id="quoteText">{C.REVIEWS[0][0]}</blockquote>
-      <div class="quote-by"><b id="quoteName">{C.REVIEWS[0][1]}</b><span id="quoteWhere">{C.REVIEWS[0][2]}</span></div>
+      <div class="quote-slide" id="quoteSlide">
+        <blockquote class="quote" id="quoteText">{C.REVIEWS[0][0]}</blockquote>
+        <div class="quote-by"><b id="quoteName">{C.REVIEWS[0][1]}</b><span id="quoteWhere">{C.REVIEWS[0][2]}</span></div>
+      </div>
       <div class="quote-nav">
         <button type="button" id="qPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
         <span class="count" id="qCount" aria-live="polite">1 / {len(C.REVIEWS)}</span>
@@ -256,6 +280,7 @@ def footer(depth):
              ('Devonport', d + 'devonport-real-estate/'),
              ('Belmont', d + 'belmont-real-estate/'),
              ('Bayswater', d + 'bayswater-real-estate/'),
+             ('Current listings', d + 'current-listings/'),
              ('Recently sold', d + 'recently-sold/'),
              ('Selling guide', d + 'free-selling-guide/'),
              ('Appraisal', d + 'property-appraisal/')]
@@ -302,7 +327,7 @@ def footer(depth):
 # ---------------------------------------------------------------- page bodies
 def home_body():
     d = 0
-    sold = '\n'.join(card(*r, depth=d) for r in C.SOLD[:3])
+    sold = '\n'.join(card(i, depth=d) for i in L.load()['sold'][:3])
     return f'''{header(d, 'home')}
 
 <main>
@@ -395,7 +420,7 @@ def home_body():
       <div class="cards">
 {sold}
       </div>
-      <p class="card-note">Sample entries shown for layout. Listings and photography connect to Ben's CRM feed or are uploaded manually.</p>
+      <p class="card-note">Photography follows shortly.</p>
     </div>
   </section>
 
@@ -604,8 +629,10 @@ def funnel_body():
     <div class="wrap">
       <h2 class="label" id="fReviews">In their words</h2>
       <p class="stars" aria-hidden="true" style="margin-top:1.2rem">★★★★★</p>
-      <blockquote class="quote" id="quoteText">{C.REVIEWS[0][0]}</blockquote>
-      <div class="quote-by"><b id="quoteName">{C.REVIEWS[0][1]}</b><span id="quoteWhere">{C.REVIEWS[0][2]}</span></div>
+      <div class="quote-slide" id="quoteSlide">
+        <blockquote class="quote" id="quoteText">{C.REVIEWS[0][0]}</blockquote>
+        <div class="quote-by"><b id="quoteName">{C.REVIEWS[0][1]}</b><span id="quoteWhere">{C.REVIEWS[0][2]}</span></div>
+      </div>
       <div class="quote-nav">
         <button type="button" id="qPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
         <span class="count" id="qCount" aria-live="polite">1 / {len(C.REVIEWS)}</span>
@@ -647,10 +674,72 @@ def funnel_body():
 </footer>'''
 
 
+def empty_listings(depth, what):
+    return f'''      <div class="empty-state">
+        <p class="label blue">Nothing live right now</p>
+        <h3>{what}</h3>
+        <p>Ben sells a good share of homes before they are advertised. Register what you are looking for and he will call you when something fits, usually before it reaches the portals.</p>
+        <p class="empty-actions">
+          <a class="btn btn-blue" href="{rel(depth)}property-appraisal/">Register as a buyer</a>
+          <a class="btn btn-line" href="{rel(depth)}recently-sold/">See recent sales</a>
+        </p>
+      </div>'''
+
+
+def current_listings_body():
+    d = 1
+    data = L.load()
+    live = data['for_sale']
+    cards = ('<div class="cards">\n' + '\n'.join(card(i, depth=d, live=True) for i in live) + '\n      </div>'
+             if live else empty_listings(d, 'No homes on the market this week.'))
+    return f'''{header(d, 'sold')}
+
+<main>
+  <section class="page-hero" aria-labelledby="pageTitle">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      {crumbs([('Current listings', None)], d)}
+      <h1 id="pageTitle">Currently for <em>sale.</em></h1>
+      <p class="lede">Homes on the market with Ben right now, with open home times. Updated as new listings go live.</p>
+      <div class="page-actions">
+        <a class="btn btn-ink" href="../property-appraisal/">Register as a buyer</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-light white" aria-labelledby="liveTitle">
+    <div class="wrap">
+      <div class="list-head">
+        <div><p class="label blue">On the market</p><h2 id="liveTitle">{len(live)} listing{'' if len(live) == 1 else 's'}.</h2></div>
+        <a class="ruled" href="../recently-sold/">Recently sold {ARROW}</a>
+      </div>
+{cards}
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="switchTitle">
+    <div class="wrap">
+      <p class="label blue">The Peninsula</p>
+      <h2 id="switchTitle" style="margin-bottom:clamp(32px,4vw,52px)">Where Ben sells.</h2>
+      <div class="switch">
+{switcher(d)}
+      </div>
+    </div>
+  </section>
+
+{contact_section(d)}
+</main>
+
+{footer(d)}'''
+
+
 def sold_body():
     d = 1
-    sold = '\n'.join(card(*r, depth=d) for r in C.SOLD)
-    sale = '\n'.join(card(*r, live=True, depth=d) for r in C.SALE) + '\n' + offmarket(d)
+    data = L.load()
+    sold = '\n'.join(card(i, depth=d) for i in data['sold'])
+    sale = ('      <div class="cards">\n' + '\n'.join(card(i, depth=d, live=True) for i in data['for_sale'])
+            + '\n' + offmarket(d) + '\n      </div>'
+            if data['for_sale'] else empty_listings(d, 'No homes on the market this week.'))
     return f'''{header(d, 'sold')}
 
 <main>
@@ -677,12 +766,10 @@ def sold_body():
 
       <div class="list-head second">
         <div><h2>Currently for <em>sale.</em></h2></div>
-        <a class="ruled" href="../property-appraisal/">Register as a buyer {ARROW}</a>
+        <a class="ruled" href="../current-listings/">See all current listings {ARROW}</a>
       </div>
-      <div class="cards">
 {sale}
-      </div>
-      <p class="card-note">Sample entries shown for layout. Listings and photography connect to Ben's CRM feed or are uploaded manually.</p>
+      <p class="card-note">Photography follows shortly. Ask Ben what your own home would achieve.</p>
     </div>
   </section>
 
@@ -1089,19 +1176,35 @@ def script_block(depth=0):
 
     var quotes = @@REVIEWS_JSON@@;
     var qi = 0, qText = $('quoteText'), qName = $('quoteName'), qWhere = $('quoteWhere'), qCount = $('qCount');
-    function showQuote(i){
-      qi = (i + quotes.length) % quotes.length;
+    var slide = $('quoteSlide');
+    var slideReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function paintQuote(){
       qText.innerHTML = quotes[qi].t; qName.textContent = quotes[qi].n; qWhere.textContent = quotes[qi].w;
       qCount.textContent = (qi + 1) + ' / ' + quotes.length;
+    }
+    function showQuote(i, dir){
+      var next = (i + quotes.length) % quotes.length;
+      if(next === qi) return;
+      if(!slide || slideReduce){ qi = next; paintQuote(); return; }
+      var forward = dir === undefined ? true : dir > 0;
+      slide.classList.add(forward ? 'to-left' : 'to-right');
+      window.setTimeout(function(){
+        qi = next; paintQuote();
+        slide.classList.remove('to-left', 'to-right');
+        slide.classList.add(forward ? 'from-right' : 'from-left');
+        // force a reflow so the entry position applies before we transition back
+        void slide.offsetWidth;
+        slide.classList.remove('from-right', 'from-left');
+      }, 320);
     }
     if(qText){
       var timer = null, REVIEW_MS = 7000;
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      function start(){ if(!reduce && !timer) timer = setInterval(function(){ showQuote(qi + 1); }, REVIEW_MS); }
+      function start(){ if(!reduce && !timer) timer = setInterval(function(){ showQuote(qi + 1, 1); }, REVIEW_MS); }
       function stop(){ if(timer){ clearInterval(timer); timer = null; } }
-      function step(n){ stop(); showQuote(n); start(); }
-      $('qPrev').addEventListener('click', function(){ step(qi - 1); });
-      $('qNext').addEventListener('click', function(){ step(qi + 1); });
+      function step(n, dir){ stop(); showQuote(n, dir); start(); }
+      $('qPrev').addEventListener('click', function(){ step(qi - 1, -1); });
+      $('qNext').addEventListener('click', function(){ step(qi + 1, 1); });
       var band = qText.closest('section');
       if(band){
         ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });
@@ -1420,6 +1523,7 @@ def main():
     shutil.copyfile(os.path.join(HERE, 'src/site.css'), os.path.join(HERE, 'assets/site.css'))
 
     bodies = {'': home_body(), 'recently-sold/': sold_body(),
+              'current-listings/': current_listings_body(),
               'free-selling-guide/': guide_body(), 'property-appraisal/': appraisal_body(),
               C.FUNNEL_SLUG + '/': funnel_body()}
     for s in C.SUBURBS:

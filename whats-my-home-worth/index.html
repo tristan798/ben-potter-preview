@@ -152,7 +152,7 @@
 
       <ul class="trust-row">
         <li><b>38 years</b><span>On the North Shore</span></li>
-        <li><b>90+ five-star</b><span>Verified reviews</span></li>
+        <li><b>110+ five-star</b><span>Verified reviews</span></li>
         <li><b>Harcourts</b><span>Cooper &amp; Co</span></li>
       </ul>
     </div>
@@ -193,14 +193,16 @@
     <div class="wrap">
       <h2 class="label" id="fReviews">In their words</h2>
       <p class="stars" aria-hidden="true" style="margin-top:1.2rem">★★★★★</p>
-      <blockquote class="quote" id="quoteText">He was professional, helpful, and <mark>always available to answer my questions</mark> throughout the process. He made everything much less stressful and kept me informed every step of the way</blockquote>
-      <div class="quote-by"><b id="quoteName">Heidi</b><span id="quoteWhere">Sold in Devonport</span></div>
+      <div class="quote-slide" id="quoteSlide">
+        <blockquote class="quote" id="quoteText">He was professional, helpful, and <mark>always available to answer my questions</mark> throughout the process. He made everything much less stressful and kept me informed every step of the way</blockquote>
+        <div class="quote-by"><b id="quoteName">Heidi</b><span id="quoteWhere">Sold in Devonport</span></div>
+      </div>
       <div class="quote-nav">
         <button type="button" id="qPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
         <span class="count" id="qCount" aria-live="polite">1 / 3</span>
         <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-      <p class="trust"><a href="https://www.ratemyagent.co.nz/real-estate-agent/ben-potter-as455/sales/overview" rel="noopener">Over 90 five-star reviews on RateMyAgent</a></p>
+      <p class="trust"><a href="https://www.ratemyagent.co.nz/real-estate-agent/ben-potter-as455/sales/overview" rel="noopener">Over 110 five-star reviews on RateMyAgent</a></p>
     </div>
   </section>
 
@@ -317,19 +319,35 @@
       }
 ];
     var qi = 0, qText = $('quoteText'), qName = $('quoteName'), qWhere = $('quoteWhere'), qCount = $('qCount');
-    function showQuote(i){
-      qi = (i + quotes.length) % quotes.length;
+    var slide = $('quoteSlide');
+    var slideReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function paintQuote(){
       qText.innerHTML = quotes[qi].t; qName.textContent = quotes[qi].n; qWhere.textContent = quotes[qi].w;
       qCount.textContent = (qi + 1) + ' / ' + quotes.length;
+    }
+    function showQuote(i, dir){
+      var next = (i + quotes.length) % quotes.length;
+      if(next === qi) return;
+      if(!slide || slideReduce){ qi = next; paintQuote(); return; }
+      var forward = dir === undefined ? true : dir > 0;
+      slide.classList.add(forward ? 'to-left' : 'to-right');
+      window.setTimeout(function(){
+        qi = next; paintQuote();
+        slide.classList.remove('to-left', 'to-right');
+        slide.classList.add(forward ? 'from-right' : 'from-left');
+        // force a reflow so the entry position applies before we transition back
+        void slide.offsetWidth;
+        slide.classList.remove('from-right', 'from-left');
+      }, 320);
     }
     if(qText){
       var timer = null, REVIEW_MS = 7000;
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      function start(){ if(!reduce && !timer) timer = setInterval(function(){ showQuote(qi + 1); }, REVIEW_MS); }
+      function start(){ if(!reduce && !timer) timer = setInterval(function(){ showQuote(qi + 1, 1); }, REVIEW_MS); }
       function stop(){ if(timer){ clearInterval(timer); timer = null; } }
-      function step(n){ stop(); showQuote(n); start(); }
-      $('qPrev').addEventListener('click', function(){ step(qi - 1); });
-      $('qNext').addEventListener('click', function(){ step(qi + 1); });
+      function step(n, dir){ stop(); showQuote(n, dir); start(); }
+      $('qPrev').addEventListener('click', function(){ step(qi - 1, -1); });
+      $('qNext').addEventListener('click', function(){ step(qi + 1, 1); });
       var band = qText.closest('section');
       if(band){
         ['mouseenter','focusin'].forEach(function(e){ band.addEventListener(e, stop); });
