@@ -106,13 +106,25 @@ def from_feed(url):
     return live, sold
 
 
-def fetch(url):
-    """A plain GET with a browser user agent. Their edge returns 403 without one."""
+def fetch(url, tries=3):
+    """A plain GET with a browser user agent. Their edge returns 403 without one.
+
+    Retried, because a single timed-out read must never be mistaken for a listing that
+    no longer exists. The caller treats a final failure as fatal for that reason."""
+    import time
     import urllib.request
-    req = urllib.request.Request(url, headers={'User-Agent': UA,
-                                               'Accept-Language': 'en-NZ,en;q=0.9'})
-    with urllib.request.urlopen(req, timeout=40) as r:
-        return r.read().decode('utf-8', 'replace')
+    last = None
+    for attempt in range(tries):
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': UA,
+                                                       'Accept-Language': 'en-NZ,en;q=0.9'})
+            with urllib.request.urlopen(req, timeout=40) as r:
+                return r.read().decode('utf-8', 'replace')
+        except Exception as e:
+            last = e
+            if attempt + 1 < tries:
+                time.sleep(2 * (attempt + 1))
+    raise last
 
 
 def strip_tags(chunk):
@@ -166,8 +178,12 @@ def walk_index(path, max_pages=25):
         try:
             cards = index_cards(fetch(url))
         except Exception as e:
-            print('   ! %s page %d: %s' % (path, page, e))
-            break
+            # Stopping here would hand back a half-read list, and the caller would then
+            # write it as the complete set and quietly delete Ben's listings. A page we
+            # could not read means we know nothing, so the whole sync gives up.
+            raise SystemExit(
+                'Could not read %s (%s).\nStopping rather than writing a partial list, '
+                'which would remove listings from the site.' % (url, e))
         fresh = {k: v for k, v in cards.items() if k not in seen}
         if not fresh:
             break
