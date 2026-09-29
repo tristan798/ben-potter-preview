@@ -29,9 +29,9 @@ def pages():
     p = [
         {'path': '', 'file': 'index.html',
          'title': 'Ben Potter | Devonport, Belmont &amp; Bayswater Real Estate Agent',
-         'desc': ('Ben Potter is a Harcourts Cooper & Co real estate agent with 38 years on the Devonport '
-                  'Peninsula, selling homes across Devonport, Belmont and Bayswater and the wider North '
-                  'Shore. Free, no obligation property appraisals.'),
+         'desc': ('Ben Potter has been on the Devonport Peninsula for 38 years and is a Harcourts '
+                  'Cooper & Co real estate agent selling homes across Devonport, Belmont and Bayswater '
+                  'and the wider North Shore. Free, no obligation property appraisals.'),
          'crumbs': [], 'nav': 'home'},
     ]
     for s in C.SUBURBS:
@@ -52,7 +52,8 @@ def pages():
         {'path': 'free-selling-guide/', 'file': 'free-selling-guide/index.html',
          'title': 'Free Selling Guide for Devonport, Belmont &amp; Bayswater | Ben Potter',
          'desc': ('A free guide to preparing, pricing and selling a home on the Devonport Peninsula, written '
-                  'by Ben Potter from 38 years selling in Devonport, Belmont and Bayswater.'),
+                  'by Ben Potter, who has been on the Devonport Peninsula for 38 years and sells '
+                  'across Devonport, Belmont and Bayswater.'),
          'crumbs': [('Free selling guide', None)], 'nav': 'guide'},
         {'path': C.FUNNEL_SLUG + '/', 'file': C.FUNNEL_SLUG + '/index.html',
          'title': C.FUNNEL_TITLE.replace('&', '&amp;'), 'desc': C.FUNNEL_DESC,
@@ -150,21 +151,88 @@ def faq_block(items, open_first=True):
     return '\n'.join(out)
 
 
+# A card is never wider than about 600px, so a phone has no business downloading the
+# 1000px file. Both widths are offered and the browser picks; with seventy sold listings
+# on one page that is what keeps mobile honest.
+CARD_SIZES = "(max-width: 700px) 92vw, (max-width: 1100px) 46vw, 31vw"
+
+
+_dims = {}
+
+
+def jpeg_size(rel_path):
+    """Real pixel size of a JPEG, read from its SOF marker. The width and height
+    attributes stop the layout jumping while the photo loads, so they have to match
+    the file actually being served, not whatever the source was before resizing."""
+    if rel_path in _dims:
+        return _dims[rel_path]
+    full = os.path.join(HERE, rel_path)
+    out = None
+    try:
+        with open(full, 'rb') as f:
+            if f.read(2) != b'\xff\xd8':
+                raise ValueError('not a JPEG')
+            while True:
+                b = f.read(1)
+                if not b:
+                    break
+                if b != b'\xff':
+                    continue
+                marker = f.read(1)
+                while marker == b'\xff':
+                    marker = f.read(1)
+                if marker in (b'\xc0', b'\xc1', b'\xc2', b'\xc3'):
+                    f.read(3)                       # length + precision
+                    h = int.from_bytes(f.read(2), 'big')
+                    w = int.from_bytes(f.read(2), 'big')
+                    out = (w, h)
+                    break
+                length = int.from_bytes(f.read(2), 'big')
+                f.seek(length - 2, 1)
+    except Exception:
+        out = None
+    _dims[rel_path] = out
+    return out
+
+
+def card_media(photo, alt, item, depth):
+    def here(rel_path):
+        return os.path.exists(os.path.join(HERE, rel_path))
+
+    base, ext = os.path.splitext(photo)
+    small = base + '-500' + ext
+    real = jpeg_size(photo)
+    w, h = real if real else (item.get('photo_w', 1000), item.get('photo_h', 666))
+    r = rel(depth)
+
+    jpg_set = ''
+    if here(small):
+        jpg_set = f' srcset="{r}{small} 500w, {r}{photo} 1000w" sizes="{CARD_SIZES}"'
+    img = (f'<img src="{r}{photo}"{jpg_set} alt="{alt}" width="{w}" height="{h}" '
+           f'loading="lazy" decoding="async">')
+
+    # Only offer WebP for the files actually sitting there: a feed can hand us a URL.
+    webp, webp_small = base + '.webp', base + '-500.webp'
+    srcs = []
+    if here(webp_small) and here(webp):
+        srcs.append(f'{r}{webp_small} 500w')
+        srcs.append(f'{r}{webp} 1000w')
+    elif here(webp):
+        srcs.append(f'{r}{webp} 1000w')
+    if srcs:
+        sizes = f' sizes="{CARD_SIZES}"' if len(srcs) > 1 else ''
+        return (f'<picture><source srcset="{", ".join(srcs)}"{sizes} '
+                f'type="image/webp">{img}</picture>')
+    return img
+
+
 def card(item, depth=0, live=False):
     slug = item.get('id') or re.sub(r'[^a-z0-9]+', '-', item['address'].lower()).strip('-')
     addr, suburb = item['address'], item['suburb']
     alt = f"{addr}, {suburb}"
     photo = item.get('photo')
     if photo:
-        w, h = item.get('photo_w', 1600), item.get('photo_h', 1066)
-        img = (f'<img src="{rel(depth)}{photo}" alt="{alt}" width="{w}" height="{h}" loading="lazy" decoding="async">')
-        webp = re.sub(r'\.jpe?g$', '.webp', photo)
-        # Only offer the WebP if it is actually sitting there. A feed can hand us a remote URL.
-        if webp != photo and os.path.exists(os.path.join(HERE, webp)):
-            media = (f'<picture><source srcset="{rel(depth)}{webp}" type="image/webp">{img}</picture>')
-        else:
-            media = img
-        note = ''
+        media, note = card_media(photo, alt, item, depth), ''
     else:
         media = f'<!-- drop the photo at img/listings/{slug}.jpg and set "photo" in data/listings.json -->'
         note = ' data-note="Photography to come"'
@@ -200,7 +268,7 @@ def offmarket(depth):
           <div class="card-body">
             <p class="label">Off market</p>
             <h3>Some homes never reach this page.</h3>
-            <p class="card-meta">Ben sells a good share of Peninsula homes quietly, to buyers already on his list. Tell him what you're looking for.</p>
+            <p class="card-meta">Some Peninsula properties are sold off-market or before a full public campaign. Tell him what you're looking for.</p>
             <p class="card-status live">Register as a buyer {ARROW}</p>
           </div>
         </a>'''
@@ -791,7 +859,7 @@ def empty_listings(depth, what):
     return f'''      <div class="empty-state">
         <p class="label blue">Nothing live right now</p>
         <h3>{what}</h3>
-        <p>Ben sells a good share of homes before they are advertised. Register what you are looking for and he will call you when something fits, usually before it reaches the portals.</p>
+        <p>Some properties are sold off-market or before a full public campaign. Register what you are looking for and he will call you when something fits.</p>
         <p class="empty-actions">
           <a class="btn btn-blue" href="{rel(depth)}property-appraisal/">Register as a buyer</a>
           <a class="btn btn-line" href="{rel(depth)}recently-sold/">See recent sales</a>
@@ -861,7 +929,7 @@ def sold_body():
     <div class="wrap">
       {crumbs([('Recently sold', None)], d)}
       <h1 id="pageTitle">Recently sold on the <em>Peninsula.</em></h1>
-      <p class="lede">Every sale below was handled by Ben from the first appraisal through to settlement, across Devonport, Belmont and Bayswater.</p>
+      <p class="lede">A track record of sales across Devonport, Belmont, Bayswater and the wider North Shore.</p>
       <div class="page-actions">
         <a class="btn btn-ink" href="../property-appraisal/">What would mine sell for?</a>
       </div>
@@ -919,7 +987,7 @@ def guide_body():
         {crumbs([('Free selling guide', None)], d)}
         <p class="label blue">Free download &nbsp;·&nbsp; {C.GUIDE_PAGES} pages</p>
         <h1 id="pageTitle">A proven strategy to <em>maximise your sale price.</em></h1>
-        <p class="lede">{C.GUIDE_STRAP} Written by Ben from {C.YEARS} years selling on the Devonport Peninsula, for owners who want to know what actually moves the price before they go to market.</p>
+        <p class="lede">{C.GUIDE_STRAP} Written by Ben, who has been on the Devonport Peninsula for {C.YEARS} years, for owners who want to know what actually moves the price before they go to market.</p>
         <div class="page-actions">
           <button class="btn btn-blue" type="button" id="guideBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 19h14"/></svg>
@@ -1461,6 +1529,28 @@ def script_block(depth=0):
       host.appendChild(box);
     }
     function firstName(form){ return (form.querySelector('[name="name"]').value.trim().split(' ')[0]) || 'there'; }
+    // Telling someone "thank you, received" while the send is still in flight means
+    // they can be thanked for a lead that never arrived. Hold the panel until it lands.
+    function sending(form, on){
+      var btn = form.querySelector('button[type="submit"]');
+      if(!btn) return;
+      if(on){
+        btn.dataset.label = btn.dataset.label || btn.textContent;
+        btn.textContent = 'Sending\u2026';
+        btn.disabled = true;
+      } else {
+        btn.textContent = btn.dataset.label || btn.textContent;
+        btn.disabled = false;
+      }
+    }
+    function submitLead(form, kind, onSuccess, preset){
+      sending(form, true);
+      return sendLead(kind, form, preset).then(function(){
+        onSuccess();
+      }).catch(function(){
+        sending(form, false);          // deliveryFailed has already shown the way out
+      });
+    }
     function done(form, html){
       form.innerHTML = '<div class="form-done">' + html + '</div>';
       var h = form.querySelector('h3'); h.setAttribute('tabindex','-1'); h.focus();
@@ -1472,8 +1562,9 @@ def script_block(depth=0):
         e.preventDefault();
         if(!validate(cform)) return;
         var name = clean(firstName(cform));
-        sendLead('contact', cform);
-        done(cform, '<p class="label blue">Sent</p><h3>Thanks, ' + name + '.</h3><p>Ben has your message and will come back to you within one business day. If it\\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+        submitLead(cform, 'contact', function(){
+          done(cform, '<p class="label blue">Sent</p><h3>Thanks, ' + name + '.</h3><p>Ben has your message and will come back to you within one business day. If it\\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+        });
       });
     }
 
@@ -1483,8 +1574,9 @@ def script_block(depth=0):
         e.preventDefault();
         if(!validate(form)) return;
         var name = clean(firstName(form));
-        sendLead('appraisal', form);
-        done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+        submitLead(form, 'appraisal', function(){
+          done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+        });
       });
     }
 
@@ -1620,14 +1712,15 @@ def script_block(depth=0):
           if(el.name && el.type !== 'checkbox') answers[el.name] = el.value.trim();
         });
         answers.botcheck = fForm.querySelector('[name=botcheck]').checked;
-        sendLead('funnel', fForm, answers);
-        if(window.fbq) fbq('track', 'Lead', { content_name: 'Home appraisal funnel' });
-        $('doneName').textContent = clean((answers.name || 'there').split(' ')[0]);
-        fForm.hidden = true;
-        var done = $('funnelDone');
-        done.hidden = false;
-        done.querySelector('h2').setAttribute('tabindex', '-1');
-        done.querySelector('h2').focus();
+        submitLead(fForm, 'funnel', function(){
+          if(window.fbq) fbq('track', 'Lead', { content_name: 'Home appraisal funnel' });
+          $('doneName').textContent = clean((answers.name || 'there').split(' ')[0]);
+          fForm.hidden = true;
+          var done = $('funnelDone');
+          done.hidden = false;
+          done.querySelector('h2').setAttribute('tabindex', '-1');
+          done.querySelector('h2').focus();
+        }, answers);
       });
       paint();
     }
@@ -1644,8 +1737,9 @@ def script_block(depth=0):
         e.preventDefault();
         if(!validate(gform)) return;
         var name = clean(firstName(gform));
-        sendLead('guide', gform);
-        done(gform, '<p class="label blue">On its way</p><h3>Check your inbox, ' + name + '.</h3><p>The guide is on its way to your email now. It usually lands within a minute.</p><p class="micro-fallback">Not there? <a href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">open it here</a>, and check your junk folder.</p>');
+        submitLead(gform, 'guide', function(){
+          done(gform, '<p class="label blue">On its way</p><h3>Check your inbox, ' + name + '.</h3><p>The guide is on its way to your email now. It usually lands within a minute.</p><p class="micro-fallback">Not there? <a href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">open it here</a>, and check your junk folder.</p>');
+        });
       });
     }
   })();
@@ -1710,10 +1804,20 @@ def redirect_configs():
     os.makedirs(os.path.join(HERE, 'deploy'), exist_ok=True)
     netlify = '\n'.join(f'{a}  {b}  301' for a, b in C.REDIRECTS) + '\n'
     open(os.path.join(HERE, 'deploy/_redirects'), 'w').write(netlify)
-    vercel = {"redirects": [{"source": a, "destination": b, "permanent": True} for a, b in C.REDIRECTS]}
+    vercel = {"redirects": [{"source": a, "destination": b, "statusCode": 301} for a, b in C.REDIRECTS]}
     open(os.path.join(HERE, 'deploy/vercel.json'), 'w').write(json.dumps(vercel, indent=2) + '\n')
     ht = ['RewriteEngine On'] + [f'Redirect 301 {a} {C.SITE}{b}' for a, b in C.REDIRECTS]
     open(os.path.join(HERE, 'deploy/.htaccess'), 'w').write('\n'.join(ht) + '\n')
+
+    # vercel.json at the root is the one that actually deploys, so keep its redirects in
+    # step with content.py rather than leaving two lists to drift apart.
+    root = os.path.join(HERE, 'vercel.json')
+    if os.path.exists(root):
+        conf = json.load(open(root, encoding='utf-8'))
+        if conf.get('redirects') != vercel['redirects']:
+            conf['redirects'] = vercel['redirects']
+            open(root, 'w', encoding='utf-8').write(json.dumps(conf, indent=2) + '\n')
+            print('   vercel.json redirects synced')
 
 
 def write(path, text):

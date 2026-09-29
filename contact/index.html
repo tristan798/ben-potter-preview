@@ -446,6 +446,28 @@
       host.appendChild(box);
     }
     function firstName(form){ return (form.querySelector('[name="name"]').value.trim().split(' ')[0]) || 'there'; }
+    // Telling someone "thank you, received" while the send is still in flight means
+    // they can be thanked for a lead that never arrived. Hold the panel until it lands.
+    function sending(form, on){
+      var btn = form.querySelector('button[type="submit"]');
+      if(!btn) return;
+      if(on){
+        btn.dataset.label = btn.dataset.label || btn.textContent;
+        btn.textContent = 'Sending…';
+        btn.disabled = true;
+      } else {
+        btn.textContent = btn.dataset.label || btn.textContent;
+        btn.disabled = false;
+      }
+    }
+    function submitLead(form, kind, onSuccess, preset){
+      sending(form, true);
+      return sendLead(kind, form, preset).then(function(){
+        onSuccess();
+      }).catch(function(){
+        sending(form, false);          // deliveryFailed has already shown the way out
+      });
+    }
     function done(form, html){
       form.innerHTML = '<div class="form-done">' + html + '</div>';
       var h = form.querySelector('h3'); h.setAttribute('tabindex','-1'); h.focus();
@@ -457,8 +479,9 @@
         e.preventDefault();
         if(!validate(cform)) return;
         var name = clean(firstName(cform));
-        sendLead('contact', cform);
-        done(cform, '<p class="label blue">Sent</p><h3>Thanks, ' + name + '.</h3><p>Ben has your message and will come back to you within one business day. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+        submitLead(cform, 'contact', function(){
+          done(cform, '<p class="label blue">Sent</p><h3>Thanks, ' + name + '.</h3><p>Ben has your message and will come back to you within one business day. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+        });
       });
     }
 
@@ -468,8 +491,9 @@
         e.preventDefault();
         if(!validate(form)) return;
         var name = clean(firstName(form));
-        sendLead('appraisal', form);
-        done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+        submitLead(form, 'appraisal', function(){
+          done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
+        });
       });
     }
 
@@ -605,14 +629,15 @@
           if(el.name && el.type !== 'checkbox') answers[el.name] = el.value.trim();
         });
         answers.botcheck = fForm.querySelector('[name=botcheck]').checked;
-        sendLead('funnel', fForm, answers);
-        if(window.fbq) fbq('track', 'Lead', { content_name: 'Home appraisal funnel' });
-        $('doneName').textContent = clean((answers.name || 'there').split(' ')[0]);
-        fForm.hidden = true;
-        var done = $('funnelDone');
-        done.hidden = false;
-        done.querySelector('h2').setAttribute('tabindex', '-1');
-        done.querySelector('h2').focus();
+        submitLead(fForm, 'funnel', function(){
+          if(window.fbq) fbq('track', 'Lead', { content_name: 'Home appraisal funnel' });
+          $('doneName').textContent = clean((answers.name || 'there').split(' ')[0]);
+          fForm.hidden = true;
+          var done = $('funnelDone');
+          done.hidden = false;
+          done.querySelector('h2').setAttribute('tabindex', '-1');
+          done.querySelector('h2').focus();
+        }, answers);
       });
       paint();
     }
@@ -629,8 +654,9 @@
         e.preventDefault();
         if(!validate(gform)) return;
         var name = clean(firstName(gform));
-        sendLead('guide', gform);
-        done(gform, '<p class="label blue">On its way</p><h3>Check your inbox, ' + name + '.</h3><p>The guide is on its way to your email now. It usually lands within a minute.</p><p class="micro-fallback">Not there? <a href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">open it here</a>, and check your junk folder.</p>');
+        submitLead(gform, 'guide', function(){
+          done(gform, '<p class="label blue">On its way</p><h3>Check your inbox, ' + name + '.</h3><p>The guide is on its way to your email now. It usually lands within a minute.</p><p class="micro-fallback">Not there? <a href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">open it here</a>, and check your junk folder.</p>');
+        });
       });
     }
   })();

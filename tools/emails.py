@@ -116,7 +116,7 @@ guide_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px; f
           <strong>{C.GUIDE_TITLE}</strong>. {C.GUIDE_PAGES} pages on preparing and positioning a home for
           sale so it reaches the widest pool of buyers and sells for more.</p>
 
-        {button("Download the guide", C.SITE + "/" + C.GUIDE_FILE)}
+        {button("Download the guide", C.asset_base() + "/" + C.GUIDE_FILE)}
 
         <p style="margin:6px 0 26px; font-family:{SANS}; font-size:12px; color:{MUTED}">PDF, {C.GUIDE_PAGES} pages. Free to keep and share.</p>
 
@@ -125,7 +125,7 @@ guide_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px; f
         <p style="margin:0 0 14px; font-family:{SANS}; font-size:16px; line-height:1.6; color:#4B4D53">
           If you would like to know what your own home is worth, I will give you a written appraisal built from
           recent comparable sales near you. No cost, and no obligation to list.</p>
-        {button("Book a free appraisal", C.SITE + "/property-appraisal/", bg="#FFFFFF", fg=TEXT).replace('border-radius:3px"', 'border-radius:3px; border:1px solid ' + RULE + '"')}'''
+        {button("Book a free appraisal", C.asset_base() + "/property-appraisal/", bg="#FFFFFF", fg=TEXT).replace('border-radius:3px"', 'border-radius:3px; border:1px solid ' + RULE + '"')}'''
 
 # ---------------------------------------------------------------- 3. appraisal confirmation, to the enquirer
 appraisal_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:{BLUE}">Request received</p>
@@ -146,7 +146,7 @@ appraisal_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11p
 
         <p style="margin:0 0 16px; font-family:{SANS}; font-size:16px; line-height:1.6; color:#4B4D53">
           While you wait, my selling guide covers how to prepare a home for sale.</p>
-        {button("Read the selling guide", C.SITE + "/" + C.GUIDE_FILE, bg="#FFFFFF", fg=TEXT).replace('border-radius:3px"', 'border-radius:3px; border:1px solid ' + RULE + '"')}
+        {button("Read the selling guide", C.asset_base() + "/" + C.GUIDE_FILE, bg="#FFFFFF", fg=TEXT).replace('border-radius:3px"', 'border-radius:3px; border:1px solid ' + RULE + '"')}
 
         <p style="margin:18px 0 0; font-family:{SANS}; font-size:15px; line-height:1.6; color:#4B4D53">
           If anything is urgent, call me on <a href="tel:{C.PHONE_LINK}" style="color:{BLUE}; text-decoration:none"><strong>{C.PHONE_DISPLAY}</strong></a>.</p>'''
@@ -172,7 +172,7 @@ contact_body = f'''<p style="margin:0 0 6px; font-family:{SANS}; font-size:11px;
 
         <p style="margin:12px 0 0; font-family:{SANS}; font-size:15px; line-height:1.6; color:#4B4D53">
           In the meantime, my selling guide covers how to prepare a home for sale.
-          <a href="{C.SITE}/{C.GUIDE_FILE}" style="color:{BLUE}; text-decoration:none"><strong>Read it here</strong></a>.</p>'''
+          <a href="{C.asset_base()}/{C.GUIDE_FILE}" style="color:{BLUE}; text-decoration:none"><strong>Read it here</strong></a>.</p>'''
 
 
 def main():

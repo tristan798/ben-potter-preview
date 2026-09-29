@@ -38,9 +38,9 @@ jobs:
           elif [ "$code" != "0" ]; then exit $code
           else echo "changed=no" >> "$GITHUB_OUTPUT"; fi
 
-      - name: Encode WebP for any new photos
+      - name: Size and encode any new photos
         if: steps.pull.outputs.changed == 'yes'
-        run: python3 tools/webp.py
+        run: python3 tools/images.py
 
       - name: Rebuild and publish
         if: steps.pull.outputs.changed == 'yes'

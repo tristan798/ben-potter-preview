@@ -5,6 +5,14 @@
 # TODO before launch: confirm every value in this block with Ben.
 SITE          = "https://www.ben-potter.com"   # confirmed on Ben's selling guide
 PREVIEW       = True          # True adds noindex and a disallow-all robots.txt. Flip to False at launch.
+# Where the site can actually be reached right now. Links inside emails have to point at
+# something that works today, and www.ben-potter.com still serves Ben's old site.
+LIVE_BASE     = "https://ben-potter.vercel.app"
+
+
+def asset_base():
+    """The base for links in email. SITE once launched, the live preview until then."""
+    return LIVE_BASE if PREVIEW else SITE
 GA4_ID        = ""            # e.g. "G-XXXXXXXXXX"; leave empty to omit the tag entirely
 GSC_TOKEN     = ""            # Search Console HTML-tag verification token, if that method is used
 
@@ -89,9 +97,14 @@ HERO_ALT = ("Ben Potter, Harcourts Cooper & Co real estate agent for Devonport, 
             "Belmont and Bayswater")
 
 # Old ben-potter.com paths that must keep their search equity.
+# Everything the old Webflow site published, from its sitemap. /listings was titled
+# "Devonport, Bayswater & Belmont Homes For Sale", so it belongs on current listings
+# rather than the sold archive. /styleguide was a Webflow scaffold with no content.
 REDIRECTS = [
-    ("/listings", "/recently-sold/"),
-    ("/listings/", "/recently-sold/"),
+    ("/listings", "/current-listings/"),
+    ("/listings/", "/current-listings/"),
+    ("/styleguide", "/"),
+    ("/styleguide/", "/"),
 ]
 
 # ---------------------------------------------------------------- shared copy
@@ -142,9 +155,9 @@ FAQ_HOME = [
      "obligation-free. You'll get a written estimate of value based on recent comparable sales near you, "
      "a recommended method of sale, and a marketing plan and budget before you commit to anything."),
     ("How long does it take to sell a home on the peninsula?",
-     "Most well-priced homes in Devonport, Belmont and Bayswater sell within four to six weeks of going "
-     "to market. Homes that are prepared properly before they list tend to sell faster and for more, "
-     "which is why Ben prefers to talk to owners well before the sign goes up."),
+     "Selling time varies depending on the property, pricing, presentation, market conditions and buyer "
+     "demand. Homes that are prepared properly before they list tend to sell faster and for more, which "
+     "is why Ben prefers to talk to owners well before the sign goes up."),
     ("Should I sell by auction, deadline sale, tender or a price?",
      "The right method depends on the property, the likely buyer pool and the level of competition we "
      "expect to create. Auction can work particularly well when several buyers are likely to compete for "
@@ -158,8 +171,9 @@ FAQ_HOME = [
      "the campaign you choose. Ben provides a written estimate of both before you sign an agency "
      "agreement, so there are no surprises later."),
     ("Does Ben sell homes off market?",
-     "Regularly. A good share of Peninsula homes change hands quietly, to buyers already registered with "
-     "Ben. If you're buying, register your brief so you hear about homes before they're advertised. If "
+     "Yes. Some Peninsula properties are sold off-market or before a full public campaign, to buyers "
+     "already registered with Ben. If you're buying, register your brief so you hear about homes before "
+     "they're advertised. If "
      "you're selling, a quiet approach to the right buyer can be part of the plan, though it's worth "
      "understanding the trade-offs first."),
     ("Is now a good time to sell my home?",
@@ -256,9 +270,9 @@ SUBURBS = [
              "serve different parts of the suburb; Belmont Intermediate and Takapuna Grammar take the older "
              "years, and children can walk to beaches and parks safely."),
             ("How long does a Devonport home take to sell?",
-             "A well-prepared, sensibly priced Devonport home usually sells within four to six weeks, and "
-             "character homes on sought-after streets often sell faster. Homes that stall are almost always "
-             "priced against hope rather than against recent comparable sales."),
+             "It varies with the property, the pricing, the presentation, the market and buyer demand. "
+             "Character homes on sought-after streets tend to move faster. Homes that stall are almost "
+             "always priced against hope rather than against recent comparable sales."),
         ],
     },
     {
@@ -514,7 +528,7 @@ FUNNEL_DESC    = ("Find out what your home is worth. A free, written appraisal f
 FUNNEL_H1      = "What's your home <em>actually</em> worth?"
 FUNNEL_LEDE    = ("Answer five quick questions and Ben will send you a written appraisal built from "
                   "recent comparable sales near you, not a number designed to win your business. "
-                  "Nearly forty years selling on Auckland's North Shore.")
+                  "Nearly forty years on Auckland's North Shore.")
 FUNNEL_PROMISE = [
     ("A real number, in writing", "A range built from comparable sales near you in the last six months."),
     ("What to fix, what to skip", "An honest view on preparation, including the jobs that don't pay you back."),
@@ -539,7 +553,7 @@ FUNNEL_STEPS = [
 
 FUNNEL_FAQ = [
     ("Is it really free?",
-     "Yes. No cost, and no obligation to list with Ben. A good share of the appraisals he does are "
+     "Yes. No cost, and no obligation to list with Ben. Plenty of the appraisals he does are "
      "for owners who are a year or two away from selling."),
     ("Which areas does Ben cover?",
      "Ben works across Auckland's North Shore. If you are outside his usual patch he will still take "

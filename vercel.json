@@ -9,13 +9,23 @@
   "redirects": [
     {
       "source": "/listings",
-      "destination": "/recently-sold/",
-      "permanent": true
+      "destination": "/current-listings/",
+      "statusCode": 301
     },
     {
       "source": "/listings/",
-      "destination": "/recently-sold/",
-      "permanent": true
+      "destination": "/current-listings/",
+      "statusCode": 301
+    },
+    {
+      "source": "/styleguide",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/styleguide/",
+      "destination": "/",
+      "statusCode": 301
     }
   ]
 }

@@ -42,7 +42,12 @@ function render(name, values) {
     escapeHtml(values[k] !== undefined && values[k] !== '' ? values[k] : 'Not given'));
 }
 
-async function send(payload) {
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Every submission sends two emails back to back, and Resend rate limits per second,
+// so two people submitting at the same moment is enough to get a 429. Without this a
+// confirmation just quietly vanishes, which is exactly what it did in testing.
+async function send(payload, attempt = 0) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -51,8 +56,13 @@ async function send(payload) {
     },
     body: JSON.stringify(payload),
   });
-  if (!res.ok) throw new Error(`resend ${res.status}: ${await res.text()}`);
-  return res.json();
+  if (res.ok) return res.json();
+  const retryable = res.status === 429 || res.status >= 500;
+  if (retryable && attempt < 4) {
+    await sleep(600 * Math.pow(2, attempt));       // 0.6s, 1.2s, 2.4s, 4.8s
+    return send(payload, attempt + 1);
+  }
+  throw new Error(`resend ${res.status}: ${await res.text()}`);
 }
 
 async function handle(body) {

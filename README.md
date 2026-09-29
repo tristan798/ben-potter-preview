@@ -17,7 +17,7 @@ python3 build.py        # regenerates every page, sitemap.xml, robots.txt and de
 | `dist/page.html` | Single-file homepage fragment for the Claude artifact preview. |
 | `deploy/` | Redirect configs for Netlify (`_redirects`), Vercel (`vercel.json`) and Apache (`.htaccess`). |
 | `tools/sync_listings.py` | Pulls Ben's listings from his Harcourts pages. Runs hourly in CI. |
-| `tools/webp.py` | Writes a WebP beside each listing JPEG, through headless Chrome. |
+| `tools/images.py` | Sizes listing photos to 1000px and 500px, JPEG and WebP, for the card srcset. |
 | `tools/emails.py` | Builds the branded HTML emails into `email/`. |
 | `api/lead.js` | Sends the notification and the confirmation. Needs a host that runs functions. |
 
