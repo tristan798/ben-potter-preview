@@ -631,7 +631,7 @@
       // Where appraisal and guide submissions are emailed. See tools/content.py.
       provider: 'endpoint',
       formKey: '',
-      leadEmail: 'tristan@harbourstudios.nz',
+      leadEmail: '',
       formAlias: '',
       formEndpoint: 'https://ben-potter.vercel.app/api/lead',
       guideUrl: 'guide/ben-potter-selling-guide.pdf',                           // the selling guide PDF
@@ -851,7 +851,7 @@
     // If the provider is unreachable, hand the visitor a way to reach Ben anyway.
     function deliveryFailed(fields){
       var lines = Object.keys(fields).map(function(k){ return k + ': ' + fields[k]; }).join('%0D%0A');
-      var href = 'mailto:tristan@harbourstudios.nz?subject=' + encodeURIComponent('Appraisal enquiry') + '&body=' + lines;
+      var href = 'mailto:ben.potter@harcourts.co.nz?subject=' + encodeURIComponent('Appraisal enquiry') + '&body=' + lines;
       var box = document.createElement('div');
       box.className = 'send-failed';
       box.innerHTML = '<p><b>That did not send.</b> Please call Ben on <a href="tel:+64279530210">027 953 0210</a> ' +

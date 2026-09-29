@@ -9,7 +9,9 @@
  * Environment variables:
  *   RESEND_API_KEY   from resend.com
  *   MAIL_FROM        e.g. "Ben Potter <ben@ben-potter.com>"  (domain must be verified)
- *   LEAD_TO          e.g. "ben.potter@harcourts.co.nz"
+ *   LEAD_TO          where the notification goes. Internal routing, never shown to a lead.
+ *   REPLY_TO         what a lead replies to. Public, so it is always one of Ben's own
+ *                    addresses, even while LEAD_TO points somewhere else for testing.
  */
 const fs = require('fs');
 const path = require('path');
@@ -112,7 +114,9 @@ async function handle(body) {
       await send({
         from: process.env.MAIL_FROM,
         to: [values.email],
-        reply_to: process.env.LEAD_TO,
+        // Never LEAD_TO: that can be a testing address, and a lead hitting reply
+        // must always reach Ben rather than whoever is checking the forms.
+        reply_to: process.env.REPLY_TO || process.env.LEAD_TO,
         subject: subj,
         html: render(tpl, values),
       });

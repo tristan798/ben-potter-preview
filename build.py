@@ -1452,7 +1452,7 @@ def script_block(depth=0):
     // If the provider is unreachable, hand the visitor a way to reach Ben anyway.
     function deliveryFailed(fields){
       var lines = Object.keys(fields).map(function(k){ return k + ': ' + fields[k]; }).join('%0D%0A');
-      var href = 'mailto:@@LEAD_EMAIL@@?subject=' + encodeURIComponent('Appraisal enquiry') + '&body=' + lines;
+      var href = 'mailto:@@PUBLIC_EMAIL@@?subject=' + encodeURIComponent('Appraisal enquiry') + '&body=' + lines;
       var box = document.createElement('div');
       box.className = 'send-failed';
       box.innerHTML = '<p><b>That did not send.</b> Please call Ben on <a href="tel:@@PHONE_LINK@@">@@PHONE_DISPLAY@@</a> ' +
@@ -1656,7 +1656,11 @@ def script_block(depth=0):
         '@@PHONE_LINK@@': C.PHONE_LINK,
         '@@GUIDE_URL@@': rel(depth) + C.GUIDE_FILE,
         '@@FORM_KEY@@': C.FORM_KEY,
-        '@@LEAD_EMAIL@@': C.lead_destination(),
+        # Where leads are routed. Internal, and only the formsubmit provider needs it in
+        # the page at all, so it is left empty otherwise rather than sitting in the source.
+        '@@LEAD_EMAIL@@': C.lead_destination() if C.FORM_PROVIDER == 'formsubmit' else '',
+        # Ben's own address, safe to show a visitor.
+        '@@PUBLIC_EMAIL@@': C.EMAIL,
         '@@FORM_ALIAS@@': C.lead_alias(),
         '@@FORM_ENDPOINT@@': getattr(C, 'FORM_ENDPOINT', '/api/lead'),
         '@@FORM_PROVIDER@@': C.FORM_PROVIDER,
