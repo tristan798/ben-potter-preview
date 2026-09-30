@@ -332,9 +332,11 @@
 <dialog class="modal" id="guideModal" aria-labelledby="guideTitle">
   <button class="modal-close" type="button" id="guideClose" aria-label="Close">×</button>
   <div class="modal-body">
-    <p class="label blue">Free download</p>
-    <h3 id="guideTitle">Where should Ben send it?</h3>
-    <p class="muted" style="font-size:.95rem">A Proven Strategy to Maximise Your Sale Price, 16 pages. It arrives in your inbox in a moment.</p>
+    <div class="modal-intro" id="guideIntro">
+      <p class="label blue">Free download</p>
+      <h3 id="guideTitle">Where should Ben send it?</h3>
+      <p class="muted" style="font-size:.95rem">A Proven Strategy to Maximise Your Sale Price, 16 pages. It arrives in your inbox in a moment.</p>
+    </div>
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
@@ -603,6 +605,9 @@
       });
     }
     function done(form, html){
+      // Anything that was asking the question goes with the form it belonged to.
+      var intro = form.parentNode && form.parentNode.querySelector('.modal-intro');
+      if(intro) intro.remove();
       form.innerHTML = '<div class="form-done">' + html + '</div>';
       var h = form.querySelector('h3'); h.setAttribute('tabindex','-1'); h.focus();
     }

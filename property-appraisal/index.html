@@ -176,6 +176,56 @@
     </div>
   </section>
 
+  <section class="section appraise on-light stone" id="form" aria-labelledby="formTitle">
+    <div class="wrap">
+      <div class="appraise-copy">
+        <p class="label blue">Book a free appraisal</p>
+        <h2 id="formTitle">Request your <em>appraisal.</em></h2>
+        <p class="lede">Fill this in and Ben will call you within one business day to arrange a time that suits.</p>
+        <div class="details">
+          <a href="tel:+64279530210"><span>Mobile</span><b>027 953 0210</b></a>
+          <a href="mailto:ben.potter@harcourts.co.nz"><span>Email</span><b>ben.potter@harcourts.co.nz</b></a>
+          <div><span>Agency</span><b>Harcourts Cooper & Co</b></div>
+        </div>
+      </div>
+      <div class="form-card">
+        <form id="appraisal" novalidate aria-label="Appraisal request">
+          <div class="field">
+            <label for="f-address">Property address</label>
+            <input id="f-address" name="address" type="text" autocomplete="street-address" required>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="f-phone">Mobile</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="f-when">Timeframe</label>
+            <select id="f-when" name="timeframe">
+              <option>Selling in the next three months</option>
+              <option>Selling in three to twelve months</option>
+              <option>Just curious about value</option>
+            </select>
+          </div>
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="form-foot">
+            <button class="btn btn-blue" type="submit">Request appraisal</button>
+            <small>No cost, no obligation. Ben replies personally.</small>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section class="section on-light" aria-labelledby="stepsTitle">
     <div class="wrap">
       <div class="areas-head">
@@ -237,55 +287,7 @@
     </div>
   </section>
 
-  <section class="section appraise on-light stone" id="form" aria-labelledby="formTitle">
-    <div class="wrap">
-      <div class="appraise-copy">
-        <p class="label blue">Book a free appraisal</p>
-        <h2 id="formTitle">Request your <em>appraisal.</em></h2>
-        <p class="lede">Fill this in and Ben will call you within one business day to arrange a time that suits.</p>
-        <div class="details">
-          <a href="tel:+64279530210"><span>Mobile</span><b>027 953 0210</b></a>
-          <a href="mailto:ben.potter@harcourts.co.nz"><span>Email</span><b>ben.potter@harcourts.co.nz</b></a>
-          <div><span>Agency</span><b>Harcourts Cooper & Co</b></div>
-        </div>
-      </div>
-      <div class="form-card">
-        <form id="appraisal" novalidate aria-label="Appraisal request">
-          <div class="field">
-            <label for="f-address">Property address</label>
-            <input id="f-address" name="address" type="text" autocomplete="street-address" required>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="f-name">Name</label>
-              <input id="f-name" name="name" type="text" autocomplete="name" required>
-            </div>
-            <div class="field">
-              <label for="f-phone">Mobile</label>
-              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
-            </div>
-          </div>
-          <div class="field">
-            <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="f-when">Timeframe</label>
-            <select id="f-when" name="timeframe">
-              <option>Selling in the next three months</option>
-              <option>Selling in three to twelve months</option>
-              <option>Just curious about value</option>
-            </select>
-          </div>
-          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="form-foot">
-            <button class="btn btn-blue" type="submit">Request appraisal</button>
-            <small>No cost, no obligation. Ben replies personally.</small>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
+
 </main>
 
 <footer class="footer">
@@ -321,9 +323,11 @@
 <dialog class="modal" id="guideModal" aria-labelledby="guideTitle">
   <button class="modal-close" type="button" id="guideClose" aria-label="Close">×</button>
   <div class="modal-body">
-    <p class="label blue">Free download</p>
-    <h3 id="guideTitle">Where should Ben send it?</h3>
-    <p class="muted" style="font-size:.95rem">A Proven Strategy to Maximise Your Sale Price, 16 pages. It arrives in your inbox in a moment.</p>
+    <div class="modal-intro" id="guideIntro">
+      <p class="label blue">Free download</p>
+      <h3 id="guideTitle">Where should Ben send it?</h3>
+      <p class="muted" style="font-size:.95rem">A Proven Strategy to Maximise Your Sale Price, 16 pages. It arrives in your inbox in a moment.</p>
+    </div>
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
@@ -592,6 +596,9 @@
       });
     }
     function done(form, html){
+      // Anything that was asking the question goes with the form it belonged to.
+      var intro = form.parentNode && form.parentNode.querySelector('.modal-intro');
+      if(intro) intro.remove();
       form.innerHTML = '<div class="form-done">' + html + '</div>';
       var h = form.querySelector('h3'); h.setAttribute('tabindex','-1'); h.focus();
     }

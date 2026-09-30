@@ -513,6 +513,9 @@
       });
     }
     function done(form, html){
+      // Anything that was asking the question goes with the form it belonged to.
+      var intro = form.parentNode && form.parentNode.querySelector('.modal-intro');
+      if(intro) intro.remove();
       form.innerHTML = '<div class="form-done">' + html + '</div>';
       var h = form.querySelector('h3'); h.setAttribute('tabindex','-1'); h.focus();
     }

@@ -489,9 +489,11 @@ def footer(depth):
 <dialog class="modal" id="guideModal" aria-labelledby="guideTitle">
   <button class="modal-close" type="button" id="guideClose" aria-label="Close">×</button>
   <div class="modal-body">
-    <p class="label blue">Free download</p>
-    <h3 id="guideTitle">Where should Ben send it?</h3>
-    <p class="muted" style="font-size:.95rem">{C.GUIDE_TITLE}, {C.GUIDE_PAGES} pages. It arrives in your inbox in a moment.</p>
+    <div class="modal-intro" id="guideIntro">
+      <p class="label blue">Free download</p>
+      <h3 id="guideTitle">Where should Ben send it?</h3>
+      <p class="muted" style="font-size:.95rem">{C.GUIDE_TITLE}, {C.GUIDE_PAGES} pages. It arrives in your inbox in a moment.</p>
+    </div>
     <form id="guideForm" novalidate>
       <div class="field"><label for="g-name">Name</label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
       <div class="field"><label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required></div>
@@ -1059,6 +1061,24 @@ def appraisal_body():
     </div>
   </section>
 
+  <section class="section appraise on-light stone" id="form" aria-labelledby="formTitle">
+    <div class="wrap">
+      <div class="appraise-copy">
+        <p class="label blue">Book a free appraisal</p>
+        <h2 id="formTitle">Request your <em>appraisal.</em></h2>
+        <p class="lede">Fill this in and Ben will call you within one business day to arrange a time that suits.</p>
+        <div class="details">
+          <a href="tel:{C.PHONE_LINK}"><span>Mobile</span><b>{C.PHONE_DISPLAY}</b></a>
+          <a href="mailto:{C.EMAIL}"><span>Email</span><b>{C.EMAIL}</b></a>
+          <div><span>Agency</span><b>{C.AGENCY}</b></div>
+        </div>
+      </div>
+      <div class="form-card">
+{appraisal_form(d, 'Request appraisal')}
+      </div>
+    </div>
+  </section>
+
   <section class="section on-light" aria-labelledby="stepsTitle">
     <div class="wrap">
       <div class="areas-head">
@@ -1086,23 +1106,7 @@ def appraisal_body():
     </div>
   </section>
 
-  <section class="section appraise on-light stone" id="form" aria-labelledby="formTitle">
-    <div class="wrap">
-      <div class="appraise-copy">
-        <p class="label blue">Book a free appraisal</p>
-        <h2 id="formTitle">Request your <em>appraisal.</em></h2>
-        <p class="lede">Fill this in and Ben will call you within one business day to arrange a time that suits.</p>
-        <div class="details">
-          <a href="tel:{C.PHONE_LINK}"><span>Mobile</span><b>{C.PHONE_DISPLAY}</b></a>
-          <a href="mailto:{C.EMAIL}"><span>Email</span><b>{C.EMAIL}</b></a>
-          <div><span>Agency</span><b>{C.AGENCY}</b></div>
-        </div>
-      </div>
-      <div class="form-card">
-{appraisal_form(d, 'Request appraisal')}
-      </div>
-    </div>
-  </section>
+
 </main>
 
 {footer(d)}'''
@@ -1552,6 +1556,9 @@ def script_block(depth=0):
       });
     }
     function done(form, html){
+      // Anything that was asking the question goes with the form it belonged to.
+      var intro = form.parentNode && form.parentNode.querySelector('.modal-intro');
+      if(intro) intro.remove();
       form.innerHTML = '<div class="form-done">' + html + '</div>';
       var h = form.querySelector('h3'); h.setAttribute('tabindex','-1'); h.focus();
     }
