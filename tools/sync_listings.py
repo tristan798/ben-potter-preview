@@ -288,7 +288,10 @@ def from_harcourts(current, dry=False):
                 print('   ! skipped, no address/suburb: %s' % card['url'])
                 continue
             was = known.get(item['id'])
-            if was:
+            # Carrying over only counts when there is something to carry. A listing
+            # entered by hand has no specs, and skipping the fetch left it showing no
+            # bed or bath while every card beside it had them.
+            if was and was.get('bedrooms'):
                 # Specs do not change. Carry them over rather than re-reading the page.
                 for k in ('bedrooms', 'bathrooms', 'parking', 'land_m2'):
                     if was.get(k):

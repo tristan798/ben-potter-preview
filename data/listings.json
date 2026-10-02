@@ -227,7 +227,11 @@
       "photo": "img/listings/16-kiwi-road-devonport.jpg",
       "sold_on": "2026-05-21",
       "photo_w": 1448,
-      "photo_h": 965
+      "photo_h": 965,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "parking": 1,
+      "land_m2": 379
     },
     {
       "address": "3/64 Victoria Road",

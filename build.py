@@ -48,7 +48,7 @@ def pages():
          'title': 'Current Listings | Ben Potter, Harcourts Cooper &amp; Co',
          'desc': ('Every home currently for sale with Ben Potter, across Devonport, Belmont, '
                   'Bayswater and the wider North Shore.'),
-         'crumbs': [('Current listings', None)], 'nav': 'sold'},
+         'crumbs': [('Current listings', None)], 'nav': 'listings'},
         {'path': 'free-selling-guide/', 'file': 'free-selling-guide/index.html',
          'title': 'Free Selling Guide for Devonport, Belmont &amp; Bayswater | Ben Potter',
          'desc': ('A free guide to preparing, pricing and selling a home on the Devonport Peninsula, written '
@@ -74,8 +74,8 @@ def pages():
 
 
 NAV = [('About', '#about', 'about'), ('Areas', 'areas', 'areas'),
-       ('Sold', 'recently-sold/', 'sold'), ('Reviews', '#reviews', 'reviews'),
-       ('Contact', 'contact/', 'contact')]
+       ('Listings', 'current-listings/', 'listings'), ('Sold', 'recently-sold/', 'sold'),
+       ('Reviews', '#reviews', 'reviews'), ('Contact', 'contact/', 'contact')]
 
 
 def rel(depth):
@@ -243,7 +243,10 @@ def card(item, depth=0, live=False):
     status = item.get('status_label') or item.get('sold_label') or ''
     cls = ' live' if live else ''
     href = item.get('url') or (rel(depth) + 'property-appraisal/')
-    return f'''        <a class="card" href="{href}" aria-label="{alt}">
+    # A listing lives on Harcourts, so send it to a new tab rather than navigating the
+    # visitor off Ben's site.
+    ext = ' target="_blank" rel="noopener"' if href.startswith('http') else ''
+    return f'''        <a class="card" href="{href}"{ext} aria-label="{alt}">
           <div class="card-media"{note}>{media}</div>
           <div class="card-body">
             <p class="label">{suburb}</p>
@@ -301,7 +304,7 @@ def reviews_section(depth):
         <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
       <div class="reviews-cta">
-        <a class="btn btn-blue btn-lg" href="{C.RATEMYAGENT}" target="_blank" rel="noopener">Read all {C.REVIEW_COUNT} five-star reviews {ARROW}</a>
+        <a class="btn btn-blue btn-lg" href="{C.RATEMYAGENT}" target="_blank" rel="noopener">Read all {C.REVIEW_COUNT}+ Reviews {ARROW}</a>
         <p class="reviews-cta-note">Verified on RateMyAgent.</p>
       </div>
     </div>
@@ -790,7 +793,7 @@ def funnel_body():
 
       <ul class="trust-row">
         <li><b>38 years</b><span>On the North Shore</span></li>
-        <li><b>{C.REVIEW_COUNT}+ five-star</b><span>Verified reviews</span></li>
+        <li><b>{C.REVIEW_COUNT}+ Reviews</b><span>Verified on RateMyAgent</span></li>
         <li><b>Harcourts</b><span>Cooper &amp; Co</span></li>
       </ul>
     </div>
@@ -821,7 +824,7 @@ def funnel_body():
         <span class="count" id="qCount" aria-live="polite">1 / {len(C.REVIEWS)}</span>
         <button type="button" id="qNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-      <p class="trust"><a href="{C.RATEMYAGENT}" rel="noopener">Over {C.REVIEW_COUNT} five-star reviews on RateMyAgent</a></p>
+      <p class="trust"><a href="{C.RATEMYAGENT}" target="_blank" rel="noopener">{C.REVIEW_COUNT}+ Reviews on RateMyAgent</a></p>
     </div>
   </section>
 
@@ -989,7 +992,8 @@ def guide_body():
         {crumbs([('Free selling guide', None)], d)}
         <p class="label blue">Free download &nbsp;·&nbsp; {C.GUIDE_PAGES} pages</p>
         <h1 id="pageTitle">A proven strategy to <em>maximise your sale price.</em></h1>
-        <p class="lede">{C.GUIDE_STRAP} Written by Ben, who has been on the Devonport Peninsula for {C.YEARS} years, for owners who want to know what actually moves the price before they go to market.</p>
+        <p class="lede">{C.GUIDE_STRAP} For owners who want to know what actually makes the most impact before they go to market.</p>
+      <p class="lede guide-support">Written for owners who want the very best result when they sell their largest asset.</p>
         <div class="page-actions">
           <button class="btn btn-blue" type="button" id="guideBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 19h14"/></svg>

@@ -3,10 +3,11 @@
 
 # ---------------------------------------------------------------- configuration
 # TODO before launch: confirm every value in this block with Ben.
-SITE          = "https://www.ben-potter.com"   # confirmed on Ben's selling guide
+SITE          = "https://www.benpotter.co.nz"  # Ben's own domain, bought Oct 2026. www is canonical.
 PREVIEW       = True          # True adds noindex and a disallow-all robots.txt. Flip to False at launch.
 # Where the site can actually be reached right now. Links inside emails have to point at
-# something that works today, and www.ben-potter.com still serves Ben's old site.
+# something that works today, which is the Vercel host until benpotter.co.nz is pointed
+# at it. Once that DNS is in, this becomes SITE and the whole site is on one domain.
 LIVE_BASE     = "https://ben-potter.vercel.app"
 
 
@@ -106,6 +107,8 @@ REDIRECTS = [
     ("/styleguide", "/"),
     ("/styleguide/", "/"),
 ]
+# ben-potter.com was the old Webflow address. If Ben keeps it, pointing it here as well
+# means those three URLs and any inbound links keep working instead of dying.
 
 # ---------------------------------------------------------------- shared copy
 SUPPORT_COPY = ("Ben Potter has been on the Devonport Peninsula for 38 years and specialises in "
