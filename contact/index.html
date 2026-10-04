@@ -131,11 +131,11 @@
           <div class="field">
             <label for="c-topic">What is your enquiry about?</label>
             <select id="c-topic" name="topic" required>
-              <option>Selling my home</option>
-              <option>Buying on the North Shore</option>
-              <option>A property currently listed</option>
-              <option>A free appraisal</option>
-              <option>Something else</option>
+              <option data-enquiry="selling">Selling my home</option>
+              <option data-enquiry="buying">Buying, register as a buyer</option>
+              <option data-enquiry="listing">A property currently listed</option>
+              <option data-enquiry="appraisal">A free appraisal</option>
+              <option data-enquiry="other">Something else</option>
             </select>
           </div>
           <div class="field-row">
@@ -222,7 +222,7 @@
       provider: 'endpoint',
       formKey: '',
       leadEmail: '',
-      formAlias: '',
+      formAlias: '834c42471a791eaf2dbcfd7e8233efd3',
       formEndpoint: 'https://ben-potter.vercel.app/api/lead',
       guideUrl: '../guide/ben-potter-selling-guide.pdf',                           // the selling guide PDF
       replyGuide: "Thanks for requesting the guide.\n\nHere it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and positioning a home for sale so it reaches the widest pool of buyers.\n\nDownload it here:\nhttps://www.benpotter.co.nz/guide/ben-potter-selling-guide.pdf\n\nIf you'd like a written appraisal of your own home, just reply to this email or call me on 027 953 0210. No cost and no obligation.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz",                         // confirmation emailed to the requester
@@ -482,6 +482,16 @@
 
     var cform = $('contactForm');
     if(cform){
+      // "Register as a buyer" links arrive as ?enquiry=buying, so the person lands on
+      // the form already set to what they came for rather than having to pick it.
+      (function(){
+        var want = (location.search.match(/[?&]enquiry=([a-z-]+)/) || [])[1];
+        if(!want) return;
+        var sel = $('c-topic');
+        if(!sel) return;
+        var opt = sel.querySelector('option[data-enquiry="' + want + '"]');
+        if(opt) sel.value = opt.value;
+      })();
       cform.addEventListener('submit', function(e){
         e.preventDefault();
         if(!validate(cform)) return;

@@ -10,6 +10,8 @@
  *   RESEND_API_KEY   from resend.com
  *   MAIL_FROM        e.g. "Ben Potter <ben@ben-potter.com>"  (domain must be verified)
  *   LEAD_TO          where the notification goes. Internal routing, never shown to a lead.
+ *   LEAD_CC          a second, independent inbox. One mail server having a bad morning
+ *                    should not be the difference between Ben getting a lead and not.
  *   REPLY_TO         what a lead replies to. Public, so it is always one of Ben's own
  *                    addresses, even while LEAD_TO points somewhere else for testing.
  */
@@ -68,6 +70,23 @@ async function send(payload, attempt = 0) {
 async function handle(body) {
   if (body.botcheck) return { success: 'true' };          // honeypot, pretend it worked
 
+  // Written before anything is attempted, so a lead exists in the record even if every
+  // send fails afterwards. One line, one prefix, so it can be found in the logs.
+  console.log('LEAD ' + JSON.stringify({
+    at: new Date().toISOString(),
+    kind: body.kind || 'unknown',
+    name: body.name || '',
+    email: body.email || '',
+    phone: body.phone || '',
+    address: body.address || '',
+    topic: body.topic || '',
+    message: body.message || '',
+    timeframe: body.timeframe || '',
+    type: body.type || '',
+    bedrooms: body.bedrooms || '',
+    page: body.page || '',
+  }));
+
   const kindLabels = {
     guide: 'Selling guide download',
     funnel: 'Appraisal request (Meta ad)',
@@ -102,13 +121,17 @@ async function handle(body) {
     ? `Website enquiry${values.topic ? ': ' + values.topic : ''}${name ? ' from ' + name : ''}`
     : `${kind}${name ? ' from ' + name : ''}${body.address ? ', ' + body.address : ''}`;
 
+  const notifyTo = [process.env.LEAD_TO].concat(
+    (process.env.LEAD_CC || '').split(',').map((a) => a.trim()).filter(Boolean)
+  );
   await send({
     from: process.env.MAIL_FROM,
-    to: [process.env.LEAD_TO],
+    to: notifyTo,
     reply_to: values.email || undefined,
     subject,
     html: render('lead-notification.html', values),
   });
+  console.log('LEAD DELIVERED to ' + notifyTo.join(', '));
 
   // Every submission gets a confirmation. If this one throws, the notification to Ben
   // has already gone, so the lead is never lost to a confirmation failure.

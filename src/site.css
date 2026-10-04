@@ -111,6 +111,9 @@
   .first-screen .hero-actions{margin-top:0}
   .hero .wrap{display:grid; grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr); gap:clamp(28px, 5vw, 80px); align-items:center; padding-block:clamp(56px, 7vw, 104px) clamp(56px, 7vw, 96px); width:100%}
   .hero-copy{display:flex; flex-direction:column; align-items:flex-start; gap:26px}
+  /* Sits below the buttons with real air either side, so it reads as a deliberate
+     third option rather than a stray member of the button group. */
+  .hero-copy .quietlink{margin-top:clamp(10px, 1.6vh, 20px); margin-bottom:clamp(6px, 1.2vh, 14px)}
   .hero-copy h1{max-width:13ch}
   .hero-copy .lede{font-size:1.08rem; max-width:48ch}
   .hero-actions{display:flex; gap:12px; flex-wrap:wrap}

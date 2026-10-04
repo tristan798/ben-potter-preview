@@ -28,7 +28,8 @@ LEAD_EMAIL    = "ben.potter@harcourts.co.nz"
 # of Ben, so the flow can be checked without landing in a client's inbox. The site
 # still displays and marks up Ben's address; only delivery is diverted.
 # SET THIS TO False BEFORE LAUNCH. build.py prints a warning while it is on.
-LEAD_TEST_MODE  = True
+LEAD_TEST_MODE  = False   # live: notifications go to Ben. Routing itself lives in the
+                          # Vercel environment (LEAD_TO and LEAD_CC), not here.
 LEAD_TEST_EMAIL = "tristan@harbourstudios.nz"
 # -------------------------------------------------------------------------------
 
@@ -573,12 +574,14 @@ FUNNEL_FAQ = [
 # ---------------------------------------------------------------- autoresponders
 # Plain text, sent to the person who submitted. FormSubmit does not render HTML here,
 # so the download is a link on its own line rather than a styled button.
+# The slug is what a link passes in ?enquiry= to preselect an option, so the buyer
+# journey can land on this page already set to the right thing.
 CONTACT_TOPICS = [
-    "Selling my home",
-    "Buying on the North Shore",
-    "A property currently listed",
-    "A free appraisal",
-    "Something else",
+    ("selling", "Selling my home"),
+    ("buying", "Buying, register as a buyer"),
+    ("listing", "A property currently listed"),
+    ("appraisal", "A free appraisal"),
+    ("other", "Something else"),
 ]
 
 CONTACT_H1 = "Talk to <em>Ben.</em>"

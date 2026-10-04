@@ -226,7 +226,7 @@ def card_media(photo, alt, item, depth):
     return img
 
 
-def card(item, depth=0, live=False):
+def card(item, depth=0, live=False, date_label=True):
     slug = item.get('id') or re.sub(r'[^a-z0-9]+', '-', item['address'].lower()).strip('-')
     addr, suburb = item['address'], item['suburb']
     alt = f"{addr}, {suburb}"
@@ -241,6 +241,8 @@ def card(item, depth=0, live=False):
     result = item.get('result') or ''
     result_html = f'<p class="card-meta">{result}</p>' if result else ''
     status = item.get('status_label') or item.get('sold_label') or ''
+    if not date_label and item.get('sold_label'):
+        status = 'Sold'
     cls = ' live' if live else ''
     href = item.get('url') or (rel(depth) + 'property-appraisal/')
     # A listing lives on Harcourts, so send it to a new tab rather than navigating the
@@ -267,7 +269,7 @@ def photo_note(items, extra=''):
 
 
 def offmarket(depth):
-    return f'''        <a class="card text-card" href="{rel(depth)}property-appraisal/">
+    return f'''        <a class="card text-card" href="{rel(depth)}contact/?enquiry=buying">
           <div class="card-body">
             <p class="label">Off market</p>
             <h3>Some homes never reach this page.</h3>
@@ -348,7 +350,8 @@ def appraisal_form(depth, heading='Request appraisal'):
 
 
 def contact_form(depth):
-    opts = '\n'.join(f'              <option>{t}</option>' for t in C.CONTACT_TOPICS)
+    opts = '\n'.join(f'              <option data-enquiry="{slug}">{t}</option>'
+                     for slug, t in C.CONTACT_TOPICS)
     return f"""        <form id="contactForm" novalidate aria-label="Contact Ben">
           <div class="field">
             <label for="c-topic">What is your enquiry about?</label>
@@ -511,7 +514,9 @@ def footer(depth):
 # ---------------------------------------------------------------- page bodies
 def home_body():
     d = 0
-    sold = '\n'.join(card(i, depth=d) for i in L.featured_sold(L.load()))
+    # Ben wants the homepage three to read simply SOLD: a date there makes the page look
+    # stale the moment it ages. The full archive keeps its dates.
+    sold = '\n'.join(card(i, depth=d, date_label=False) for i in L.featured_sold(L.load()))
     return f'''{header(d, 'home')}
 
 <main>
@@ -866,7 +871,7 @@ def empty_listings(depth, what):
         <h3>{what}</h3>
         <p>Some properties are sold off-market or before a full public campaign. Register what you are looking for and he will call you when something fits.</p>
         <p class="empty-actions">
-          <a class="btn btn-blue" href="{rel(depth)}property-appraisal/">Register as a buyer</a>
+          <a class="btn btn-blue" href="{rel(depth)}contact/?enquiry=buying">Register as a buyer</a>
           <a class="btn btn-line" href="{rel(depth)}recently-sold/">See recent sales</a>
         </p>
       </div>'''
@@ -888,7 +893,7 @@ def current_listings_body():
       <h1 id="pageTitle">Currently for <em>sale.</em></h1>
       <p class="lede">Homes on the market with Ben right now, with open home times. Updated as new listings go live.</p>
       <div class="page-actions">
-        <a class="btn btn-ink" href="../property-appraisal/">Register as a buyer</a>
+        <a class="btn btn-ink" href="../contact/?enquiry=buying">Register as a buyer</a>
       </div>
     </div>
   </section>
@@ -1569,6 +1574,16 @@ def script_block(depth=0):
 
     var cform = $('contactForm');
     if(cform){
+      // "Register as a buyer" links arrive as ?enquiry=buying, so the person lands on
+      // the form already set to what they came for rather than having to pick it.
+      (function(){
+        var want = (location.search.match(/[?&]enquiry=([a-z-]+)/) || [])[1];
+        if(!want) return;
+        var sel = $('c-topic');
+        if(!sel) return;
+        var opt = sel.querySelector('option[data-enquiry="' + want + '"]');
+        if(opt) sel.value = opt.value;
+      })();
       cform.addEventListener('submit', function(e){
         e.preventDefault();
         if(!validate(cform)) return;

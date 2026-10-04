@@ -424,7 +424,7 @@
             <h3>8/3 Corrella Road</h3>
             <p class="card-meta">4 bed · 3 bath · 1 car</p>
             
-            <p class="card-status">Sold 17 Sep 2026</p>
+            <p class="card-status">Sold</p>
           </div>
         </a>
 
@@ -435,7 +435,7 @@
             <h3>13A Bayswater Avenue</h3>
             <p class="card-meta">6 bed · 2 bath · 2 car · 648 m²</p>
             
-            <p class="card-status">Sold 4 Aug 2026</p>
+            <p class="card-status">Sold</p>
           </div>
         </a>
 
@@ -446,7 +446,7 @@
             <h3>16 Kiwi Road</h3>
             <p class="card-meta">3 bed · 2 bath · 1 car · 379 m²</p>
             
-            <p class="card-status">Sold 21 May 2026</p>
+            <p class="card-status">Sold</p>
           </div>
         </a>
 
@@ -640,7 +640,7 @@
       provider: 'endpoint',
       formKey: '',
       leadEmail: '',
-      formAlias: '',
+      formAlias: '834c42471a791eaf2dbcfd7e8233efd3',
       formEndpoint: 'https://ben-potter.vercel.app/api/lead',
       guideUrl: 'guide/ben-potter-selling-guide.pdf',                           // the selling guide PDF
       replyGuide: "Thanks for requesting the guide.\n\nHere it is: A Proven Strategy to Maximise Your Sale Price. Sixteen pages on preparing and positioning a home for sale so it reaches the widest pool of buyers.\n\nDownload it here:\nhttps://www.benpotter.co.nz/guide/ben-potter-selling-guide.pdf\n\nIf you'd like a written appraisal of your own home, just reply to this email or call me on 027 953 0210. No cost and no obligation.\n\nBen Potter\nNorth Shore Real Estate Specialist\nHarcourts Cooper & Co\n027 953 0210\nben.potter@harcourts.co.nz",                         // confirmation emailed to the requester
@@ -900,6 +900,16 @@
 
     var cform = $('contactForm');
     if(cform){
+      // "Register as a buyer" links arrive as ?enquiry=buying, so the person lands on
+      // the form already set to what they came for rather than having to pick it.
+      (function(){
+        var want = (location.search.match(/[?&]enquiry=([a-z-]+)/) || [])[1];
+        if(!want) return;
+        var sel = $('c-topic');
+        if(!sel) return;
+        var opt = sel.querySelector('option[data-enquiry="' + want + '"]');
+        if(opt) sel.value = opt.value;
+      })();
       cform.addEventListener('submit', function(e){
         e.preventDefault();
         if(!validate(cform)) return;
