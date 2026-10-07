@@ -9,6 +9,10 @@
  * Environment variables:
  *   RESEND_API_KEY   from resend.com
  *   MAIL_FROM        e.g. "Ben Potter <ben@benpotter.co.nz>"  (domain must be verified)
+ *   MAIL_FROM_FALLBACK  a sender on an already verified domain. Used only if MAIL_FROM
+ *                    is refused, which is what happens while its DNS is still
+ *                    propagating. Lets the switch happen without a window where
+ *                    every form is broken.
  *   LEAD_TO          where the notification goes. Internal routing, never shown to a lead.
  *   LEAD_CC          a second, independent inbox. One mail server having a bad morning
  *                    should not be the difference between Ben getting a lead and not.
@@ -49,8 +53,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // Every submission sends two emails back to back, and Resend rate limits per second,
 // so two people submitting at the same moment is enough to get a 429. Without this a
 // confirmation just quietly vanishes, which is exactly what it did in testing.
-async function send(payload, attempt = 0) {
-  const res = await fetch('https://api.resend.com/emails', {
+async function post(payload) {
+  return fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
@@ -58,6 +62,24 @@ async function send(payload, attempt = 0) {
     },
     body: JSON.stringify(payload),
   });
+}
+
+async function send(payload, attempt = 0) {
+  let res = await post(payload);
+
+  // While Ben's domain is still propagating, Resend refuses to send as him. Rather than
+  // fail the form, fall back to a sender that is already verified. The moment his DNS
+  // goes green this stops firing on its own, with no redeploy and no flipped setting.
+  if (!res.ok && (res.status === 403 || res.status === 422) && process.env.MAIL_FROM_FALLBACK
+      && payload.from !== process.env.MAIL_FROM_FALLBACK) {
+    const why = await res.text();
+    if (/domain|verif/i.test(why)) {
+      console.warn('MAIL_FROM refused, falling back:', why.slice(0, 160));
+      return send(Object.assign({}, payload, { from: process.env.MAIL_FROM_FALLBACK }), attempt);
+    }
+    throw new Error(`resend ${res.status}: ${why}`);
+  }
+
   if (res.ok) return res.json();
   const retryable = res.status === 429 || res.status >= 500;
   if (retryable && attempt < 4) {
