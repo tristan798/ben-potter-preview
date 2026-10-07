@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static site generator for ben-potter.com.
+"""Static site generator for benpotter.co.nz.
 
 Renders every page, the schema graph, sitemap.xml, robots.txt and host redirect
 configs. Run: python3 build.py
@@ -1640,7 +1640,7 @@ def script_block(depth=0):
       } else if(CONFIG.provider === 'web3forms' && CONFIG.formKey){
         url = 'https://api.web3forms.com/submit';
         payload = Object.assign({ access_key: CONFIG.formKey, subject: subject,
-                                  from_name: 'ben-potter.com', replyto: data.email || '',
+                                  from_name: '@@SITE_HOST@@', replyto: data.email || '',
                                   botcheck: data.botcheck || false }, fields);
       } else if(CONFIG.provider === 'formsubmit'){
         url = 'https://formsubmit.co/ajax/' + (CONFIG.formAlias || CONFIG.leadEmail);
@@ -1975,6 +1975,7 @@ def script_block(depth=0):
         '@@LEAD_EMAIL@@': C.lead_destination() if C.FORM_PROVIDER == 'formsubmit' else '',
         # Ben's own address, safe to show a visitor.
         '@@PUBLIC_EMAIL@@': C.EMAIL,
+        '@@SITE_HOST@@': C.SITE.split('//')[-1],
         '@@FORM_ALIAS@@': C.lead_alias(),
         '@@FORM_ENDPOINT@@': getattr(C, 'FORM_ENDPOINT', '/api/lead'),
         '@@FORM_PROVIDER@@': C.FORM_PROVIDER,

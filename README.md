@@ -1,4 +1,4 @@
-# ben-potter.com
+# benpotter.co.nz
 
 Static site for Ben Potter, Harcourts Cooper & Co. No build dependencies beyond Python 3.
 
@@ -45,9 +45,9 @@ four of Ben's templates were sent through that account on 28 September 2026 and 
 correctly. So the templates and the key are both proven. What is missing is a place to
 run the function, and a verified sending domain of Ben's own.
 
-`ben-potter.com` is registered and sits on Cloudflare nameservers (`felicity` and
-`michelle`), with no MX and no SPF record on it today. Whoever holds that Cloudflare
-account has to add the records Resend generates before Ben's own domain can send.
+`benpotter.co.nz` is Ben's own domain, bought in October 2026 and managed by him at
+Domains Direct. The old `benpotter.co.nz` Webflow address is not under his control and
+nothing on this site points at it. If he regains it, a 301 at the registrar is enough.
 
 To turn them on:
 
@@ -55,11 +55,11 @@ To turn them on:
    [app.netlify.com/start](https://app.netlify.com/start). `vercel.json` and
    `netlify.toml` are already here, and there is nothing to build: `build.py` has
    written the HTML into the repo already.
-2. Add `ben-potter.com` in the Resend dashboard, copy the DNS records it gives you
+2. Add `benpotter.co.nz` in the Resend dashboard, copy the DNS records it gives you
    into Cloudflare, and wait for it to go green. The existing Harbour Studios key can
    then send as Ben, or issue a new one scoped to his domain.
 3. Set four environment variables on the host:
-   `RESEND_API_KEY`, `MAIL_FROM` (for example `Ben Potter <ben@ben-potter.com>`),
+   `RESEND_API_KEY`, `MAIL_FROM` (for example `Ben Potter <ben@benpotter.co.nz>`),
    `LEAD_TO` (`ben.potter@harcourts.co.nz`) and `ALLOWED_ORIGINS`.
    `tools/deploy-vercel.sh` does the linking, the variables and the deploy in one go.
 4. In `tools/content.py` set `FORM_PROVIDER = "endpoint"`, and set `FORM_ENDPOINT` to
@@ -86,7 +86,7 @@ Everything below lives in `tools/content.py` unless noted.
    build while it is on. This is the easiest thing to forget.
 1. `PREVIEW = False` — removes `noindex` from every page and switches `robots.txt` from
    disallow-all to allow-all with the sitemap reference.
-2. `SITE` — `https://www.ben-potter.com`, confirmed on Ben's selling guide. Canonicals, Open Graph
+2. `SITE` — `https://www.benpotter.co.nz`. Canonicals, Open Graph
    URLs and the sitemap all derive from it.
 3. `STREET` — the Devonport office street address. Currently empty, so `streetAddress` is omitted
    from the schema. Local SEO wants it filled.
@@ -144,7 +144,7 @@ so `api/lead.js` exists to hold it. That needs hosting with functions.
 1. Move hosting to Netlify, Vercel or Cloudflare Pages. All free, and all three also
    fix two other things GitHub Pages cannot do: the `/listings` redirect from the old
    site, and instant cache purge on deploy.
-2. Create a Resend account, verify `ben-potter.com` (SPF and DKIM), which is also what
+2. Create a Resend account, verify `benpotter.co.nz` (SPF and DKIM), which is also what
    keeps these emails out of spam.
 3. Set `RESEND_API_KEY`, `MAIL_FROM` and `LEAD_TO` as environment variables.
 4. Set `FORM_PROVIDER = "endpoint"` in `tools/content.py` and rebuild.

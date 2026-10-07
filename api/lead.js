@@ -8,7 +8,7 @@
  *
  * Environment variables:
  *   RESEND_API_KEY   from resend.com
- *   MAIL_FROM        e.g. "Ben Potter <ben@ben-potter.com>"  (domain must be verified)
+ *   MAIL_FROM        e.g. "Ben Potter <ben@benpotter.co.nz>"  (domain must be verified)
  *   LEAD_TO          where the notification goes. Internal routing, never shown to a lead.
  *   LEAD_CC          a second, independent inbox. One mail server having a bad morning
  *                    should not be the difference between Ben getting a lead and not.
@@ -161,10 +161,10 @@ async function handle(body) {
   return { success: 'true' };
 }
 
-// The site may be served from a different origin to this function (GitHub Pages now,
-// ben-potter.com later), so the browser needs these before it will hand over a response.
+// The function and the site can be served from different origins, so the browser needs
+// these before it will hand over a response. Set ALLOWED_ORIGINS to override.
 const ALLOWED = (process.env.ALLOWED_ORIGINS ||
-  'https://tristan798.github.io,https://ben-potter.com,https://www.ben-potter.com')
+  'https://www.benpotter.co.nz,https://benpotter.co.nz')
   .split(',').map((s) => s.trim());
 
 function cors(req, res) {

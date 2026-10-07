@@ -1,4 +1,14 @@
-# Preview build: indexing is switched off.
-# Set PREVIEW = False in tools/content.py before launch.
 User-agent: *
-Disallow: /
+Allow: /
+
+# AI and answer engines are welcome.
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://www.benpotter.co.nz/sitemap.xml

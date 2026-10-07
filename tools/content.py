@@ -4,7 +4,7 @@
 # ---------------------------------------------------------------- configuration
 # TODO before launch: confirm every value in this block with Ben.
 SITE          = "https://www.benpotter.co.nz"  # Ben's own domain, bought Oct 2026. www is canonical.
-PREVIEW       = True          # True adds noindex and a disallow-all robots.txt. Flip to False at launch.
+PREVIEW       = False         # True adds noindex and a disallow-all robots.txt. Live since 8 Oct 2026.
 # Where the site can actually be reached right now. Links inside emails have to point at
 # something that works today, which is the Vercel host until benpotter.co.nz is pointed
 # at it. Once that DNS is in, this becomes SITE and the whole site is on one domain.
@@ -53,7 +53,7 @@ FORM_PROVIDER = "endpoint"
 FORM_ENDPOINT = "https://ben-potter.vercel.app/api/lead"
 # FormSubmit's hashed alias for LEAD_EMAIL. Using it instead of the raw address keeps Ben's
 # email out of the page source, where scrapers would find it. Activation is per domain:
-# when the site moves to ben-potter.com the first submission there triggers a fresh
+# when the site moves to benpotter.co.nz the first submission there triggers a fresh
 # confirmation email, which Ben needs to click once.
 FORM_ALIAS    = "834c42471a791eaf2dbcfd7e8233efd3"
 FORM_KEY      = ""
@@ -98,7 +98,7 @@ HERO_IMG = "img/ben-potter-devonport-real-estate-agent"
 HERO_ALT = ("Ben Potter, Harcourts Cooper & Co real estate agent for Devonport, "
             "Belmont and Bayswater")
 
-# Old ben-potter.com paths that must keep their search equity.
+# Paths the old Webflow site published, kept as working URLs on the new domain.
 # Everything the old Webflow site published, from its sitemap. /listings was titled
 # "Devonport, Bayswater & Belmont Homes For Sale", so it belongs on current listings
 # rather than the sold archive. /styleguide was a Webflow scaffold with no content.
@@ -108,8 +108,8 @@ REDIRECTS = [
     ("/styleguide", "/"),
     ("/styleguide/", "/"),
 ]
-# ben-potter.com was the old Webflow address. If Ben keeps it, pointing it here as well
-# means those three URLs and any inbound links keep working instead of dying.
+# Ben does not control the old domain, so nothing on this site points at it. If he
+# regains it later, a 301 at the registrar is all that is needed.
 
 # ---------------------------------------------------------------- shared copy
 SUPPORT_COPY = ("Ben Potter has been on the Devonport Peninsula for 38 years and specialises in "
