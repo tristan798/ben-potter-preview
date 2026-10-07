@@ -1,6 +1,6 @@
 {
   "_comment": "Single source of truth for listings. Edit by hand, or let tools/sync_listings.py write it from a feed. build.py renders both the current-listings and recently-sold pages from here.",
-  "updated": "2026-09-28",
+  "updated": "2026-10-07",
   "source": "harcourts",
   "for_sale": [
     {
@@ -45,20 +45,6 @@
       "photo": "img/listings/6-3-corrella-road-belmont.jpg"
     },
     {
-      "address": "42A Old Lake Road",
-      "suburb": "Devonport",
-      "id": "42a-old-lake-road-devonport",
-      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l41977698-42a-old-lake-road-devonport-nz-0624",
-      "ref": 41977698,
-      "bedrooms": 4,
-      "bathrooms": 2,
-      "parking": 1,
-      "land_m2": 637,
-      "order": 3,
-      "status_label": "Asking Price $2,285,000",
-      "photo": "img/listings/42a-old-lake-road-devonport.jpg"
-    },
-    {
       "address": "2/3 Corrella Road",
       "suburb": "Belmont",
       "id": "2-3-corrella-road-belmont",
@@ -67,7 +53,7 @@
       "bedrooms": 4,
       "bathrooms": 3,
       "parking": 1,
-      "order": 4,
+      "order": 3,
       "status_label": "Enquiries Over $1,200,000",
       "photo": "img/listings/2-3-corrella-road-belmont.jpg"
     },
@@ -81,7 +67,7 @@
       "bathrooms": 3,
       "parking": 1,
       "land_m2": 179,
-      "order": 5,
+      "order": 4,
       "status_label": "Enquiries Over $1,200,000",
       "photo": "img/listings/3-corrella-road-belmont.jpg"
     },
@@ -95,7 +81,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 436,
-      "order": 8,
+      "order": 7,
       "status_label": "Price by Negotiation",
       "photo": "img/listings/56a-church-street-devonport.jpg"
     },
@@ -107,7 +93,7 @@
       "ref": 24195557,
       "bedrooms": 2,
       "bathrooms": 1,
-      "order": 6,
+      "order": 5,
       "status_label": "Asking Price $875,000",
       "photo": "img/listings/2-3a-first-avenue-devonport.jpg"
     },
@@ -119,7 +105,7 @@
       "ref": 24195378,
       "bedrooms": 2,
       "bathrooms": 1,
-      "order": 7,
+      "order": 6,
       "status_label": "Price by Negotiation",
       "photo": "img/listings/1-3a-first-avenue-devonport.jpg"
     }
@@ -223,15 +209,15 @@
       "id": "16-kiwi-road-devonport",
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l39078311-16-kiwi-road-devonport-nz-0624",
       "ref": 39078311,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "parking": 1,
+      "land_m2": 379,
       "order": 7,
       "photo": "img/listings/16-kiwi-road-devonport.jpg",
       "sold_on": "2026-05-21",
       "photo_w": 1448,
-      "photo_h": 965,
-      "bedrooms": 3,
-      "bathrooms": 2,
-      "parking": 1,
-      "land_m2": 379
+      "photo_h": 965
     },
     {
       "address": "3/64 Victoria Road",
