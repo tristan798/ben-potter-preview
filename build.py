@@ -11,11 +11,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, 'tools'))
 import content as C
 import listings as L
+import market as MU
 
 TODAY = date.today().isoformat()
 ARROW = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
          'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
          '<path d="M5 12h14M13 6l6 6-6 6"/></svg>')
+
+
+def strip_em(t):
+    """Headings carry <em> for the two-tone treatment. Card titles and <title> do not."""
+    return t.replace('<em>', '').replace('</em>', '')
 
 
 def esc(t):
@@ -58,6 +64,11 @@ def pages():
         {'path': C.FUNNEL_SLUG + '/', 'file': C.FUNNEL_SLUG + '/index.html',
          'title': C.FUNNEL_TITLE.replace('&', '&amp;'), 'desc': C.FUNNEL_DESC,
          'crumbs': [], 'nav': None, 'funnel': True, 'noindex': True},
+        {'path': 'market-updates/', 'file': 'market-updates/index.html',
+         'title': 'Peninsula Market Updates | Devonport, Belmont &amp; Bayswater | Ben Potter',
+         'desc': ('Monthly property market updates for Devonport, Belmont, Bayswater, Narrow Neck '
+                  'and Stanley Point, with sales volumes, average prices and commentary from Ben Potter.'),
+         'crumbs': [('Market updates', None)], 'nav': 'market'},
         {'path': 'contact/', 'file': 'contact/index.html',
          'title': 'Contact Ben Potter | Harcourts Cooper &amp; Co, Devonport',
          'desc': ('Get in touch with Ben Potter, Harcourts Cooper & Co salesperson for Devonport, '
@@ -70,12 +81,19 @@ def pages():
                   'written estimate from recent comparable sales, plus a recommended method of sale.'),
          'crumbs': [('Property appraisal', None)], 'nav': 'contact'},
     ]
+    for e in MU.load():
+        p.append({'path': e['path'], 'file': e['path'] + 'index.html',
+                  'title': e.get('seo_title') or strip_em(e['h1']),
+                  'desc': e.get('meta') or e['lede'],
+                  'crumbs': [('Market updates', 'market-updates/'), (e['period'], None)],
+                  'nav': 'market', 'edition': e})
     return p
 
 
 NAV = [('About', '#about', 'about'), ('Areas', 'areas', 'areas'),
        ('Listings', 'current-listings/', 'listings'), ('Sold', 'recently-sold/', 'sold'),
-       ('Reviews', '#reviews', 'reviews'), ('Contact', 'contact/', 'contact')]
+       ('Market Updates', 'market-updates/', 'market'), ('Reviews', '#reviews', 'reviews'),
+       ('Contact', 'contact/', 'contact')]
 
 
 def rel(depth):
@@ -980,6 +998,157 @@ def sold_body():
 {footer(d)}'''
 
 
+def market_index_body():
+    d = 1
+    eds = MU.load()
+    cards = []
+    for e in eds:
+        glance = e.get('glance') or []
+        bits = ''.join(f'<li><b>{v}</b><span>{t}</span></li>' for v, t in glance[:3])
+        cards.append(f'''        <a class="mu-card" href="{rel(d)}{e["path"]}">
+          <p class="label blue">{e["period"]}</p>
+          <h3>{strip_em(e["h1"])}</h3>
+          <p class="mu-card-lede">{e["lede"]}</p>
+          <ul class="mu-card-stats">{bits}</ul>
+          <p class="card-status live">Read the update {ARROW}</p>
+        </a>''')
+    listing = '\n'.join(cards) if cards else (
+        '        <p class="lede">The first monthly update is on its way.</p>')
+    return f'''{header(d, 'market')}
+
+<main>
+  <section class="page-hero" aria-labelledby="pageTitle">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      {crumbs([('Market updates', None)], d)}
+      <p class="label blue">Peninsula property market</p>
+      <h1 id="pageTitle">Market <em>updates.</em></h1>
+      <p class="lede">A monthly read on what is actually selling across Devonport, Belmont, Bayswater, Narrow Neck and Stanley Point, with the figures behind it.</p>
+    </div>
+  </section>
+
+  <section class="section on-light" aria-labelledby="archiveTitle">
+    <div class="wrap">
+      <h2 class="visually-hidden" id="archiveTitle">Every monthly update</h2>
+      <div class="mu-list">
+{listing}
+      </div>
+    </div>
+  </section>
+
+{contact_section(d)}
+</main>
+
+{footer(d)}'''
+
+
+def market_edition_body(e):
+    d = 2
+    glance = ''.join(
+        f'''          <div class="mu-stat"><b>{v}</b><span>{t}</span></div>'''
+        for v, t in e.get('glance', []))
+
+    commentary = '\n'.join(f'        <p>{para}</p>' for para in e.get('commentary', []))
+
+    subs = []
+    for s_ in e.get('suburbs', []):
+        vol, vdir = MU.delta(s_['sales'], s_['prior_sales'])
+        prc, pdir = MU.delta(s_['avg'], s_['prior_avg'])
+        link = (f'<a class="quietlink" href="{rel(d)}{s_["link"]}">'
+                f'{s_["name"]} property, in depth {ARROW}</a>') if s_.get('link') else ''
+        subs.append(f'''        <article class="mu-suburb">
+          <h3>{s_["name"]} property market</h3>
+          <dl class="mu-figures">
+            <div><dt>Sales, last 12 months</dt><dd>{s_["sales"]} <i class="mu-{vdir}">{vol}</i></dd></div>
+            <div><dt>Average sale price</dt><dd>{MU.money(s_["avg"])} <i class="mu-{pdir}">{prc}</i></dd></div>
+          </dl>
+          <p>{s_["note"]}</p>
+          {link}
+        </article>''')
+    suburbs = '\n'.join(subs)
+
+    chart = MU.trend_svg(e['trend']) if e.get('trend') else ''
+    pdf = e.get('pdf')
+    pdf_btn = (f'''<a class="btn btn-blue" href="{rel(d)}{pdf}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 19h14"/></svg>
+            Download the full PDF report
+          </a>''') if pdf else ''
+
+    return f'''{header(d, 'market')}
+
+<main>
+  <article>
+  <section class="page-hero mu-hero" aria-labelledby="pageTitle">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap mu-hero-grid">
+      <div class="mu-hero-copy">
+        {crumbs([('Market updates', 'market-updates/'), (e['period'], None)], d)}
+        <p class="label blue">{e['eyebrow']}</p>
+        <h1 id="pageTitle">{e['h1']}</h1>
+        <p class="lede">{e['lede']}</p>
+        <div class="page-actions">
+          {pdf_btn}
+        </div>
+        <a class="quietlink" href="{rel(d)}property-appraisal/">or book a free appraisal {ARROW}</a>
+      </div>
+      <figure class="mu-hero-chart">
+        {chart}
+        <figcaption>{e.get('trend_caption','')}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section on-light white" aria-labelledby="glanceTitle">
+    <div class="wrap">
+      <div class="funnel-head">
+        <p class="label blue">Market at a glance</p>
+        <h2 id="glanceTitle">{e['period']} in <em>numbers.</em></h2>
+      </div>
+      <div class="mu-stats">
+{glance}
+      </div>
+      <p class="mu-source">{e.get('source','')}</p>
+    </div>
+  </section>
+
+  <section class="section on-light" aria-labelledby="commentaryTitle">
+    <div class="wrap split">
+      <div class="split-head">
+        <p class="label blue">Commentary</p>
+        <h2 id="commentaryTitle">What <em>happened.</em></h2>
+      </div>
+      <div class="prose mu-prose">
+{commentary}
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-light white" aria-labelledby="suburbsTitle">
+    <div class="wrap">
+      <div class="funnel-head">
+        <p class="label blue">Suburb by suburb</p>
+        <h2 id="suburbsTitle">The Peninsula is <em>five markets.</em></h2>
+      </div>
+      <div class="mu-suburbs">
+{suburbs}
+      </div>
+    </div>
+  </section>
+
+  <section class="section funnel-close">
+    <div class="wrap">
+      <h2>{e.get('cta_title','Thinking of selling?')}</h2>
+      <p class="lede">{e.get('cta_body','')}</p>
+      <p><a class="btn btn-blue" href="{rel(d)}property-appraisal/">Book a free appraisal</a></p>
+      <p class="or">or call Ben on <a href="tel:{C.PHONE_LINK}">{C.PHONE_DISPLAY}</a></p>
+    </div>
+  </section>
+  </article>
+</main>
+
+{footer(d)}'''
+
+
 def guide_body():
     d = 1
     half = (len(C.GUIDE_CONTENTS) + 1) // 2
@@ -1213,6 +1382,31 @@ def schema_for(page):
         for i, (label, _) in enumerate(page['crumbs'], start=2):
             crumb_items.append({"@type": "ListItem", "position": i, "name": esc(label), "item": url})
         graph.append({"@type": "BreadcrumbList", "@id": url + "#breadcrumb", "itemListElement": crumb_items})
+        ed = page.get('edition')
+        if ed:
+            # The monthly update is an article, so it gets Article markup with a real
+            # author and dates. That is what lets it surface as a dated piece rather
+            # than as another page of the site.
+            url_pdf = C.SITE + "/" + ed['pdf'] if ed.get('pdf') else None
+            article = {
+                "@type": "Article", "@id": url + "#article",
+                "headline": esc(strip_em(ed['h1'])),
+                "description": esc(ed.get('meta') or ed['lede']),
+                "datePublished": ed['published'],
+                "dateModified": ed.get('updated') or ed['published'],
+                "author": {"@id": PERSON_ID},
+                "publisher": {"@id": ORG_ID},
+                "isPartOf": {"@id": C.SITE + "/#website"},
+                "mainEntityOfPage": {"@id": url + "#webpage"},
+                "inLanguage": "en-NZ",
+                "about": [{"@type": "Place", "name": s_['name'] + ", Auckland, New Zealand"}
+                          for s_ in ed.get('suburbs', [])],
+            }
+            if url_pdf:
+                article["associatedMedia"] = {
+                    "@type": "DigitalDocument", "name": "Peninsula Sales Statistics, " + ed['period'],
+                    "url": url_pdf, "encodingFormat": "application/pdf"}
+            graph.append(article)
         page_type = "ContactPage" if page['path'] == 'contact/' else "WebPage"
         graph.append({"@type": page_type, "@id": url + "#webpage", "url": url,
                       "name": esc(page['title']), "description": esc(page['desc']),
@@ -1882,7 +2076,10 @@ def main():
     bodies = {'': home_body(), 'recently-sold/': sold_body(),
               'current-listings/': current_listings_body(),
               'free-selling-guide/': guide_body(), 'property-appraisal/': appraisal_body(),
-              'contact/': contact_body(), C.FUNNEL_SLUG + '/': funnel_body()}
+              'contact/': contact_body(), 'market-updates/': market_index_body(),
+              C.FUNNEL_SLUG + '/': funnel_body()}
+    for e in MU.load():
+        bodies[e['path']] = market_edition_body(e)
     for s in C.SUBURBS:
         bodies[s['slug'] + '/'] = suburb_body(s)
 

@@ -1,0 +1,332 @@
+{
+  "_comment": "One entry per monthly Market Update, newest first. Add a month by adding an entry and dropping its PDF in reports/, then running build.py.",
+  "editions": [
+    {
+      "slug": "september-2026",
+      "period": "September 2026",
+      "published": "2026-10-07",
+      "updated": "2026-10-07",
+      "author": "Ben Potter",
+      "eyebrow": "Peninsula Property Market · September 2026",
+      "h1": "Devonport Peninsula Property Market, <em>September 2026.</em>",
+      "lede": "September sales data and market commentary for Devonport, Belmont, Bayswater, Narrow Neck and Stanley Point.",
+      "seo_title": "Devonport Peninsula Property Market, September 2026 | Ben Potter",
+      "meta": "September 2026 sales data and market commentary for Devonport, Belmont, Bayswater, Narrow Neck and Stanley Point. 19 sales, average price $1,479,500, and the 12 month trend across the Peninsula.",
+      "pdf": "reports/peninsula-sales-statistics-september-2026.pdf",
+      "glance": [
+        [
+          "19",
+          "Sales across the Peninsula in September"
+        ],
+        [
+          "$1,479,500",
+          "Average September sale price"
+        ],
+        [
+          "$1,755,259",
+          "12 month moving average"
+        ],
+        [
+          "221",
+          "Sales across the latest 12 months"
+        ],
+        [
+          "18.1% down",
+          "Sales volume against the preceding 12 months"
+        ],
+        [
+          "0.8% up",
+          "Average sale price across the latest 12 months"
+        ]
+      ],
+      "trend": [
+        {
+          "label": "Jan 22",
+          "value": 2101410
+        },
+        {
+          "label": "Feb 22",
+          "value": 2110978
+        },
+        {
+          "label": "Mar 22",
+          "value": 2112423
+        },
+        {
+          "label": "Apr 22",
+          "value": 2105086
+        },
+        {
+          "label": "May 22",
+          "value": 2086384
+        },
+        {
+          "label": "Jun 22",
+          "value": 2075159
+        },
+        {
+          "label": "Jul 22",
+          "value": 2068059
+        },
+        {
+          "label": "Aug 22",
+          "value": 2058767
+        },
+        {
+          "label": "Sep 22",
+          "value": 1982980
+        },
+        {
+          "label": "Oct 22",
+          "value": 1943152
+        },
+        {
+          "label": "Nov 22",
+          "value": 1968395
+        },
+        {
+          "label": "Dec 22",
+          "value": 1987319
+        },
+        {
+          "label": "Jan 23",
+          "value": 2012727
+        },
+        {
+          "label": "Feb 23",
+          "value": 2031201
+        },
+        {
+          "label": "Mar 23",
+          "value": 2027986
+        },
+        {
+          "label": "Apr 23",
+          "value": 1997097
+        },
+        {
+          "label": "May 23",
+          "value": 1978438
+        },
+        {
+          "label": "Jun 23",
+          "value": 2015159
+        },
+        {
+          "label": "Jul 23",
+          "value": 1977016
+        },
+        {
+          "label": "Aug 23",
+          "value": 1964681
+        },
+        {
+          "label": "Sep 23",
+          "value": 1930254
+        },
+        {
+          "label": "Oct 23",
+          "value": 1942769
+        },
+        {
+          "label": "Nov 23",
+          "value": 1905863
+        },
+        {
+          "label": "Dec 23",
+          "value": 1853998
+        },
+        {
+          "label": "Jan 24",
+          "value": 1800584
+        },
+        {
+          "label": "Feb 24",
+          "value": 1792449
+        },
+        {
+          "label": "Mar 24",
+          "value": 1781119
+        },
+        {
+          "label": "Apr 24",
+          "value": 1748573
+        },
+        {
+          "label": "May 24",
+          "value": 1789943
+        },
+        {
+          "label": "Jun 24",
+          "value": 1722912
+        },
+        {
+          "label": "Jul 24",
+          "value": 1725694
+        },
+        {
+          "label": "Aug 24",
+          "value": 1693015
+        },
+        {
+          "label": "Sep 24",
+          "value": 1716483
+        },
+        {
+          "label": "Oct 24",
+          "value": 1690628
+        },
+        {
+          "label": "Nov 24",
+          "value": 1690359
+        },
+        {
+          "label": "Dec 24",
+          "value": 1697721
+        },
+        {
+          "label": "Jan 25",
+          "value": 1770682
+        },
+        {
+          "label": "Feb 25",
+          "value": 1744392
+        },
+        {
+          "label": "Mar 25",
+          "value": 1750551
+        },
+        {
+          "label": "Apr 25",
+          "value": 1755185
+        },
+        {
+          "label": "May 25",
+          "value": 1716286
+        },
+        {
+          "label": "Jun 25",
+          "value": 1721342
+        },
+        {
+          "label": "Jul 25",
+          "value": 1688509
+        },
+        {
+          "label": "Aug 25",
+          "value": 1717742
+        },
+        {
+          "label": "Sep 25",
+          "value": 1723419
+        },
+        {
+          "label": "Oct 25",
+          "value": 1795444
+        },
+        {
+          "label": "Nov 25",
+          "value": 1786834
+        },
+        {
+          "label": "Dec 25",
+          "value": 1764619
+        },
+        {
+          "label": "Jan 26",
+          "value": 1778093
+        },
+        {
+          "label": "Feb 26",
+          "value": 1776807
+        },
+        {
+          "label": "Mar 26",
+          "value": 1770076
+        },
+        {
+          "label": "Apr 26",
+          "value": 1774897
+        },
+        {
+          "label": "May 26",
+          "value": 1792067
+        },
+        {
+          "label": "Jun 26",
+          "value": 1780834
+        },
+        {
+          "label": "Jul 26",
+          "value": 1797502
+        },
+        {
+          "label": "Aug 26",
+          "value": 1785130
+        },
+        {
+          "label": "Sep 26",
+          "value": 1755259
+        }
+      ],
+      "trend_caption": "Twelve month moving average sale price across the Peninsula, January 2022 to September 2026.",
+      "commentary": [
+        "September remained relatively subdued for sales volumes across the Devonport Peninsula, with 19 recorded sales for the month. The broader trend continues to show fewer properties changing hands than during the previous 12 month period, with total sales volumes down 18.1%.",
+        "Pricing, however, has been considerably more resilient. The average sale price across the latest 12 months was approximately $1.721 million, broadly unchanged from the prior period, while the 12 month moving average remains around $1.755 million.",
+        "The underlying picture remains quite different from suburb to suburb. Narrow Neck has seen materially stronger sales volumes over the latest 12 months, while Belmont and Bayswater have recorded lower transaction volumes but higher average prices compared with the previous period. Devonport has remained comparatively stable on price despite reduced turnover.",
+        "From what I am seeing on the ground, buyers remain active but selective. Well presented homes with realistic pricing are still attracting competition, while properties that are harder to compare or require more work are generally taking longer for buyers to commit to.",
+        "As we move further into spring, presentation, pricing and the way a property is positioned against competing stock will continue to matter."
+      ],
+      "suburbs": [
+        {
+          "name": "Devonport",
+          "link": "devonport-real-estate/",
+          "sales": 91,
+          "prior_sales": 110,
+          "avg": 1910586,
+          "prior_avg": 1928842,
+          "note": "Devonport remains the deepest market on the Peninsula by some margin, with 91 sales over the latest 12 months. Turnover is down against the prior period, but pricing has held almost exactly level, which is the clearer signal. Standalone houses in particular lifted, averaging around $2.14 million."
+        },
+        {
+          "name": "Belmont",
+          "link": "belmont-real-estate/",
+          "sales": 43,
+          "prior_sales": 68,
+          "avg": 1625649,
+          "prior_avg": 1521559,
+          "note": "Belmont recorded the sharpest fall in volume of any Peninsula suburb, yet the average sale price rose 6.8%. Fewer homes traded, and the ones that did skewed toward the better presented end of the market."
+        },
+        {
+          "name": "Bayswater",
+          "link": "bayswater-real-estate/",
+          "sales": 34,
+          "prior_sales": 49,
+          "avg": 1578294,
+          "prior_avg": 1288312,
+          "note": "Bayswater produced the strongest price movement on the Peninsula, up 22.5% on the prior 12 months. Volume fell, so the lift reflects what sold as much as the market itself, with houses averaging close to $1.59 million."
+        },
+        {
+          "name": "Narrow Neck",
+          "link": null,
+          "sales": 38,
+          "prior_sales": 27,
+          "avg": 1530487,
+          "prior_avg": 1765981,
+          "note": "Narrow Neck was the one suburb to grow, with sales up 40.7% on the prior period. The average price eased, which follows from a higher share of apartments and smaller homes in the mix rather than from any softening in comparable stock."
+        },
+        {
+          "name": "Stanley Point",
+          "link": null,
+          "sales": 15,
+          "prior_sales": 16,
+          "avg": 1651733,
+          "prior_avg": 2154376,
+          "note": "Stanley Point is a small market where a handful of sales moves the averages, so read the 23.3% price fall with that in mind. Volume was essentially flat. The mix simply included fewer of the large freehold homes that lifted the prior period."
+        }
+      ],
+      "cta_title": "Thinking of selling on the Peninsula?",
+      "cta_body": "If you would like to understand where your property sits in the current market, book a free appraisal with Ben.",
+      "source": "Figures are drawn from REINZ data covering Bayswater, Belmont, Devonport, Narrow Neck and Stanley Point."
+    }
+  ]
+}

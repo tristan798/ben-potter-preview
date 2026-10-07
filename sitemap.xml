@@ -43,6 +43,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.benpotter.co.nz/market-updates/</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.benpotter.co.nz/contact/</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -50,6 +56,12 @@
   </url>
   <url>
     <loc>https://www.benpotter.co.nz/property-appraisal/</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.benpotter.co.nz/market-updates/september-2026/</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
