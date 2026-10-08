@@ -1205,6 +1205,11 @@ def download_body():
   var frame = document.getElementById('dlFrame');
 
   function save(){{
+    try {{
+      var ev = key === 'guide' ? 'guide_download' : 'report_download';
+      if (window.va) window.va('event', {{ name: ev, file: key }});
+      if (window.gtag) window.gtag('event', ev, {{ file: key }});
+    }} catch (e) {{}}
     var a = document.createElement('a');
     a.href = item.url;
     a.download = item.url.split('/').pop();
@@ -1562,6 +1567,12 @@ def head(page, depth):
         ga = f'''
 <script async src="https://www.googletagmanager.com/gtag/js?id={C.GA4_ID}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{C.GA4_ID}');</script>'''
+    # Vercel's own analytics, which the host already has switched on for this project.
+    # Cookieless, so it needs no consent banner, and it reports visitors from the first
+    # day rather than waiting on a Google property to be set up.
+    if C.VERCEL_ANALYTICS:
+        ga += ('\n<script defer src="/_vercel/insights/script.js"></script>'
+               '\n<script defer src="/_vercel/speed-insights/script.js"></script>')
     pixel = ''
     if page.get('funnel') and C.META_PIXEL_ID:
         pixel = ('\n<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?'
@@ -1823,6 +1834,15 @@ def script_block(depth=0):
       var host = document.querySelector('.form-card') || document.querySelector('.funnel-card') || document.body;
       host.appendChild(box);
     }
+    // Page views come for free. The things Ben actually wants counted, guide downloads
+    // and enquiries, have to be reported explicitly. Sent to whichever analytics are
+    // loaded, so this keeps working when GA4 is connected later.
+    function track(name, detail){
+      try {
+        if (window.va) window.va('event', Object.assign({ name: name }, detail || {}));
+        if (window.gtag) window.gtag('event', name, detail || {});
+      } catch (e) { /* analytics must never break a form */ }
+    }
     function firstName(form){ return (form.querySelector('[name="name"]').value.trim().split(' ')[0]) || 'there'; }
     // Telling someone "thank you, received" while the send is still in flight means
     // they can be thanked for a lead that never arrived. Hold the panel until it lands.
@@ -1871,6 +1891,7 @@ def script_block(depth=0):
         if(!validate(cform)) return;
         var name = clean(firstName(cform));
         submitLead(cform, 'contact', function(){
+          track('enquiry_contact', { topic: (cform.querySelector('[name=topic]') || {}).value || '' });
           done(cform, '<p class="label blue">Sent</p><h3>Thanks, ' + name + '.</h3><p>Ben has your message and will come back to you within one business day. If it\\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
         });
       });
@@ -1883,6 +1904,7 @@ def script_block(depth=0):
         if(!validate(form)) return;
         var name = clean(firstName(form));
         submitLead(form, 'appraisal', function(){
+          track('enquiry_appraisal');
           done(form, '<p class="label blue">Received</p><h3>Thank you, ' + name + '.</h3><p>Ben will call you within one business day to arrange a time. If it\\u2019s urgent, ring him on <a href="tel:' + PHONE_LINK + '">' + PHONE + '</a>.</p>');
         });
       });
@@ -2021,6 +2043,7 @@ def script_block(depth=0):
         });
         answers.botcheck = fForm.querySelector('[name=botcheck]').checked;
         submitLead(fForm, 'funnel', function(){
+          track('enquiry_funnel');
           if(window.fbq) fbq('track', 'Lead', { content_name: 'Home appraisal funnel' });
           $('doneName').textContent = clean((answers.name || 'there').split(' ')[0]);
           fForm.hidden = true;
@@ -2046,6 +2069,7 @@ def script_block(depth=0):
         if(!validate(gform)) return;
         var name = clean(firstName(gform));
         submitLead(gform, 'guide', function(){
+          track('guide_request');
           done(gform, '<p class="label blue">On its way</p><h3>Check your inbox, ' + name + '.</h3><p>The guide is on its way to your email now. It usually lands within a minute.</p><p class="micro-fallback">Not there? <a href="' + CONFIG.guideUrl + '" target="_blank" rel="noopener">open it here</a>, and check your junk folder.</p>');
         });
       });

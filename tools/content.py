@@ -14,6 +14,12 @@ LIVE_BASE     = "https://ben-potter.vercel.app"
 def asset_base():
     """The base for links in email. SITE once launched, the live preview until then."""
     return LIVE_BASE if PREVIEW else SITE
+# Vercel's own analytics. Cookieless, so no consent banner, and it reports visitors
+# without waiting on a Google property. Speed Insights is live. Web Analytics also needs
+# turning on once under Project, Analytics in the Vercel dashboard: until then its script
+# 404s harmlessly, and it starts reporting the moment it is enabled, with no redeploy.
+VERCEL_ANALYTICS = True
+
 GA4_ID        = ""            # e.g. "G-XXXXXXXXXX"; leave empty to omit the tag entirely
 GSC_TOKEN     = ""            # Search Console HTML-tag verification token, if that method is used
 
