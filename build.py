@@ -69,6 +69,10 @@ def pages():
          'desc': ('Monthly property market updates for Devonport, Belmont, Bayswater, Narrow Neck '
                   'and Stanley Point, with sales volumes, average prices and commentary from Ben Potter.'),
          'crumbs': [('Market updates', None)], 'nav': 'market'},
+        {'path': 'download/', 'file': 'download/index.html',
+         'title': 'Download | Ben Potter',
+         'desc': 'Your download from benpotter.co.nz.',
+         'crumbs': [('Download', None)], 'nav': None, 'noindex': True},
         {'path': 'contact/', 'file': 'contact/index.html',
          'title': 'Contact Ben Potter | Harcourts Cooper &amp; Co, Devonport',
          'desc': ('Get in touch with Ben Potter, Harcourts Cooper & Co salesperson for Devonport, '
@@ -1069,7 +1073,7 @@ def market_edition_body(e):
 
     chart = MU.trend_svg(e['trend']) if e.get('trend') else ''
     pdf = e.get('pdf')
-    pdf_btn = (f'''<a class="btn btn-blue" href="{rel(d)}{pdf}" target="_blank" rel="noopener">
+    pdf_btn = (f'''<a class="btn btn-blue" href="{rel(d)}download/?f={e['slug']}" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 19h14"/></svg>
             Download the full PDF report
           </a>''') if pdf else ''
@@ -1145,6 +1149,90 @@ def market_edition_body(e):
   </section>
   </article>
 </main>
+
+{footer(d)}'''
+
+
+def download_body():
+    """Saves the file, then shows it.
+
+    A PDF served inline just opens in the viewer, and the person never ends up with a
+    copy. Serving it as an attachment instead would download it but show them nothing.
+    This does both: the anchor's download attribute puts it in their downloads, and the
+    same file is embedded underneath so they can read it in the tab that just opened.
+
+    Only files listed here can be fetched, so the query string cannot be pointed at
+    anything else."""
+    d = 1
+    files = {'guide': (C.GUIDE_FILE, C.GUIDE_TITLE)}
+    for e in MU.load():
+        if e.get('pdf'):
+            files[e['slug']] = (e['pdf'], 'Peninsula Sales Statistics, ' + e['period'])
+    allow = json.dumps({k: {'url': rel(d) + v[0], 'name': v[1]} for k, v in files.items()})
+
+    return f'''{header(d, 'guide')}
+
+<main>
+  <section class="page-hero" aria-labelledby="pageTitle">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <p class="label blue">Download</p>
+      <h1 id="pageTitle" class="dl-title">Saving it <em>now.</em></h1>
+      <p class="lede" id="dlNote">Your download should start on its own. The document is below as well.</p>
+      <div class="page-actions">
+        <a class="btn btn-blue" id="dlAgain" href="#">Download again</a>
+        <a class="btn btn-line" href="{rel(d)}property-appraisal/">Book a free appraisal</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-light" aria-labelledby="previewTitle">
+    <div class="wrap">
+      <h2 class="visually-hidden" id="previewTitle">Preview</h2>
+      <div class="dl-frame" id="dlFrame"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){{
+  var FILES = {allow};
+  var key = (location.search.match(/[?&]f=([a-z0-9-]+)/i) || [])[1] || 'guide';
+  var item = FILES[key] || FILES.guide;
+  var title = document.getElementById('pageTitle');
+  var note = document.getElementById('dlNote');
+  var again = document.getElementById('dlAgain');
+  var frame = document.getElementById('dlFrame');
+
+  function save(){{
+    var a = document.createElement('a');
+    a.href = item.url;
+    a.download = item.url.split('/').pop();
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }}
+
+  again.setAttribute('href', item.url);
+  again.setAttribute('download', item.url.split('/').pop());
+  again.addEventListener('click', function(e){{ e.preventDefault(); save(); }});
+  note.textContent = item.name + '. Your download should start on its own. The document is below as well.';
+
+  // Some browsers block a download that was not asked for by a click. If that happens
+  // the file is still one tap away rather than the page being a dead end.
+  try {{ save(); }} catch (err) {{
+    title.innerHTML = 'Your <em>download.</em>';
+    note.textContent = item.name + '. Tap the button to save it.';
+  }}
+
+  var o = document.createElement('object');
+  o.setAttribute('data', item.url);
+  o.setAttribute('type', 'application/pdf');
+  o.innerHTML = '<p class="dl-fallback">Your browser will not preview PDFs here. '
+    + '<a href="' + item.url + '" target="_blank" rel="noopener">Open it in a new tab</a>.</p>';
+  frame.appendChild(o);
+}})();
+</script>
 
 {footer(d)}'''
 
@@ -1968,7 +2056,7 @@ def script_block(depth=0):
         '@@REVIEWS_JSON@@': reviews,
         '@@PHONE_DISPLAY@@': C.PHONE_DISPLAY,
         '@@PHONE_LINK@@': C.PHONE_LINK,
-        '@@GUIDE_URL@@': rel(depth) + C.GUIDE_FILE,
+        '@@GUIDE_URL@@': rel(depth) + 'download/?f=guide',
         '@@FORM_KEY@@': C.FORM_KEY,
         # Where leads are routed. Internal, and only the formsubmit provider needs it in
         # the page at all, so it is left empty otherwise rather than sitting in the source.
@@ -2078,6 +2166,7 @@ def main():
               'current-listings/': current_listings_body(),
               'free-selling-guide/': guide_body(), 'property-appraisal/': appraisal_body(),
               'contact/': contact_body(), 'market-updates/': market_index_body(),
+              'download/': download_body(),
               C.FUNNEL_SLUG + '/': funnel_body()}
     for e in MU.load():
         bodies[e['path']] = market_edition_body(e)

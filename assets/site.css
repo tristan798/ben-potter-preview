@@ -558,6 +558,11 @@
   .mu-down{color:#C0462F}
   .mu-flat{color:var(--mute)}
 
+  .dl-frame{margin-top:clamp(28px, 4vw, 44px); border:1px solid var(--rule); border-radius:3px; overflow:hidden; background:var(--panel)}
+  .dl-frame object{display:block; width:100%; height:min(78vh, 900px); border:0}
+  .dl-fallback{padding:40px; text-align:center; color:var(--fg-2)}
+  .dl-fallback a{color:var(--accent)}
+
   .mu-list{display:grid; gap:0; border-top:1px solid var(--rule); margin-top:clamp(28px, 4vw, 44px)}
   .mu-card{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(20px, 4vw, 60px); align-items:start;
     padding:clamp(28px, 3.4vw, 42px) 0; border-bottom:1px solid var(--rule); text-decoration:none; color:inherit}

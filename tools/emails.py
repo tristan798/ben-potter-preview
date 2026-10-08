@@ -39,7 +39,7 @@ DISPLAY = "'Clash Display', 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-
 SANS    = "'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif"
 FONT_BASE = C.asset_base() + "/assets/fonts/"
 
-GUIDE_URL = C.asset_base() + "/" + C.GUIDE_FILE
+GUIDE_URL = C.asset_base() + "/download/?f=guide"
 
 
 def label(text):
