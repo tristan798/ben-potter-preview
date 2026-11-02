@@ -1,6 +1,6 @@
 {
   "_comment": "Single source of truth for listings. Edit by hand, or let tools/sync_listings.py write it from a feed. build.py renders both the current-listings and recently-sold pages from here.",
-  "updated": "2026-10-21",
+  "updated": "2026-11-02",
   "source": "harcourts",
   "for_sale": [
     {
@@ -94,7 +94,7 @@
       "bedrooms": 2,
       "bathrooms": 1,
       "order": 5,
-      "status_label": "Asking Price $875,000",
+      "status_label": "Price by Negotation",
       "photo": "img/listings/2-3a-first-avenue-devonport.jpg"
     },
     {
