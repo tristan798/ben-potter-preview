@@ -1,6 +1,6 @@
 {
   "_comment": "Single source of truth for listings. Edit by hand, or let tools/sync_listings.py write it from a feed. build.py renders both the current-listings and recently-sold pages from here.",
-  "updated": "2026-11-02",
+  "updated": "2026-11-04",
   "source": "harcourts",
   "for_sale": [
     {
@@ -68,7 +68,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 436,
-      "order": 7,
+      "order": 6,
       "status_label": "Price by Negotiation",
       "photo": "img/listings/56a-church-street-devonport.jpg"
     },
@@ -86,18 +86,6 @@
       "photo": "img/listings/48a-waterview-road-devonport.jpg"
     },
     {
-      "address": "2/3A First Avenue",
-      "suburb": "Devonport",
-      "id": "2-3a-first-avenue-devonport",
-      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l24195557-2-3a-first-avenue-devonport-nz-0622",
-      "ref": 24195557,
-      "bedrooms": 2,
-      "bathrooms": 1,
-      "order": 5,
-      "status_label": "Price by Negotation",
-      "photo": "img/listings/2-3a-first-avenue-devonport.jpg"
-    },
-    {
       "address": "1/3A First Avenue",
       "suburb": "Devonport",
       "id": "1-3a-first-avenue-devonport",
@@ -105,12 +93,23 @@
       "ref": 24195378,
       "bedrooms": 2,
       "bathrooms": 1,
-      "order": 6,
+      "order": 5,
       "status_label": "Price by Negotiation",
       "photo": "img/listings/1-3a-first-avenue-devonport.jpg"
     }
   ],
   "sold": [
+    {
+      "address": "2/3A First Avenue",
+      "suburb": "Devonport",
+      "id": "2-3a-first-avenue-devonport",
+      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l24195557-2-3a-first-avenue-devonport-nz-0622",
+      "ref": 24195557,
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "order": 0,
+      "photo": "img/listings/2-3a-first-avenue-devonport.jpg"
+    },
     {
       "address": "2/6 Maleme Avenue",
       "suburb": "Belmont",
@@ -120,7 +119,7 @@
       "bedrooms": 3,
       "bathrooms": 2,
       "parking": 2,
-      "order": 0,
+      "order": 1,
       "photo": "img/listings/2-6-maleme-avenue-belmont.jpg"
     },
     {
@@ -131,7 +130,7 @@
       "ref": 40348255,
       "bedrooms": 3,
       "bathrooms": 2,
-      "order": 1,
+      "order": 2,
       "photo": "img/listings/1-171-bayswater-avenue-bayswater.jpg"
     },
     {
@@ -144,7 +143,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 414,
-      "order": 2,
+      "order": 3,
       "photo": "img/listings/28-fraser-road-devonport.jpg"
     },
     {
@@ -157,7 +156,7 @@
       "bathrooms": 3,
       "parking": 1,
       "land_m2": 179,
-      "order": 3,
+      "order": 4,
       "photo": "img/listings/4-3-corrella-road-belmont.jpg"
     },
     {
@@ -170,7 +169,7 @@
       "bathrooms": 2,
       "parking": 2,
       "land_m2": 648,
-      "order": 4,
+      "order": 5,
       "photo": "img/listings/13a-bayswater-avenue-bayswater.jpg",
       "sold_on": "2026-08-04",
       "photo_w": 1600,
@@ -185,7 +184,7 @@
       "bedrooms": 3,
       "bathrooms": 3,
       "parking": 1,
-      "order": 5,
+      "order": 6,
       "photo": "img/listings/5-3-corrella-road-belmont.jpg"
     },
     {
@@ -197,7 +196,7 @@
       "bedrooms": 4,
       "bathrooms": 3,
       "parking": 1,
-      "order": 6,
+      "order": 7,
       "photo": "img/listings/8-3-corrella-road-belmont.jpg",
       "sold_on": "2026-09-17",
       "photo_w": 1600,
@@ -212,7 +211,7 @@
       "bedrooms": 4,
       "bathrooms": 3,
       "parking": 1,
-      "order": 7,
+      "order": 8,
       "photo": "img/listings/7-16-williamson-avenue-belmont.jpg"
     },
     {
@@ -225,7 +224,7 @@
       "bathrooms": 2,
       "parking": 1,
       "land_m2": 379,
-      "order": 8,
+      "order": 9,
       "photo": "img/listings/16-kiwi-road-devonport.jpg",
       "sold_on": "2026-05-21",
       "photo_w": 1448,
@@ -240,7 +239,7 @@
       "bedrooms": 2,
       "bathrooms": 1,
       "parking": 1,
-      "order": 9,
+      "order": 10,
       "photo": "img/listings/3-64-victoria-road-devonport.jpg"
     },
     {
@@ -252,7 +251,7 @@
       "bedrooms": 3,
       "bathrooms": 2,
       "parking": 1,
-      "order": 10,
+      "order": 11,
       "photo": "img/listings/1-106-stanley-point-road-devonport.jpg"
     },
     {
@@ -265,7 +264,7 @@
       "bathrooms": 3,
       "parking": 2,
       "land_m2": 817,
-      "order": 11,
+      "order": 12,
       "photo": "img/listings/89-bayswater-avenue-bayswater.jpg"
     },
     {
@@ -277,7 +276,7 @@
       "bedrooms": 1,
       "bathrooms": 1,
       "parking": 1,
-      "order": 12,
+      "order": 13,
       "photo": "img/listings/13-53-vauxhall-road-devonport.jpg"
     },
     {
@@ -290,7 +289,7 @@
       "bathrooms": 4,
       "parking": 2,
       "land_m2": 497,
-      "order": 13,
+      "order": 14,
       "photo": "img/listings/13-bayswater-avenue-bayswater.jpg"
     },
     {
@@ -303,7 +302,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 501,
-      "order": 14,
+      "order": 15,
       "photo": "img/listings/3-st-leonards-road-devonport.jpg"
     },
     {
@@ -316,7 +315,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 455,
-      "order": 15,
+      "order": 16,
       "photo": "img/listings/6-cautley-street-devonport.jpg"
     },
     {
@@ -328,7 +327,7 @@
       "bedrooms": 2,
       "bathrooms": 1,
       "parking": 1,
-      "order": 16,
+      "order": 17,
       "photo": "img/listings/46a-albert-road-devonport.jpg"
     },
     {
@@ -341,7 +340,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 487,
-      "order": 17,
+      "order": 18,
       "photo": "img/listings/12-ngataringa-road-devonport.jpg"
     },
     {
@@ -353,7 +352,7 @@
       "bedrooms": 4,
       "bathrooms": 3,
       "parking": 2,
-      "order": 18,
+      "order": 19,
       "photo": "img/listings/2-67-beresford-street-bayswater.jpg"
     },
     {
@@ -366,7 +365,7 @@
       "bathrooms": 2,
       "parking": 2,
       "land_m2": 553,
-      "order": 19,
+      "order": 20,
       "photo": "img/listings/79a-bayswater-avenue-bayswater.jpg"
     },
     {
@@ -377,7 +376,7 @@
       "ref": 36018063,
       "bedrooms": 2,
       "bathrooms": 1,
-      "order": 20,
+      "order": 21,
       "photo": "img/listings/1-16a-bardia-street-belmont.jpg"
     },
     {
@@ -389,7 +388,7 @@
       "bedrooms": 2,
       "bathrooms": 1,
       "parking": 1,
-      "order": 21,
+      "order": 22,
       "photo": "img/listings/2-30-fraser-road-devonport.jpg"
     },
     {
@@ -402,7 +401,7 @@
       "bathrooms": 2,
       "parking": 1,
       "land_m2": 506,
-      "order": 22,
+      "order": 23,
       "photo": "img/listings/20-lake-road-devonport.jpg"
     },
     {
@@ -415,7 +414,7 @@
       "bathrooms": 1,
       "parking": 2,
       "land_m2": 2367,
-      "order": 23,
+      "order": 24,
       "photo": "img/listings/37-wairau-road-forrest-hill.jpg"
     },
     {
@@ -427,7 +426,7 @@
       "bedrooms": 2,
       "bathrooms": 1,
       "parking": 1,
-      "order": 24,
+      "order": 25,
       "photo": "img/listings/2-10-ewen-alison-avenue-devonport.jpg"
     },
     {
@@ -439,7 +438,7 @@
       "bedrooms": 4,
       "bathrooms": 2,
       "land_m2": 840,
-      "order": 25,
+      "order": 26,
       "photo": "img/listings/55-regent-street-devonport.jpg"
     },
     {
@@ -451,7 +450,7 @@
       "bedrooms": 3,
       "bathrooms": 2,
       "parking": 1,
-      "order": 26,
+      "order": 27,
       "photo": "img/listings/1-5-corrella-road-belmont.jpg"
     },
     {
@@ -464,7 +463,7 @@
       "bathrooms": 2,
       "parking": 2,
       "land_m2": 1012,
-      "order": 27,
+      "order": 28,
       "photo": "img/listings/10-bayswater-avenue-bayswater.jpg"
     },
     {
@@ -477,7 +476,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 440,
-      "order": 28,
+      "order": 29,
       "photo": "img/listings/11-wesley-street-devonport.jpg"
     },
     {
@@ -490,7 +489,7 @@
       "bathrooms": 1,
       "parking": 2,
       "land_m2": 529,
-      "order": 29,
+      "order": 30,
       "photo": "img/listings/19-wicklow-road-devonport.jpg"
     },
     {
@@ -502,7 +501,7 @@
       "bedrooms": 2,
       "bathrooms": 1,
       "parking": 1,
-      "order": 30,
+      "order": 31,
       "photo": "img/listings/3-39-eversleigh-road-belmont.jpg"
     },
     {
@@ -515,7 +514,7 @@
       "bathrooms": 2,
       "parking": 1,
       "land_m2": 588,
-      "order": 31,
+      "order": 32,
       "photo": "img/listings/87-bayswater-avenue-bayswater.jpg"
     },
     {
@@ -526,7 +525,7 @@
       "ref": 32591433,
       "bedrooms": 3,
       "bathrooms": 2,
-      "order": 32,
+      "order": 33,
       "photo": "img/listings/2-30-vauxhall-road-devonport.jpg"
     },
     {
@@ -539,7 +538,7 @@
       "bathrooms": 3,
       "parking": 2,
       "land_m2": 250,
-      "order": 33,
+      "order": 34,
       "photo": "img/listings/96b-anzac-street-takapuna.jpg"
     },
     {
@@ -551,7 +550,7 @@
       "bedrooms": 2,
       "bathrooms": 2,
       "parking": 1,
-      "order": 34,
+      "order": 35,
       "photo": "img/listings/10-66-victoria-road-devonport.jpg"
     },
     {
@@ -562,7 +561,7 @@
       "ref": 30750419,
       "bedrooms": 3,
       "bathrooms": 1,
-      "order": 35,
+      "order": 36,
       "photo": "img/listings/2-118-victoria-road-devonport.jpg"
     },
     {
@@ -575,7 +574,7 @@
       "bathrooms": 2,
       "parking": 1,
       "land_m2": 1351,
-      "order": 36,
+      "order": 37,
       "photo": "img/listings/63-corunna-road-milford.jpg"
     },
     {
@@ -586,7 +585,7 @@
       "ref": 29221659,
       "bedrooms": 2,
       "bathrooms": 2,
-      "order": 37,
+      "order": 38,
       "photo": "img/listings/1-126a-vauxhall-road-devonport.jpg"
     },
     {
@@ -597,7 +596,7 @@
       "ref": 27746149,
       "bedrooms": 3,
       "bathrooms": 1,
-      "order": 38,
+      "order": 39,
       "photo": "img/listings/1-68-lake-road-devonport.jpg"
     },
     {
@@ -609,7 +608,7 @@
       "bedrooms": 10,
       "bathrooms": 5,
       "land_m2": 1378,
-      "order": 39,
+      "order": 40,
       "photo": "img/listings/32-karaka-street-takapuna.jpg"
     },
     {
@@ -621,7 +620,7 @@
       "bedrooms": 4,
       "bathrooms": 2,
       "parking": 2,
-      "order": 40,
+      "order": 41,
       "photo": "img/listings/1-80-bayswater-avenue-bayswater.jpg"
     },
     {
@@ -633,7 +632,7 @@
       "bedrooms": 4,
       "bathrooms": 2,
       "land_m2": 781,
-      "order": 41,
+      "order": 42,
       "photo": "img/listings/173-lake-road-belmont.jpg"
     },
     {
@@ -646,7 +645,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 696,
-      "order": 42,
+      "order": 43,
       "photo": "img/listings/12-niccol-avenue-devonport.jpg"
     },
     {
@@ -658,7 +657,7 @@
       "bedrooms": 4,
       "bathrooms": 2,
       "parking": 1,
-      "order": 43,
+      "order": 44,
       "photo": "img/listings/2-46-aramoana-avenue-devonport.jpg"
     },
     {
@@ -669,7 +668,7 @@
       "ref": 26093590,
       "bedrooms": 2,
       "bathrooms": 1,
-      "order": 44,
+      "order": 45,
       "photo": "img/listings/1-3-balfour-street-bayswater.jpg"
     },
     {
@@ -682,7 +681,7 @@
       "bathrooms": 2,
       "parking": 1,
       "land_m2": 986,
-      "order": 45,
+      "order": 46,
       "photo": "img/listings/158-lake-road-belmont.jpg"
     },
     {
@@ -694,7 +693,7 @@
       "bedrooms": 3,
       "bathrooms": 1,
       "land_m2": 663,
-      "order": 46,
+      "order": 47,
       "photo": "img/listings/9-tui-street-belmont.jpg"
     },
     {
@@ -707,7 +706,7 @@
       "bathrooms": 1,
       "parking": 2,
       "land_m2": 981,
-      "order": 47,
+      "order": 48,
       "photo": "img/listings/61-aramoana-avenue-devonport.jpg"
     },
     {
@@ -718,7 +717,7 @@
       "bedrooms": 3,
       "bathrooms": 1,
       "land_m2": 613,
-      "order": 48,
+      "order": 49,
       "photo": "img/listings/11-rutland-road-devonport.jpg"
     },
     {
@@ -730,7 +729,7 @@
       "bathrooms": 3,
       "parking": 2,
       "land_m2": 716,
-      "order": 49,
+      "order": 50,
       "photo": "img/listings/39a-aramoana-avenue-devonport.jpg"
     },
     {
@@ -740,7 +739,7 @@
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp24388-2-43a-stanley-point-road-devonport-auckland-0624",
       "bedrooms": 3,
       "bathrooms": 1,
-      "order": 50,
+      "order": 51,
       "photo": "img/listings/2-43a-stanley-point-road-devonport.jpg"
     },
     {
@@ -750,7 +749,7 @@
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp24559-1-30-fraser-road-devonport-auckland-0624",
       "bedrooms": 4,
       "bathrooms": 2,
-      "order": 51,
+      "order": 52,
       "photo": "img/listings/1-30-fraser-road-devonport.jpg"
     },
     {
@@ -761,7 +760,7 @@
       "bedrooms": 4,
       "bathrooms": 2,
       "parking": 1,
-      "order": 52,
+      "order": 53,
       "photo": "img/listings/2-1-diomede-street-bayswater.jpg"
     },
     {
@@ -772,7 +771,7 @@
       "bedrooms": 2,
       "bathrooms": 1,
       "parking": 1,
-      "order": 53,
+      "order": 54,
       "photo": "img/listings/3-33-northumberland-avenue-belmont.jpg"
     },
     {
@@ -783,20 +782,8 @@
       "bedrooms": 4,
       "bathrooms": 1,
       "land_m2": 304,
-      "order": 54,
-      "photo": "img/listings/30-rutland-road-devonport.jpg"
-    },
-    {
-      "address": "35 Becroft Drive",
-      "suburb": "Forrest Hill",
-      "id": "35-becroft-drive-forrest-hill",
-      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp24292-35-becroft-drive-forrest-hill-auckland-0620",
-      "bedrooms": 3,
-      "bathrooms": 1,
-      "parking": 2,
-      "land_m2": 1065,
       "order": 55,
-      "photo": "img/listings/35-becroft-drive-forrest-hill.jpg"
+      "photo": "img/listings/30-rutland-road-devonport.jpg"
     },
     {
       "address": "97 Lake Road",
@@ -810,13 +797,25 @@
       "photo": "img/listings/97-lake-road-belmont.jpg"
     },
     {
+      "address": "35 Becroft Drive",
+      "suburb": "Forrest Hill",
+      "id": "35-becroft-drive-forrest-hill",
+      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp24292-35-becroft-drive-forrest-hill-auckland-0620",
+      "bedrooms": 3,
+      "bathrooms": 1,
+      "parking": 2,
+      "land_m2": 1065,
+      "order": 57,
+      "photo": "img/listings/35-becroft-drive-forrest-hill.jpg"
+    },
+    {
       "address": "24 Russell Street",
       "suburb": "Devonport",
       "id": "24-russell-street-devonport",
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp24259-24-russell-street-devonport-auckland-0624",
       "bedrooms": 4,
       "bathrooms": 2,
-      "order": 57,
+      "order": 58,
       "photo": "img/listings/24-russell-street-devonport.jpg"
     },
     {
@@ -826,7 +825,7 @@
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp23955-3-6-north-avenue-devonport-auckland-0624",
       "bedrooms": 2,
       "bathrooms": 1,
-      "order": 58,
+      "order": 59,
       "photo": "img/listings/3-6-north-avenue-devonport.jpg"
     },
     {
@@ -837,7 +836,7 @@
       "bedrooms": 3,
       "bathrooms": 1,
       "parking": 1,
-      "order": 59,
+      "order": 60,
       "photo": "img/listings/10-aramoana-avenue-devonport.jpg"
     },
     {
@@ -848,7 +847,7 @@
       "bedrooms": 3,
       "bathrooms": 2,
       "land_m2": 589,
-      "order": 60,
+      "order": 61,
       "photo": "img/listings/85-stanley-point-road-devonport.jpg"
     },
     {
@@ -858,7 +857,7 @@
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp23737-8-shoal-bay-road-devonport-auckland-0624",
       "bedrooms": 3,
       "bathrooms": 2,
-      "order": 61,
+      "order": 62,
       "photo": "img/listings/8-shoal-bay-road-devonport.jpg"
     },
     {
@@ -869,7 +868,7 @@
       "bedrooms": 4,
       "bathrooms": 2,
       "parking": 2,
-      "order": 62,
+      "order": 63,
       "photo": "img/listings/50-northboro-road-belmont.jpg"
     },
     {
@@ -880,7 +879,7 @@
       "bedrooms": 3,
       "bathrooms": 2,
       "parking": 1,
-      "order": 63,
+      "order": 64,
       "photo": "img/listings/18a-coroglen-avenue-birkenhead.jpg"
     },
     {
@@ -892,7 +891,7 @@
       "bathrooms": 2,
       "parking": 2,
       "land_m2": 400,
-      "order": 64,
+      "order": 65,
       "photo": "img/listings/40b-norwood-road-bayswater.jpg"
     },
     {
@@ -902,7 +901,7 @@
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp23682-1-23-mozeley-avenue-devonport-auckland-0624",
       "bedrooms": 2,
       "bathrooms": 1,
-      "order": 65,
+      "order": 66,
       "photo": "img/listings/1-23-mozeley-avenue-devonport.jpg"
     },
     {
@@ -912,7 +911,7 @@
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp23593-13-merwood-lane-devonport-auckland-0624",
       "bedrooms": 5,
       "bathrooms": 3,
-      "order": 66,
+      "order": 67,
       "photo": "img/listings/13-merwood-lane-devonport.jpg"
     },
     {
@@ -924,7 +923,7 @@
       "bathrooms": 1,
       "parking": 2,
       "land_m2": 521,
-      "order": 67,
+      "order": 68,
       "photo": "img/listings/52-old-lake-road-devonport.jpg"
     },
     {
@@ -934,7 +933,7 @@
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp23586-3-32-alamein-avenue-belmont-auckland-0622",
       "bedrooms": 1,
       "bathrooms": 1,
-      "order": 68,
+      "order": 69,
       "photo": "img/listings/3-32-alamein-avenue-belmont.jpg"
     },
     {
@@ -944,7 +943,7 @@
       "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/dp23557-24a-aramoana-ave-devonport-auckland-0624",
       "bedrooms": 3,
       "bathrooms": 2,
-      "order": 69,
+      "order": 70,
       "photo": "img/listings/24a-aramoana-ave-devonport.jpg"
     },
     {
@@ -956,7 +955,7 @@
       "bathrooms": 3,
       "parking": 2,
       "land_m2": 402,
-      "order": 70,
+      "order": 71,
       "photo": "img/listings/17-winscombe-street-belmont.jpg"
     },
     {
@@ -967,7 +966,7 @@
       "bedrooms": 2,
       "bathrooms": 1,
       "parking": 1,
-      "order": 71,
+      "order": 72,
       "photo": "img/listings/4-11-wicklow-road-devonport.jpg"
     },
     {
@@ -979,7 +978,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 421,
-      "order": 72,
+      "order": 73,
       "photo": "img/listings/37-kawerau-avenue-devonport.jpg"
     }
   ]
