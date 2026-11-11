@@ -1,8 +1,21 @@
 {
   "_comment": "Single source of truth for listings. Edit by hand, or let tools/sync_listings.py write it from a feed. build.py renders both the current-listings and recently-sold pages from here.",
-  "updated": "2026-11-10",
+  "updated": "2026-11-11",
   "source": "harcourts",
   "for_sale": [
+    {
+      "address": "43 Beresford Street",
+      "suburb": "Bayswater",
+      "id": "43-beresford-street-bayswater",
+      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l43559924-43-beresford-street-bayswater-nz-0622",
+      "ref": 43559924,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "land_m2": 475,
+      "order": 0,
+      "status_label": "Auction 3rd December at 12.00pm",
+      "photo": "img/listings/43-beresford-street-bayswater.jpg"
+    },
     {
       "address": "2 Merani Street",
       "suburb": "Devonport",
@@ -13,7 +26,7 @@
       "bathrooms": 2,
       "parking": 2,
       "land_m2": 640,
-      "order": 0,
+      "order": 1,
       "status_label": "Auction 3rd December at 12.00pm",
       "photo": "img/listings/2-merani-street-devonport.jpg"
     },
@@ -27,8 +40,8 @@
       "bathrooms": 3,
       "parking": 1,
       "land_m2": 179,
-      "order": 2,
-      "status_label": "Enquiries Over $1,185,000",
+      "order": 3,
+      "status_label": "Price by Negotiation",
       "photo": "img/listings/1-3-corrella-road-belmont.jpg"
     },
     {
@@ -41,7 +54,7 @@
       "bathrooms": 3,
       "parking": 1,
       "land_m2": 108,
-      "order": 3,
+      "order": 4,
       "status_label": "Enquiries Over $1,185,000",
       "photo": "img/listings/6-3-corrella-road-belmont.jpg"
     },
@@ -54,7 +67,7 @@
       "bedrooms": 4,
       "bathrooms": 3,
       "parking": 1,
-      "order": 4,
+      "order": 5,
       "status_label": "Enquiries Over $1,185,000",
       "photo": "img/listings/2-3-corrella-road-belmont.jpg"
     },
@@ -68,7 +81,7 @@
       "bathrooms": 3,
       "parking": 1,
       "land_m2": 179,
-      "order": 5,
+      "order": 6,
       "status_label": "Enquiries Over $1,185,000",
       "photo": "img/listings/3-corrella-road-belmont.jpg"
     },
@@ -82,7 +95,7 @@
       "bathrooms": 1,
       "parking": 1,
       "land_m2": 436,
-      "order": 6,
+      "order": 7,
       "status_label": "Price by Negotiation",
       "photo": "img/listings/56a-church-street-devonport.jpg"
     },
@@ -95,7 +108,7 @@
       "bedrooms": 5,
       "bathrooms": 3,
       "land_m2": 600,
-      "order": 1,
+      "order": 2,
       "status_label": "Auction 19th November at 12pm",
       "photo": "img/listings/48a-waterview-road-devonport.jpg"
     }
