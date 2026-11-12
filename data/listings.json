@@ -1,6 +1,6 @@
 {
   "_comment": "Single source of truth for listings. Edit by hand, or let tools/sync_listings.py write it from a feed. build.py renders both the current-listings and recently-sold pages from here.",
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "source": "harcourts",
   "for_sale": [
     {
@@ -31,45 +31,44 @@
       "photo": "img/listings/2-merani-street-devonport.jpg"
     },
     {
-      "address": "1/3 Corrella Road",
+      "address": "5/3 Corrella Road",
       "suburb": "Belmont",
-      "id": "1-3-corrella-road-belmont",
-      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l42932693-lot-1-3-corrella-road-belmont-nz-0622",
+      "id": "5-3-corrella-road-belmont",
+      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l42932693-5-3-corrella-road-belmont-nz-0622",
       "ref": 42932693,
-      "bedrooms": 4,
-      "bathrooms": 3,
-      "parking": 1,
-      "land_m2": 179,
-      "order": 3,
-      "status_label": "Price by Negotiation",
-      "photo": "img/listings/1-3-corrella-road-belmont.jpg"
-    },
-    {
-      "address": "6/3 Corrella Road",
-      "suburb": "Belmont",
-      "id": "6-3-corrella-road-belmont",
-      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l42394656-lot-6-3-corrella-road-belmont-nz-0622",
-      "ref": 42394656,
       "bedrooms": 3,
       "bathrooms": 3,
       "parking": 1,
-      "land_m2": 108,
-      "order": 4,
-      "status_label": "Enquiries Over $1,185,000",
-      "photo": "img/listings/6-3-corrella-road-belmont.jpg"
+      "order": 3,
+      "status_label": "Price by Negotiation",
+      "photo": "img/listings/5-3-corrella-road-belmont.jpg"
     },
     {
       "address": "2/3 Corrella Road",
       "suburb": "Belmont",
       "id": "2-3-corrella-road-belmont",
-      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l41314991-lot-2-3-corrella-road-belmont-nz-0622",
-      "ref": 41314991,
+      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l42394656-2-3-corrella-road-belmont-nz-0622",
+      "ref": 42394656,
       "bedrooms": 4,
       "bathrooms": 3,
       "parking": 1,
-      "order": 5,
+      "order": 4,
       "status_label": "Enquiries Over $1,185,000",
       "photo": "img/listings/2-3-corrella-road-belmont.jpg"
+    },
+    {
+      "address": "6/3 Corrella Road",
+      "suburb": "Belmont",
+      "id": "6-3-corrella-road-belmont",
+      "url": "https://harcourts.net/nz/office/devonport/people/ben-potter/listing/l41314991-6-3-corrella-road-belmont-nz-0622",
+      "ref": 41314991,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "parking": 1,
+      "land_m2": 108,
+      "order": 5,
+      "status_label": "Enquiries Over $1,185,000",
+      "photo": "img/listings/6-3-corrella-road-belmont.jpg"
     },
     {
       "address": "3 Corrella Road",
