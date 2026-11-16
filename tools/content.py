@@ -72,7 +72,7 @@ REEL_SECONDS  = 22
 REEL_TITLE    = "Ben Potter on Devonport, Belmont and Bayswater"
 REEL_DESC     = ("Ben Potter, Harcourts Cooper & Co, on selling homes across Devonport, Belmont and "
                  "Bayswater on Auckland's North Shore.")
-REEL_DATE     = "2026-09-28"   # upload date for VideoObject schema
+REEL_DATE     = "2026-09-28T16:51:18+13:00"   # upload date for VideoObject schema
 
 AGENT_NAME    = "Ben Potter"
 AGENT_TITLE   = "North Shore Real Estate Specialist"
@@ -200,7 +200,7 @@ SUBURBS = [
         "coord": "36.8290° S · 174.7961° E",
         "lat": -36.8290, "lng": 174.7961,
         "h1": "Devonport real estate<br>Street by street.",
-        "title": "Devonport Real Estate Agent | Ben Potter, Harcourts Cooper & Co",
+        "title": "Devonport Real Estate Agent | Ben Potter",
         "desc": ("Selling or buying in Devonport? Ben Potter has 38 years on the Devonport Peninsula and "
                  "specialises in the suburb's villas, character homes and tightly held streets. Free appraisals."),
         "card": ("Heritage villas, Cheltenham Beach and the ferry. Some of the North Shore's most tightly "
@@ -291,7 +291,7 @@ SUBURBS = [
         "coord": "36.8060° S · 174.7898° E",
         "lat": -36.8060, "lng": 174.7898,
         "h1": "Belmont real estate<br>perfectly positioned.",
-        "title": "Belmont Real Estate Agent | Ben Potter, Harcourts Cooper & Co",
+        "title": "Belmont Real Estate Agent | Ben Potter",
         "desc": ("Thinking of selling in Belmont? Ben Potter knows the Takapuna Grammar and Belmont "
                  "Intermediate zones, the family homes and the buyers. 38 years on the peninsula. Free appraisals."),
         "card": ("Perfectly positioned between Devonport and Takapuna. From first-home buyers to the "
@@ -376,7 +376,7 @@ SUBURBS = [
         "coord": "36.8163° S · 174.7727° E",
         "lat": -36.8163, "lng": 174.7727,
         "h1": "Bayswater real estate<br>on the harbour's edge.",
-        "title": "Bayswater Real Estate Agent | Ben Potter, Harcourts Cooper & Co",
+        "title": "Bayswater Real Estate Agent | Ben Potter",
         "desc": ("Selling in Bayswater? Ben Potter knows the marina, the ferry, the view lines and the "
                  "buyers. 38 years on the Devonport Peninsula. Free, no obligation property appraisals."),
         "card": ("Water on three sides: the marina and views back to the city. Larger sections still "

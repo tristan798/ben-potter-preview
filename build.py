@@ -467,7 +467,7 @@ def contact_section(depth):
   </section>'''
 
 
-def switcher(depth, current=None):
+def switcher(depth, current=None, suffix=''):
     out = []
     for s in C.SUBURBS:
         cur = ' aria-current="page"' if s['name'] == current else ''
@@ -475,7 +475,7 @@ def switcher(depth, current=None):
           <p class="coord">{s['coord']}</p>
           <h3>{s['name']}</h3>
           <p>{s['card']}</p>
-          <span class="quietlink">Explore {s['name']} {ARROW}</span>
+          <span class="quietlink">Explore {s['name']}{suffix} {ARROW}</span>
         </a>''')
     return '\n'.join(out)
 
@@ -610,7 +610,7 @@ def home_body():
         <p class="lede">Each of these suburbs has its own housing stock, its own buyers and its own rhythm. Choose one for a closer look at what sells there and what it takes to sell well.</p>
       </div>
       <div class="switch">
-{switcher(d)}
+{switcher(d, suffix=' real estate')}
       </div>
       <div class="secondary">
         <p class="label">Also sells in</p>
@@ -1052,7 +1052,65 @@ def market_edition_body(e):
         f'''          <div class="mu-stat"><b>{v}</b><span>{t}</span></div>'''
         for v, t in e.get('glance', []))
 
-    commentary = '\n'.join(f'        <p>{para}</p>' for para in e.get('commentary', []))
+    root = rel(d)
+    def paras(key):
+        return '\n'.join(f'        <p>{para.replace("{root}", root)}</p>' for para in e.get(key, []))
+    commentary = paras('commentary')
+    commentary_title = e.get('commentary_title') or 'What <em>happened.</em>'
+
+    # Optional sections. An edition without them renders exactly as before.
+    sales_section = ''
+    if e.get('sales'):
+        cards = []
+        for s_ in e['sales']:
+            area = [s_['suburb']]
+            if s_.get('tenure'):
+                area.append(s_['tenure'])
+            if s_.get('floor'):
+                area.append(f"{s_['floor']} m² floor")
+            if s_.get('land'):
+                area.append(f"{s_['land']} m² land")
+            cards.append(f'''        <article class="mu-suburb">
+          <h3>{s_["address"]}, {s_["suburb"]}</h3>
+          <dl class="mu-figures">
+            <div><dt>Sale price</dt><dd>{MU.money(s_["price"])}</dd></div>
+            <div><dt>Sold</dt><dd>{s_["date"]}</dd></div>
+            <div><dt>Bedrooms</dt><dd>{s_["beds"]}</dd></div>
+            <div><dt>Method</dt><dd>{s_["method"]}</dd></div>
+          </dl>
+          <p>{" &nbsp;·&nbsp; ".join(area)}</p>
+        </article>''')
+        sales_section = f'''
+  <section class="section on-light white" aria-labelledby="salesTitle">
+    <div class="wrap">
+      <div class="funnel-head">
+        <p class="label blue">Individual sales</p>
+        <h2 id="salesTitle">{e.get('sales_title') or 'Every <em>sale.</em>'}</h2>
+      </div>
+      <div class="mu-suburbs">
+{chr(10).join(cards)}
+      </div>
+      <p class="mu-source">{e.get('sales_source','')}</p>
+    </div>
+  </section>
+'''
+    perspective_section = ''
+    if e.get('perspective'):
+        perspective_section = f'''
+  <section class="section on-light{' white' if e.get('sales') else ''}" aria-labelledby="perspectiveTitle">
+    <div class="wrap split">
+      <div class="split-head">
+        <p class="label blue">Perspective</p>
+        <h2 id="perspectiveTitle">{e.get('perspective_title') or 'What it <em>means.</em>'}</h2>
+      </div>
+      <div class="prose mu-prose">
+{paras('perspective')}
+      </div>
+    </div>
+  </section>
+'''
+    # Keep the light and white bands alternating when the sales section is added.
+    suburbs_band = 'on-light' if e.get('sales') else 'on-light white'
 
     subs = []
     for s_ in e.get('suburbs', []):
@@ -1066,7 +1124,7 @@ def market_edition_body(e):
             <div><dt>Sales, last 12 months</dt><dd>{s_["sales"]} <i class="mu-{vdir}">{vol}</i></dd></div>
             <div><dt>Average sale price</dt><dd>{MU.money(s_["avg"])} <i class="mu-{pdir}">{prc}</i></dd></div>
           </dl>
-          <p>{s_["note"]}</p>
+          <p>{s_["note"].replace("{root}", root)}</p>
           {link}
         </article>''')
     suburbs = '\n'.join(subs)
@@ -1119,15 +1177,15 @@ def market_edition_body(e):
     <div class="wrap split">
       <div class="split-head">
         <p class="label blue">Commentary</p>
-        <h2 id="commentaryTitle">What <em>happened.</em></h2>
+        <h2 id="commentaryTitle">{commentary_title}</h2>
       </div>
       <div class="prose mu-prose">
 {commentary}
       </div>
     </div>
   </section>
-
-  <section class="section on-light white" aria-labelledby="suburbsTitle">
+{sales_section}
+  <section class="section {suburbs_band}" aria-labelledby="suburbsTitle">
     <div class="wrap">
       <div class="funnel-head">
         <p class="label blue">Suburb by suburb</p>
@@ -1138,7 +1196,7 @@ def market_edition_body(e):
       </div>
     </div>
   </section>
-
+{perspective_section}
   <section class="section funnel-close">
     <div class="wrap">
       <h2>{e.get('cta_title','Thinking of selling?')}</h2>
