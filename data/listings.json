@@ -1,6 +1,6 @@
 {
   "_comment": "Single source of truth for listings. Edit by hand, or let tools/sync_listings.py write it from a feed. build.py renders both the current-listings and recently-sold pages from here.",
-  "updated": "2026-11-13",
+  "updated": "2026-11-19",
   "source": "harcourts",
   "for_sale": [
     {
@@ -108,7 +108,7 @@
       "bathrooms": 3,
       "land_m2": 600,
       "order": 3,
-      "status_label": "Auction 19th November at 12pm",
+      "status_label": "Price by Negotiation",
       "photo": "img/listings/48a-waterview-road-devonport.jpg"
     },
     {
